@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<description>LPLC Service</description>
+	<display-name>LPLC Service</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:applicationContext-lplc.xml
+			classpath:applicationContext-lplc-ws.xml
+			classpath:applicationContext-lplc-dao.xml
+			classpath:applicationContext-lplc-service.xml
+			classpath:applicationContext-lplc-hibernate.xml
+			classpath:applicationContext-lplc-exception.xml
+            classpath:applicationContext-lplc-warning.xml
+            
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>lplc-ws</servlet-name>
+		<servlet-class>
+			org.springframework.ws.transport.http.MessageDispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>transformWsdlLocations</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+<!--  
+	<resource-ref>
+		<description>
+			Resource reference for UMR database datasource.
+		</description>
+		<res-ref-name>jdbc/umrUserDB</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+-->
+<!--
+	<servlet-mapping>
+		<servlet-name>lplc-ws</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+-->
+	<servlet-mapping>
+		<servlet-name>lplc-ws</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>lplc-ws</servlet-name>
+		<url-pattern>*.wsdl</url-pattern>
+	</servlet-mapping>
+</web-app>

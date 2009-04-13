@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Application context definition for hibernate.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- <context:property-placeholder location="classpath:app.properties" /> -->
+
+	<!-- Using anotation drive transactions -->
+	<tx:annotation-driven />
+	<!-- Data source bean -->
+	  	<bean id="lplcDataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName"
+		value="${hibernate.connection.driver_class}" />
+		<property name="url" value="${hibernate.connection.url}" />
+		<property name="username"
+		value="${hibernate.connection.username}" />
+		<property name="password"
+		value="${hibernate.connection.password}" />
+		<property name="initialSize"
+		value="${db.dbcp.connection.pool.initial_size}" />
+		<property name="maxActive"
+		value="${db.dbcp.connection.pool.max_active}" />
+		<property name="maxIdle"
+		value="${db.dbcp.connection.pool.max_idle}" />
+		<property name="minIdle"
+		value="${db.dbcp.connection.pool.min_idle}" />
+		<property name="maxWait"
+		value="${db.dbcp.connection.pool.max_wait}" />
+		</bean>
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="lplcDataSource" />
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.pearson.ed.lplc.model.LicensePoolMapping</value>
+			    
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="hibernate.show_sql">${hibernate.show.sql}</prop>
+				<prop key="hibernate.default_schema">${hibernate.default.schema}</prop>
+				<prop key="hibernate.cache.provider_class">${hibernate.cacheprovider}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.use.cache}</prop>
+				<prop key="hibernate.query.factory_class">${hibernate.query.factory_class}</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+</beans>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Application context definition for the lplc service.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<context:property-placeholder location="classpath:app.properties" />
+    <context:annotation-config/>
+
+	
+	<bean id="licensepoolService"
+		class="com.pearson.ed.lplc.services.impl.LicensePoolServiceImpl">
+		<property name="licensePoolConverter" ref="licensepoolConverter" />
+		<property name="licensePoolDAO" ref="licensepoolDAO" />
+		
+	</bean>
+	
+	<bean id="licensepoolServiceEndPoint"
+		class="com.pearson.ed.lplc.services.impl.LicensePoolServiceEndPointImpl">
+		<property name="licensepoolService" ref="licensepoolService" />
+		<property name="licensePoolConverter" ref="licensepoolConverter" />
+	</bean>
+	
+	<bean id="licensepoolConverter"
+		class="com.pearson.ed.lplc.services.converter.impl.LicensePoolConverterImpl">
+			
+	</bean>
+</beans>
