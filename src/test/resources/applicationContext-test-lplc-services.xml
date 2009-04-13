@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+          http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- LicensePool Service testing -->
+	<bean id="serviceTestLicensePool" name="serviceTestLicensePool"
+		class="com.pearson.ed.lplc.dto.LicensePoolDTO"
+		scope="prototype">
+		<property name="type" value="Seat based licensing" />
+		<property name="denyManualSubscription" value="0" />
+		<property name="endDate" value="10/30/2009"/>
+		<property name="startDate"  value="05/30/2009"/>
+		<property name="organizationId" value="TestOrganizationID"/>
+		<property name="productId">
+			<list>
+				<value>TestProductId1</value>
+			</list>
+		</property>
+		<property name="createdBy" value="TestUser1"/>
+		<property name="quantity" value="100"/>
+		<property name="sourceSystem" value="RADAdmin"/>
+	</bean>
+	
+</beans>
