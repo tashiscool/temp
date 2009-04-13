@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://licensepool.rws.pearson.com/doc/2009/04/01/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:licensepool="http://licensepool.rws.pearson.com/doc/2009/04/01/" name="User" targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/" xmlns:licensepool="http://licensepool.rws.pearson.com/doc/2009/04/01/">
+			<xsd:import schemaLocation="LicensePool.xsd" namespace="http://licensepool.rws.pearson.com/doc/2009/04/01/"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="LicensePoolException">
+		<wsdl:part name="LicensePoolException" element="tns:LicensePoolExceptionElement"/>
+	</wsdl:message>
+	<wsdl:message name="CreateLicensePoolRequest">
+		<wsdl:part name="CreateLicensePoolRequest" element="tns:CreateLicensePoolRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreateLicensePoolResponse">
+		<wsdl:part name="CreateLicensePoolResponse" element="tns:CreateLicensePoolResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="LicensePoolLifeCyclePort">
+		<wsdl:operation name="CreateLicensePool">
+			<wsdl:input message="tns:CreateLicensePoolRequest"/>
+			<wsdl:output message="tns:CreateLicensePoolResponse"/>
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LicensePoolLifeCycleBinding" type="tns:LicensePoolLifeCyclePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="CreateLicensePool">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="LicensePoolException">
+				<soap:fault name="LicensePoolException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LicensePoolLifeCycleWebService">
+		<wsdl:port name="LicensePoolLifeCyclePort" binding="tns:LicensePoolLifeCycleBinding">
+			<soap:address location="http://www.pearson.com/LicensePoolLifeCycle/services"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
