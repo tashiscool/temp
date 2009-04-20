@@ -12,14 +12,6 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 
-	<simpleType name="StatusDescriptionType">
-		<restriction base="string">
-			<whiteSpace value="collapse"/>
-			<minLength value="1"/>
-			<maxLength value="1024"/>
-		</restriction>
-	</simpleType>
-
 	<xsd:simpleType name="StatusCodeType">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="SUCCESS" />
@@ -33,7 +25,6 @@
 		<xsd:sequence>
 			<xsd:element name="TransactionId"	type="tns:TransactionIdType"	minOccurs="1" maxOccurs="1" />
 			<xsd:element name="StatusCode"		type="tns:StatusCodeType"	minOccurs="1" maxOccurs="1" />
-			<xsd:element name="StatusDescription"		type="tns:StatusDescriptionType"	minOccurs="1" maxOccurs="1" />
 			<xsd:element name="StatusMessage"	type="xsd:string"		minOccurs="1" maxOccurs="unbounded" />
 			<xsd:element name="ReturnValue"		type="xsd:string" />
 		</xsd:sequence>
