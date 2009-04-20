@@ -33,6 +33,36 @@ public class LicensePoolDTO implements Serializable {
 	private List<String> productIds;
 	private String organizationId;
 	private int organizationLevel;
+	private boolean managedChildOrganization;
+	private boolean managedParentOrganization;
+	/**
+	 * @return the managedChildOrganization
+	 */
+	public boolean isManagedChildOrganization() {
+		return managedChildOrganization;
+	}
+
+	/**
+	 * @param managedChildOrganization the managedChildOrganization to set
+	 */
+	public void setManagedChildOrganization(boolean managedChildOrganization) {
+		this.managedChildOrganization = managedChildOrganization;
+	}
+
+	/**
+	 * @return the managedParentOrganization
+	 */
+	public boolean isManagedParentOrganization() {
+		return managedParentOrganization;
+	}
+
+	/**
+	 * @param managedParentOrganization the managedParentOrganization to set
+	 */
+	public void setManagedParentOrganization(boolean managedParentOrganization) {
+		this.managedParentOrganization = managedParentOrganization;
+	}
+
 	/**
 	 * @return the productIds
 	 */

@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
@@ -28,9 +27,11 @@ public class LicensePoolServiceEndPointImpl implements
 	}
 
 	/**
-	 * @param licensePoolConverter the licensePoolConverter to set
+	 * @param licensePoolConverter
+	 *            the licensePoolConverter to set
 	 */
-	public void setLicensePoolConverter(LicensePoolConverter licensePoolConverter) {
+	public void setLicensePoolConverter(
+			LicensePoolConverter licensePoolConverter) {
 		this.licensePoolConverter = licensePoolConverter;
 	}
 

@@ -19,6 +19,7 @@
 				<prop key="LPLC0007">${LPLC0007}</prop>
 				<prop key="LPLC0008">${LPLC0008}</prop>
 				<prop key="LPLC0009">${LPLC0009}</prop>
+				<prop key="LPLC0010">${LPLC0010}</prop>
 			</props>
 		</property>
 	</bean>

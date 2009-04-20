@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
+import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.model.common.LPLCBaseEntity;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
@@ -80,7 +81,6 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 				.getDenyManualSubscription());
 		licensepool.setLicensePoolStatus(licensepoolMapping.getStatus());
 		licensepool.setQuantity(licensepoolMapping.getQuantity());
-		licensepool.setUsedLicenses(licensepoolMapping.getUsed_quantity());
 		licensepool.setStartDate(licensepoolMapping.getStart_date());
 		licensepool.setEndDate(licensepoolMapping.getEnd_date());
 		licensepool.setOrganizationId(licensepoolMapping.getOrg_id());
@@ -146,7 +146,6 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolMapping.setStart_date(licensepool.getStartDate());
 		licensepoolMapping.setEnd_date(licensepool.getEndDate());
 		licensepoolMapping.setQuantity(licensepool.getQuantity());
-		licensepoolMapping.setUsed_quantity(licensepool.getUsedLicenses());
 		licensepoolMapping.setSource_system(licensepool.getSourceSystem());
 		licensepoolMapping.setOrg_id(licensepool.getOrganizationId());
 		licensepoolMapping.setProducts(getProducts(licensepool));
@@ -159,7 +158,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			setCreatedValues(licensepoolMapping, licensepool);
 		}
 		setModifiedValues(licensepoolMapping, licensepool);
-
+		
 		return licensepoolMapping;
 	}
 

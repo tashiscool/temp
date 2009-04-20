@@ -7,13 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -60,27 +62,31 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	@Column(nullable = true, name = "quantity", length = 16)
 	private int quantity;
 
-	@Column(nullable = true, name = "used_quantity", length = 16)
-	private int used_quantity;
-
 	@Column(nullable = true, name = "organization_id", length = 128)
 	private String org_id;
 
-	@Column(nullable = true, name = "ORGANIZATION_LEVEL", length = 128)
-	private int org_level;
-	
+	@org.hibernate.annotations.CollectionOfElements(targetElement = java.lang.String.class, fetch=FetchType.EAGER)
+	@JoinTable(name = "LicensePool_Product", joinColumns = @JoinColumn(name = "licensepool_id"))
+	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	@Column(name = "product_id", nullable = false)
+	private List<String> products = new ArrayList<String>();
+
+	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	private Set<OrganizationLPMapping> organizations = new HashSet<OrganizationLPMapping>();
+
 	/**
-	 * @return the org_level
+	 * @return the organizations
 	 */
-	public int getOrg_level() {
-		return org_level;
+	public Set<OrganizationLPMapping> getOrganizations() {
+		return organizations;
 	}
 
 	/**
-	 * @param org_level the org_level to set
+	 * @param organizations the organizations to set
 	 */
-	public void setOrg_level(int org_level) {
-		this.org_level = org_level;
+	public void setOrganizations(Set<OrganizationLPMapping> organizations) {
+		this.organizations = organizations;
 	}
 
 	@Column(nullable = true, name = "sourcesystem", length = 128)
@@ -115,12 +121,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	public void setSource_system(String source_system) {
 		this.source_system = source_system;
 	}
- 
-	
-	@org.hibernate.annotations.CollectionOfElements(targetElement = java.lang.String.class)
-	@JoinTable(name="LicensePool_Product", joinColumns = @JoinColumn(name="licensepool_id"))
-	@Column(name="product_id", nullable=false)
-	private List<String> products = new ArrayList<String>();
 
 	/**
 	 * @return the licensepoolId
@@ -137,7 +137,8 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param products the products to set
+	 * @param products
+	 *            the products to set
 	 */
 	public void setProducts(List<String> products) {
 		this.products = products;
@@ -227,21 +228,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @return the used_quantity
-	 */
-	public int getUsed_quantity() {
-		return used_quantity;
-	}
-
-	/**
-	 * @param used_quantity
-	 *            the used_quantity to set
-	 */
-	public void setUsed_quantity(int used_quantity) {
-		this.used_quantity = used_quantity;
-	}
-
-	/**
 	 * @return the org_id
 	 */
 	public String getOrg_id() {
@@ -255,7 +241,7 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	public void setOrg_id(String org_id) {
 		this.org_id = org_id;
 	}
-	
+
 	/**
 	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
 	 * persistent member variables in order to maintain the hashCode contract
@@ -271,7 +257,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		hashCodeBuilder.append(start_date);
 		hashCodeBuilder.append(end_date);
 		hashCodeBuilder.append(quantity);
-		hashCodeBuilder.append(used_quantity);
 		hashCodeBuilder.append(org_id);
 		return hashCodeBuilder.toHashCode();
 	}
@@ -301,7 +286,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		equalsBuilder.append(this.start_date, u.start_date);
 		equalsBuilder.append(this.end_date, u.end_date);
 		equalsBuilder.append(this.quantity, u.quantity);
-		equalsBuilder.append(this.used_quantity, u.used_quantity);
 		equalsBuilder.append(this.org_id, u.org_id);
 		return equalsBuilder.isEquals() && super.equals(obj);
 	}

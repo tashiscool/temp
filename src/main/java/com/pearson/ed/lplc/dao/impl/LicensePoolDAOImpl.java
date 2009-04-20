@@ -34,7 +34,7 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDA
 	 */
 	public LicensePoolMapping findByLicensePoolId(String lplcId) {
 		Criteria criteria = getSession().createCriteria(LicensePoolMapping.class);
-		Criterion eqLicensePoolId = Restrictions.eq("LICENSEPOOL_ID", lplcId);
+		Criterion eqLicensePoolId = Restrictions.eq("licensepoolId", lplcId);
 		criteria.add(eqLicensePoolId);
 		return (LicensePoolMapping) criteria.uniqueResult();
 	}

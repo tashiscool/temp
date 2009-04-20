@@ -37,7 +37,8 @@
 	<simpleType name="DenyNewSubscription">
 		<restriction base="xsd:int">
 			<enumeration value="1"/>
-			<enumeration value="0"/>		</restriction>
+			<enumeration value="0"/>	
+			</restriction>
 	</simpleType>
 		<complexType name="CreateLicensePool">
 			<sequence>

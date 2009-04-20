@@ -50,7 +50,7 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.pearson.ed.lplc.model.LicensePoolMapping</value>
-			    
+			    <value>com.pearson.ed.lplc.model.OrganizationLPMapping</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
