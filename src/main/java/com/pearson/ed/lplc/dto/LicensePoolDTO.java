@@ -28,7 +28,6 @@ public class LicensePoolDTO implements Serializable {
 	private Date endDate;
 	private int quantity;
 	private int usedLicenses;
-	private String licensePoolStatus;
 	private int denyManualSubscription;
 	private List<String> productIds;
 	private String organizationId;
@@ -195,20 +194,6 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @return the licensePoolStatus
-	 */
-	public String getLicensePoolStatus() {
-		return licensePoolStatus;
-	}
-
-	/**
-	 * @param licensePoolStatus the licensePoolStatus to set
-	 */
-	public void setLicensePoolStatus(String licensePoolStatus) {
-		this.licensePoolStatus = licensePoolStatus;
-	}
-
-	/**
 	 * @return the subscriptionStatus
 	 */
 	public int getDenyManualSubscription() {
@@ -350,7 +335,6 @@ public class LicensePoolDTO implements Serializable {
 		equalsBuilder.append(this.quantity, u.quantity);
 		equalsBuilder.append(this.usedLicenses, u.usedLicenses);
 		
-		equalsBuilder.append(this.licensePoolStatus, u.licensePoolStatus);
 		equalsBuilder.append(this.denyManualSubscription, u.denyManualSubscription);
 		equalsBuilder.append(this.productIds.size(), u.productIds.size());
 		if (this.productIds.size() == u.productIds.size()){
@@ -382,7 +366,6 @@ public class LicensePoolDTO implements Serializable {
 		hashCodeBuilder.append(endDate);
 		hashCodeBuilder.append(quantity);
 		hashCodeBuilder.append(usedLicenses);
-		hashCodeBuilder.append(licensePoolStatus);
 		hashCodeBuilder.append(denyManualSubscription);
 		hashCodeBuilder.append(productIds);
 		hashCodeBuilder.append(organizationId);
@@ -414,8 +397,6 @@ public class LicensePoolDTO implements Serializable {
 		sb.append("Quantity:" + quantity);
 		sb.append(",");
 		sb.append("UsedLicenses:" + usedLicenses);
-		sb.append(",");
-		sb.append("LicensePoolStatus:" + licensePoolStatus);
 		sb.append(",");
 		sb.append("SubscriptionStatus:" + denyManualSubscription);
 		sb.append(",");

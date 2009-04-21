@@ -47,9 +47,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	@Column(nullable = false, name = "type", length = 128)
 	private String type;
 
-	@Column(nullable = false, name = "status", length = 1)
-	private String status;
-
 	@Column(nullable = false, name = "denynewsubscription", length = 1)
 	private int denyManualSubscription;
 
@@ -168,21 +165,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
-
-	/**
-	 * @param status
-	 *            the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
 	 * @return the start_date
 	 */
 	public Date getStart_date() {
@@ -253,7 +235,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(499, 911);
 		hashCodeBuilder.append(licensepoolId);
 		hashCodeBuilder.append(type);
-		hashCodeBuilder.append(status);
 		hashCodeBuilder.append(start_date);
 		hashCodeBuilder.append(end_date);
 		hashCodeBuilder.append(quantity);
@@ -282,7 +263,6 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		EqualsBuilder equalsBuilder = new EqualsBuilder();
 		equalsBuilder.append(this.licensepoolId, u.licensepoolId);
 		equalsBuilder.append(this.type, u.type);
-		equalsBuilder.append(this.status, u.status);
 		equalsBuilder.append(this.start_date, u.start_date);
 		equalsBuilder.append(this.end_date, u.end_date);
 		equalsBuilder.append(this.quantity, u.quantity);

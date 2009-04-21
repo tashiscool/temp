@@ -31,8 +31,6 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			LicensePool licensepool) {
 		LicensePoolDTO licensepoolDTO = new LicensePoolDTO();
 		licensepoolDTO.setLicensepoolId(licensepool.getLicenseId());
-		licensepoolDTO.setLicensePoolStatus(licensepool.getLicensePoolStatus()
-				.value());
 		licensepoolDTO.setType(licensepool.getType());
 		licensepoolDTO.setDenyManualSubscription(licensepool
 				.getDenyNewSubscription());
@@ -79,7 +77,6 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepool.setType(licensepoolMapping.getType());
 		licensepool.setDenyManualSubscription(licensepoolMapping
 				.getDenyManualSubscription());
-		licensepool.setLicensePoolStatus(licensepoolMapping.getStatus());
 		licensepool.setQuantity(licensepoolMapping.getQuantity());
 		licensepool.setStartDate(licensepoolMapping.getStart_date());
 		licensepool.setEndDate(licensepoolMapping.getEnd_date());
@@ -133,11 +130,6 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		String type = licensepool.getType();
 		if (StringUtils.isNotBlank(type)) {
 			licensepoolMapping.setType(type);
-		}
-
-		String status = licensepool.getLicensePoolStatus();
-		if (StringUtils.isNotBlank(status)) {
-			licensepoolMapping.setStatus(status);
 		}
 
 		licensepoolMapping.setDenyManualSubscription(licensepool

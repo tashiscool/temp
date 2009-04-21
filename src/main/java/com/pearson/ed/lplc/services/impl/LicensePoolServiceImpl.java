@@ -80,8 +80,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	public String createLicensePool(LicensePoolDTO licensepoolDTO) {
 		String licensepoolId = null;
 		licensepoolDTO.setMode(LPLCConstants.CREATE_MODE);
-		licensepoolDTO.setLicensePoolStatus(getLicenseStatus(licensepoolDTO));
-		// licensepoolDTO.setOrganizationLevel(0);
+		//licensepoolDTO.setLicensePoolStatus(getLicenseStatus(licensepoolDTO));
 
 		LicensePoolMapping licensepoolMapping = licensePoolConverter
 				.convertLicensePoolToLicensePoolMapping(licensepoolDTO, null);
