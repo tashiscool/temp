@@ -18,8 +18,8 @@
 		scope="prototype">
 		<property name="type" value="Seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
-		<property name="endDate" value="10/30/2009"/>
-		<property name="startDate"  value="05/30/2009"/>
+		<property name="endDate" value="03/30/2009"/>
+		<property name="startDate"  value="01/30/2009"/>
 		<property name="organizationId" value="TestOrganizationID"/>
 		<property name="productId">
 			<list>
