@@ -1,10 +1,11 @@
 package com.pearson.ed.lplc.services.converter.api;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
+import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
-import com.pearson.ed.lplc.ws.schema.CreateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.LicensePool;
+import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
 /**
  * A converter class which handles the interchange between LicensePools and
@@ -17,10 +18,12 @@ public interface LicensePoolConverter {
 
 	/**
 	 * Convert to LicensePoolDTO.
+	 * 
 	 * @param licensepool
 	 * @return LicensePoolDTO.
 	 */
-	public LicensePoolDTO convertLicensePoolToLicensePoolDTO(LicensePool licensepool);
+	public LicensePoolDTO convertLicensePoolToLicensePoolDTO(
+			LicensePool licensepool);
 
 	/**
 	 * Converts a LicensePool to a LicensePoolMappings.
@@ -45,7 +48,7 @@ public interface LicensePoolConverter {
 	 */
 	public LicensePoolDTO convertLicensePoolFromLicensePoolMapping(
 			LicensePoolMapping userMapping);
-	
+
 	/**
 	 * Converts CreateLicensePool Schema object to a License Pool DTO.
 	 * 
@@ -57,4 +60,13 @@ public interface LicensePoolConverter {
 
 	public LicensePoolDTO covertCreateRequestToLicensePoolDTO(
 			CreateLicensePool createLicensePoolSchemaObj);
+
+	/**
+	 * Converts updateLicensepoolSchema object to update licensepooldto.
+	 * 
+	 * @param licensepool
+	 * @return update licensepool DTO.
+	 */
+	public UpdateLicensePoolDTO covertupdateRequestToUpdateLicensePoolDTO(
+			UpdateLicensePool licensepool);
 }

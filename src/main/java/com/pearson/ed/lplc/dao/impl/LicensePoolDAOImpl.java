@@ -27,6 +27,19 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDA
 		setCreateAndModifiedValues(lplcMapping);
 		getHibernateTemplate().save(lplcMapping);
 	}
+	
+	/**
+	 * Update license pool.
+	 * @param lplcMapping
+	 * @return licensepoolId
+	 */
+	public void update(LicensePoolMapping lplcMapping){
+		setModifiedValues(lplcMapping);
+		getHibernateTemplate().saveOrUpdate(lplcMapping);
+	}
+	
+		
+	
 	/**
 	 * Find license pool by name.
 	 * @param lplcName

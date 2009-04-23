@@ -8,6 +8,7 @@ import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
+import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
 public class LicensePoolServiceEndPointImpl implements
 		LicensePoolServiceEndPoint {
@@ -55,6 +56,17 @@ public class LicensePoolServiceEndPointImpl implements
 	public String createLicensePool(CreateLicensePool licensepool) {
 		return licensepoolService.createLicensePool(licensePoolConverter
 				.covertCreateRequestToLicensePoolDTO(licensepool));
+	}
+
+	/**
+	 * Update License pool.
+	 * 
+	 * @param licensepool
+	 *            the licensepool to be updated.
+	 */
+	public String updateLicensePool(UpdateLicensePool licensepool) {
+		return licensepoolService.updateLicensePool(licensePoolConverter
+				.covertupdateRequestToUpdateLicensePoolDTO(licensepool));
 	}
 
 	/**

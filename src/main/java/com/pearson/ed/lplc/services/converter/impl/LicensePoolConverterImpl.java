@@ -10,12 +10,13 @@ import org.apache.log4j.Logger;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
+import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
-import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.model.common.LPLCBaseEntity;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePool;
+import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
 public class LicensePoolConverterImpl implements LicensePoolConverter {
 	private static final Logger logger = Logger
@@ -141,7 +142,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolMapping.setSource_system(licensepool.getSourceSystem());
 		licensepoolMapping.setOrg_id(licensepool.getOrganizationId());
 		licensepoolMapping.setProducts(getProducts(licensepool));
-		
+
 		String createdBy = licensepool.getCreatedBy();
 		if (StringUtils.isNotBlank(createdBy))
 			licensepoolMapping.setCreatedBy(createdBy);
@@ -150,7 +151,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			setCreatedValues(licensepoolMapping, licensepool);
 		}
 		setModifiedValues(licensepoolMapping, licensepool);
-		
+
 		return licensepoolMapping;
 	}
 
@@ -216,12 +217,32 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	private List<String> getProducts(CreateLicensePool licensepool) {
 		List<String> newProductIds = new ArrayList<String>();
 		List<String> productIds = licensepool.getProductId();
-		if (productIds!= null){
+		if (productIds != null) {
 			Iterator<String> iterator = productIds.iterator();
 			while (iterator.hasNext())
 				newProductIds.add(iterator.next());
 		}
 		return newProductIds;
+	}
+
+	/**
+	 * Converts updateLicensepoolSchema object to update licensepooldto.
+	 * 
+	 * @param licensepool
+	 * @return update licensepool DTO.
+	 */
+	public UpdateLicensePoolDTO covertupdateRequestToUpdateLicensePoolDTO(
+			UpdateLicensePool licensepool) {
+        UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
+        updateDTO.setLicensepoolId(licensepool.getLicenseId());
+        if (licensepool.getStartDate()!= null)
+        	updateDTO.setStartDate(licensepool.getStartDate().toGregorianCalendar().getTime());
+        if (licensepool.getEndDate()!= null)
+        	updateDTO.setEndDate(licensepool.getEndDate().toGregorianCalendar().getTime());
+        if (licensepool.getQuantity()!= null)
+        	updateDTO.setQuantity(licensepool.getQuantity());
+        return updateDTO;
+            
 	}
 
 }

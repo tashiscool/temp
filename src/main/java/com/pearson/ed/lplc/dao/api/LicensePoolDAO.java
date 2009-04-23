@@ -24,5 +24,12 @@ public interface LicensePoolDAO {
 	 * @return LicensePool mapping.
 	 */
 	public LicensePoolMapping findByLicensePoolId(String lplcId);
+	
+	
+	/**
+	 * Update license pool.
+	 * @param licensepool
+	 */
+	public void update(LicensePoolMapping licensepool);
 
 }

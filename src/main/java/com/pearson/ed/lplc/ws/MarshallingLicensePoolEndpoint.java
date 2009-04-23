@@ -17,6 +17,9 @@ import com.pearson.ed.lplc.ws.schema.CreateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolResponse;
 import com.pearson.ed.lplc.ws.schema.ServiceResponseType;
 import com.pearson.ed.lplc.ws.schema.StatusCodeType;
+import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
+import com.pearson.ed.lplc.ws.schema.UpdateLicensePoolRequest;
+import com.pearson.ed.lplc.ws.schema.UpdateLicensePoolResponse;
 
 /**
  * A LicensePool Life Cycle endpoint that processes marshaled messages.
@@ -165,6 +168,60 @@ public class MarshallingLicensePoolEndpoint implements
 		CreateLicensePoolResponse createResponse = new CreateLicensePoolResponse();
 		createResponse.setServiceResponseType(serviceResponseType);
 		return createResponse;
+	}
+
+	/**
+	 * This endpoint method uses marshalling to handle message with a
+	 * <code>&lt;CreatelicensepoolRequestElement&gt;</code> payload.
+	 * 
+	 * @param licensepoolRequest
+	 *            the update licensepool request.
+	 */
+	@PayloadRoot(localPart = UPDATE_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
+	public UpdateLicensePoolResponse createLicensePool(
+			UpdateLicensePoolRequest licensepoolRequest) {
+		ServiceResponseType serviceResponseType = new ServiceResponseType();
+
+		try {
+			UpdateLicensePool updateLicensePoolSchemaObj = licensepoolRequest
+					.getUpdateLicensePool();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Received " + UPDATE_LICENSEPOOL_REQUEST_ELEMENT
+						+ ":" + updateLicensePoolSchemaObj.toString());
+			}
+
+			String transactionId = licensePoolServiceEndPoint
+					.generateTransactionId();
+			licensePoolServiceEndPoint.setTransactionId(transactionId);
+			
+			logger.info("Invoking Licensepool Service UpdateLicensePool method");
+			String licensepoolId = licensePoolServiceEndPoint
+					.updateLicensePool(updateLicensePoolSchemaObj);
+			serviceResponseType.setReturnValue(licensepoolId);
+			serviceResponseType.setTransactionId(licensePoolServiceEndPoint
+					.getTransactionId());
+			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);
+			serviceResponseType.getStatusMessage().add(
+					"LicensePool updated successfully");
+
+		} catch (Exception e) {
+			LicensePoolException licensepoolException = exceptionFactory
+					.getLicensePoolException(e);
+			if (e instanceof LPLCBaseException) {
+				serviceResponseType.setTransactionId(licensePoolServiceEndPoint
+						.getTransactionId());
+				serviceResponseType
+						.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
+				serviceResponseType.setStatusCode(StatusCodeType.FAILURE);
+				serviceResponseType.getStatusMessage().add(
+						licensepoolException.getCause().toString());
+			} else {
+				throw licensepoolException;
+			}
+		}
+		UpdateLicensePoolResponse updateResponse = new UpdateLicensePoolResponse();
+		updateResponse.setServiceResponseType(serviceResponseType);
+		return updateResponse;
 	}
 
 }

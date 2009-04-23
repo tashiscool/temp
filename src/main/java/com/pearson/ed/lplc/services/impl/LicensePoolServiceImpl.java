@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
+import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
+import com.pearson.ed.lplc.exception.ComponentValidationException;
 import com.pearson.ed.lplc.exception.LPLCBaseException;
+import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
@@ -78,18 +81,42 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public String createLicensePool(LicensePoolDTO licensepoolDTO) {
-		String licensepoolId = null;
 		licensepoolDTO.setMode(LPLCConstants.CREATE_MODE);
+		if (licensepoolDTO.getStartDate().after(licensepoolDTO.getEndDate()))
+			throw new ComponentValidationException("Start Date can not be greater than End Date");
 		//licensepoolDTO.setLicensePoolStatus(getLicenseStatus(licensepoolDTO));
-
 		LicensePoolMapping licensepoolMapping = licensePoolConverter
 				.convertLicensePoolToLicensePoolMapping(licensepoolDTO, null);
 		manageOrganizationHierarchyForLP(licensepoolDTO.getOrganizationId(),
 				licensepoolMapping);
 		licensePoolDAO.createLicensePool(licensepoolMapping);
-		licensepoolId = licensepoolMapping.getLicensepoolId();
-		return licensepoolId;
+		return licensepoolMapping.getLicensepoolId();
 
+	}
+	
+	
+	/**
+	 * Update LicensePool Service.
+	 * 
+	 * @param licensepool
+	 * @return String licensepoolId.
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public String updateLicensePool(UpdateLicensePoolDTO updateLicensepool){
+		LicensePoolMapping licensepool = licensePoolDAO.findByLicensePoolId(updateLicensepool.getLicensepoolId());
+		if (licensepool == null)
+			throw new RequiredObjectNotFound("Licensepool Doesn't exists with ID: "+updateLicensepool.getLicensepoolId());
+	    if (updateLicensepool.getStartDate() != null)
+	    	licensepool.setStart_date(updateLicensepool.getStartDate());
+	    if (updateLicensepool.getEndDate() != null)
+	    	licensepool.setEnd_date(updateLicensepool.getEndDate());
+	    if (updateLicensepool.getQuantity()!= 0)
+	    	licensepool.setQuantity(updateLicensepool.getQuantity());
+	    if (licensepool.getStart_date().after(licensepool.getEnd_date()))
+			throw new ComponentValidationException("Start Date can not be greater than End Date");
+	   licensePoolDAO.update(licensepool);
+	   return licensepool.getLicensepoolId();
+		
 	}
 
 	private void manageOrganizationHierarchyForLP(String orgId,

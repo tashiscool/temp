@@ -4,6 +4,7 @@
 package com.pearson.ed.lplc.services.api;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
+import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 
 /**
  * Serves as the interface for user services in the LPLC.
@@ -20,5 +21,13 @@ public interface LicensePoolService {
 	 *            the license pool.
 	 */
 	String createLicensePool(LicensePoolDTO licensepool);
+
+	/**
+	 * Update License Pool.
+	 * 
+	 * @param updateLicensepool
+	 * @return licensepoolId
+	 */
+	String updateLicensePool(UpdateLicensePoolDTO updateLicensepool);
 
 }
