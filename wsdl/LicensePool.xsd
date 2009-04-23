@@ -27,13 +27,6 @@
 			<maxLength value="128"/>
 		</restriction>
 	</simpleType>
-	<simpleType name="StatusType">
-		<restriction base="xsd:string">
-			<enumeration value="A"/>
-			<enumeration value="P"/>
-			<enumeration value="E"/>
-		</restriction>
-	</simpleType>
 	<simpleType name="DenyNewSubscription">
 		<restriction base="xsd:int">
 			<enumeration value="1"/>
@@ -53,6 +46,14 @@
 				<element name="SourceSystem" type="xsd:string" maxOccurs="1" minOccurs="1" nillable="true"/>
 			</sequence>
 		</complexType>
+		<complexType name="UpdateLicensePool">
+			<sequence>
+			        <element name="LicenseId" type="licensepool:LicenseIdType" maxOccurs="1" minOccurs="1"/>
+				<element name="StartDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
+				<element name="EndDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
+				<element name="Quantity" type="xsd:int" maxOccurs="1" minOccurs="0"/>
+			</sequence>
+		</complexType>
 	<element name="CreateLicensePoolRequest">
 		<complexType>
 			<sequence>
@@ -61,6 +62,20 @@
 		</complexType>
 	</element>
 	<element name="CreateLicensePoolResponse">
+		<complexType>
+			<sequence>
+				<element name="ServiceResponseType" type="serv:ServiceResponseType" nillable="true"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="UpdateLicensePoolRequest">
+		<complexType>
+			<sequence>
+				<element name="UpdateLicensePool" type="licensepool:UpdateLicensePool" nillable="true"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="UpdateLicensePoolResponse">
 		<complexType>
 			<sequence>
 				<element name="ServiceResponseType" type="serv:ServiceResponseType" nillable="true"/>
@@ -87,7 +102,6 @@
 			<element name="LastUpdatedBy" type="xsd:string" maxOccurs="1" minOccurs="0"/>
 			<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="0"/>
 			<element name="SourceSystem" type="xsd:string" maxOccurs="1" minOccurs="1"/>
-			<element name="LicensePoolStatus" type="licensepool:StatusType" maxOccurs="1" minOccurs="1"/>
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" maxOccurs="1" minOccurs="1"/>
 		</sequence>
 	</complexType>
