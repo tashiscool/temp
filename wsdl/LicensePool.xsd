@@ -27,6 +27,14 @@
 			<maxLength value="128"/>
 		</restriction>
 	</simpleType>
+
+	<simpleType name="SourceSystemType">
+		<restriction base="string">
+			<whiteSpace value="collapse"/>
+			<minLength value="1"/>
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
 	<simpleType name="DenyNewSubscription">
 		<restriction base="xsd:int">
 			<enumeration value="1"/>
@@ -43,7 +51,7 @@
 				<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded" minOccurs="1"/>
 				<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" maxOccurs="1" minOccurs="0"/>
 				<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="1" nillable="true"/>
-				<element name="SourceSystem" type="xsd:string" maxOccurs="1" minOccurs="1" nillable="true"/>
+				<element name="SourceSystem" type="licensepool:SourceSystemType" maxOccurs="1" minOccurs="1" nillable="true"/>
 			</sequence>
 		</complexType>
 		<complexType name="UpdateLicensePool">
@@ -100,8 +108,8 @@
 			<element name="CreatedDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
 			<element name="LastUpdatedDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
 			<element name="LastUpdatedBy" type="xsd:string" maxOccurs="1" minOccurs="0"/>
-			<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="0"/>
-			<element name="SourceSystem" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+			<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="0" />
+			<element name="SourceSystem" type="licensepool:SourceSystemType" maxOccurs="1" minOccurs="1" nillable="true"/>
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" maxOccurs="1" minOccurs="1"/>
 		</sequence>
 	</complexType>
