@@ -27,7 +27,12 @@
 			<maxLength value="128"/>
 		</restriction>
 	</simpleType>
-
+        <simpleType name="QuantityType">
+		<restriction base="int">
+			<minInclusive value="0"/>
+			<maxInclusive value="2147483647"/>
+		</restriction>
+	</simpleType>
 	<simpleType name="SourceSystemType">
 		<restriction base="string">
 			<whiteSpace value="collapse"/>
@@ -46,7 +51,7 @@
 				<element name="Type" type="licensepool:LicenseType" maxOccurs="1" minOccurs="1"/>
 				<element name="StartDate" type="xsd:dateTime" maxOccurs="1" minOccurs="1"/>
 				<element name="EndDate" type="xsd:dateTime" maxOccurs="1" minOccurs="1"/>
-				<element name="Quantity" type="xsd:int" maxOccurs="1" minOccurs="1"/>
+				<element name="Quantity" type="licensepool:QuantityType" maxOccurs="1" minOccurs="1"/>
 				<element name="OrgnizationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
 				<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded" minOccurs="1"/>
 				<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" maxOccurs="1" minOccurs="0"/>
@@ -101,7 +106,7 @@
 			<element name="Type" type="licensepool:LicenseType" maxOccurs="1" minOccurs="1"/>
 			<element name="StartDate" type="xsd:dateTime"  maxOccurs="1" minOccurs="1"/>
 			<element name="EndDate" type="xsd:dateTime" maxOccurs="1" minOccurs="1"/>
-			<element name="Quantity" type="xsd:int" maxOccurs="1" minOccurs="1"/>
+			<element name="Quantity" type="licensepool:QuantityType" maxOccurs="1" minOccurs="1"/>
 			<element name="UsedLicenses" type="xsd:int" maxOccurs="1" minOccurs="1"/>
 			<element name="OrgnizationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
 			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded" minOccurs="1"/>
