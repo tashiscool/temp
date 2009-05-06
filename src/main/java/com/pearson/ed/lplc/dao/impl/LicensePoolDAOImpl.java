@@ -20,8 +20,7 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDA
 	/**
 	 * Creates a license pool mapping.
 	 * 
-	 * @param lplcMapping
-	 *            the license pool mapping.
+	 * @param lplcMapping  the license pool mapping.
 	 */
 	public void createLicensePool(LicensePoolMapping lplcMapping) {
 		setCreateAndModifiedValues(lplcMapping);
@@ -30,8 +29,7 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDA
 	
 	/**
 	 * Update license pool.
-	 * @param lplcMapping
-	 * @return licensepoolId
+	 * @param lplcMapping lplcMapping.
 	 */
 	public void update(LicensePoolMapping lplcMapping){
 		setModifiedValues(lplcMapping);

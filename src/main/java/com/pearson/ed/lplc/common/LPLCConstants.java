@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public interface LPLCConstants {
 
-	
 	/**
 	 * Indicates that the default user who is updating/creation is System.
 	 */
@@ -29,12 +28,11 @@ public interface LPLCConstants {
 	 */
 	public static final String DEFAULT_NAME_TYPE = "P";
 
-
 	/**
 	 * Default email type.
 	 */
 	public static final String DEFAULT_EMAIL_TYPE = "P";
-	
+
 	/**
 	 * For Resetting the password.
 	 */
@@ -51,16 +49,28 @@ public interface LPLCConstants {
 	/**
 	 * About email.
 	 */
-	public static final String EMAIL_VALIDATED="Y";
-	
+	public static final String EMAIL_VALIDATED = "Y";
+
 	/**
 	 * Service response constants
 	 */
 	public static final String SERVICE_RESPONSE_CODE_SUCCESS = "SUCCESS";
+	/**
+	 * Service response constants
+	 */
 	public static final String SERVICE_RESPONSE_CODE_FAILURE = "FAILURE";
+	/**
+	 * Service response constants
+	 */
 	public static final String SERVICE_RESPONSE_CODE_WARNING = "WARNING";
+	/**
+	 * Service response constants
+	 */
 	public static final String SERVICE_RESPONSE_CODE_IGNORED = "IGNORED";
-	
+	/**
+	 * Service response constants
+	 */
+
 	public static final String SERVICE_RESPONSE_RETURN_FAILURE = "-1";
 	/**
 	 * Different modes.

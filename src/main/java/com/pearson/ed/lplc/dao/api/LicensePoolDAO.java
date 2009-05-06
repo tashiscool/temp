@@ -14,13 +14,12 @@ public interface LicensePoolDAO {
 	/**
 	 * Creates a license pool mapping.
 	 * 
-	 * @param licensepoolMapping
-	 *            the license pool mapping.
+	 * @param lplcMapping the license pool mapping.
 	 */
 	public void createLicensePool(LicensePoolMapping lplcMapping);
 	/**
 	 * Find license pool by name.
-	 * @param lplcName
+	 * @param lplcId lplcId.
 	 * @return LicensePool mapping.
 	 */
 	public LicensePoolMapping findByLicensePoolId(String lplcId);
@@ -28,7 +27,7 @@ public interface LicensePoolDAO {
 	
 	/**
 	 * Update license pool.
-	 * @param licensepool
+	 * @param licensepool licensepool.
 	 */
 	public void update(LicensePoolMapping licensepool);
 
