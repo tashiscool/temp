@@ -31,7 +31,7 @@ public abstract class BaseIntegrationTest extends
 
 	/**
 	 * pass through to the junit 3 calls, which are not annotated. JUnit 4 only
-	 * cares about annotations and won’t run the old setUp and tearDown methods
+	 * cares about annotations and won't run the old setUp and tearDown methods
 	 * defined by the Spring classes. To get around this, add methods with
 	 * Before and After annotations to call setUp and tearDown
 	 * 
@@ -46,7 +46,7 @@ public abstract class BaseIntegrationTest extends
 
 	/**
 	 * pass through to the junit 3 calls, which are not annotated. JUnit 4 only
-	 * cares about annotations and won’t run the old setUp and tearDown methods
+	 * cares about annotations and won't run the old setUp and tearDown methods
 	 * defined by the Spring classes. To get around this, add methods with
 	 * Before and After annotations to call setUp and tearDown
 	 * 
