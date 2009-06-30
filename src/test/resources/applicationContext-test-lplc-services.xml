@@ -20,7 +20,8 @@
 		<property name="denyManualSubscription" value="0" />
 		<property name="endDate" value="03/30/2009"/>
 		<property name="startDate"  value="01/30/2009"/>
-		<property name="organizationId" value="TestOrganizationID"/>
+		<property name="organizationId" value="UnitTestOrganizationID"/>
+		<property name="orderLineItemId" value="TestOrderLineItemID"/>
 		<property name="productId">
 			<list>
 				<value>TestProductId1</value>

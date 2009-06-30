@@ -32,6 +32,24 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 				.findByLicensePoolId(updateLicensePool);
 		assertEquals(500, findByLicensePoolId.getQuantity());
 	}
+	@Test
+	public void testUpdateLicensePoolForOrderLineItem() {
+		LicensePoolService licensepoolService = loadLicensePoolService();
+		LicensePoolDTO licensepool = loadLicensePool();
+		LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
+		String licensepoolId = licensepoolService
+				.createLicensePool(licensepool);
+		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
+		updateDTO.setLicensepoolId(licensepoolId);
+		updateDTO.setQuantity(500);
+		updateDTO.setOrderLineItem("TestOrderLineItem2");
+		String updateLicensePool = licensepoolService
+				.updateLicensePool(updateDTO);
+		LicensePoolMapping findByLicensePoolId = licensepoolDAO
+				.findByLicensePoolId(updateLicensePool);
+		assertEquals(500, findByLicensePoolId.getQuantity());
+		assertEquals(2, findByLicensePoolId.getOrderLineItems().size());
+	}
 
 	@Test
 	public void testUpdateLicensePoolForStartDateEndDate() {

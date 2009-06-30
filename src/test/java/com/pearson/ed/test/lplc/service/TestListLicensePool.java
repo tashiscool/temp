@@ -1,48 +1,39 @@
 package com.pearson.ed.test.lplc.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.matchers.Each;
 import org.junit.runner.RunWith;
 
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
+import com.pearson.ed.lplc.dao.api.OrganizationLPDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
+
+
 @RunWith(JUnit4ClassRunner.class)
-public class TestCreateLicensePool extends BaseIntegrationTest {
+public class TestListLicensePool extends BaseIntegrationTest {
 	
     @Test
-	public void testCreateLicensePool() {
+	public void testListLicensePool() {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
-    	LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
-	    String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
-		LicensePoolMapping findLicensePool = licensepoolDAO
-				.findByLicensePoolId(licensepoolId);
-		assertNotNull(findLicensePool);
+    	OrganizationLPDAO organizationLPDAO = loadOrganizationLPDAO();
+    	String licensepoolId = licensepoolService
+			.createLicensePool(licensepool);
+
+    	List<OrganizationLPMapping> lpList = organizationLPDAO.listOrganizationMappingByOrganizationId("UnitTestOrganizationID",999);
+    	assertEquals(lpList.size(), 1);
 	}
     
-    @Test
-	public void testCreateLicensePoolForOrganization() {
-		LicensePoolService licensepoolService = loadLicensePoolService();
-		LicensePoolDTO licensepool = loadLicensePool();
-    	LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
-	    String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
-		LicensePoolMapping findLicensePool = licensepoolDAO
-				.findByLicensePoolId(licensepoolId);
-		Set<OrganizationLPMapping> organizations = findLicensePool.getOrganizations();
-	    assertEquals(7,organizations.size());
-		
-	}
-
-	public LicensePoolService loadLicensePoolService() {
+   	public LicensePoolService loadLicensePoolService() {
 		return (LicensePoolService) applicationContext
 				.getBean("licensepoolService");
 	}
@@ -54,5 +45,8 @@ public class TestCreateLicensePool extends BaseIntegrationTest {
 
 	public LicensePoolDAO loadLicensePoolDAO() {
 		return (LicensePoolDAO) applicationContext.getBean("licensepoolDAO");
+	}
+	public OrganizationLPDAO loadOrganizationLPDAO() {
+		return (OrganizationLPDAO) applicationContext.getBean("organizationLPDAO");
 	}
 }
