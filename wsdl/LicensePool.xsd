@@ -5,12 +5,34 @@
 		<restriction base="string">
 			<whiteSpace value="collapse"/>
 			<minLength value="1"/>
+			<maxLength value="32"/>
 		</restriction>
 	</simpleType>
+	<simpleType name="OrderLineItemIdType">
+		<restriction base="string">
+			<whiteSpace value="collapse"/>
+			<minLength value="1"/>
+			<maxLength value="32"/>
+		</restriction>
+	</simpleType>
+	<xsd:simpleType name="StatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A" />
+			<xsd:enumeration value="I" />
+		</xsd:restriction>
+	</xsd:simpleType>
 	<simpleType name="ProductIDType">
 		<restriction base="string">
 			<whiteSpace value="collapse"/>
 			<minLength value="1"/>
+			<maxLength value="32"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="OrganizationIDType">
+		<restriction base="string">
+			<whiteSpace value="collapse"/>
+			<minLength value="1"/>
+			<maxLength value="32"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="DescriptionType">
@@ -27,7 +49,7 @@
 			<maxLength value="128"/>
 		</restriction>
 	</simpleType>
-        <simpleType name="QuantityType">
+	<simpleType name="QuantityType">
 		<restriction base="int">
 			<minInclusive value="0"/>
 			<maxInclusive value="2147483647"/>
@@ -43,30 +65,71 @@
 	<simpleType name="DenyNewSubscription">
 		<restriction base="xsd:int">
 			<enumeration value="1"/>
-			<enumeration value="0"/>	
-			</restriction>
+			<enumeration value="0"/>
+		</restriction>
 	</simpleType>
-		<complexType name="CreateLicensePool">
+	<simpleType name="QualifyingLicensePool">
+		<restriction base="xsd:string">
+			<enumeration value="RootOnly"/>
+			<enumeration value="RootAndParents"/>
+		</restriction>
+	</simpleType>
+	<complexType name="CreateLicensePool">
+		<sequence>
+			<element name="Type" type="licensepool:LicenseType"/>
+			<element name="StartDate" type="xsd:dateTime"/>
+			<element name="EndDate" type="xsd:dateTime"/>
+			<element name="Quantity" type="licensepool:QuantityType"/>
+			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
+			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
+			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" minOccurs="0"/>
+			<element name="CreatedBy" type="xsd:string" nillable="true"/>
+			<element name="SourceSystem" type="licensepool:SourceSystemType" nillable="true"/>
+		</sequence>
+	</complexType>
+	<complexType name="UpdateLicensePool">
+		<sequence>
+			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
+			<element name="StartDate" type="xsd:dateTime" minOccurs="0"/>
+			<element name="EndDate" type="xsd:dateTime" minOccurs="0"/>
+			<element name="Quantity" type="xsd:int" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="GetLicensePoolByOrganizationIdRequestType">
+		<sequence>
+			<element name="OrgnizationId" type="xsd:string"/>
+			<element name="QualifyingLicensePool" type="licensepool:QualifyingLicensePool"/>
+		</sequence>
+	</complexType>
+	<complexType name="LicensePoolByOrganizationId">
+		<sequence>
+			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
+			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="RootOrganizationId" type="xsd:string"/>
+			<element name="Type" type="licensepool:LicenseType"/>
+			<element name="StartDate" type="xsd:dateTime"/>
+			<element name="EndDate" type="xsd:dateTime"/>
+			<element name="Quantity" type="licensepool:QuantityType"/>
+			<element name="UsedLicenses" type="xsd:int"/>
+			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription"/>
+		</sequence>
+	</complexType>
+	<element name="GetLicensePoolByOrganizationIdRequest">
+		<complexType>
 			<sequence>
-				<element name="Type" type="licensepool:LicenseType" maxOccurs="1" minOccurs="1"/>
-				<element name="StartDate" type="xsd:dateTime" maxOccurs="1" minOccurs="1"/>
-				<element name="EndDate" type="xsd:dateTime" maxOccurs="1" minOccurs="1"/>
-				<element name="Quantity" type="licensepool:QuantityType" maxOccurs="1" minOccurs="1"/>
-				<element name="OrgnizationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
-				<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded" minOccurs="1"/>
-				<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" maxOccurs="1" minOccurs="0"/>
-				<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="1" nillable="true"/>
-				<element name="SourceSystem" type="licensepool:SourceSystemType" maxOccurs="1" minOccurs="1" nillable="true"/>
+				<element name="GetLicensePoolByOrganizationIdRequestType" type="licensepool:GetLicensePoolByOrganizationIdRequestType" nillable="true"/>
 			</sequence>
 		</complexType>
-		<complexType name="UpdateLicensePool">
+	</element>
+	<element name="LicensepoolsByOrganizationId">
+		<complexType>
 			<sequence>
-			        <element name="LicenseId" type="licensepool:LicenseIdType" maxOccurs="1" minOccurs="1"/>
-				<element name="StartDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
-				<element name="EndDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
-				<element name="Quantity" type="xsd:int" maxOccurs="1" minOccurs="0"/>
+				<element name="LicensePoolByOrganizationId" type="licensepool:LicensePoolByOrganizationId" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 			</sequence>
 		</complexType>
+	</element>
 	<element name="CreateLicensePoolRequest">
 		<complexType>
 			<sequence>
@@ -102,23 +165,23 @@
 	</complexType>
 	<complexType name="LicensePool">
 		<sequence>
-			<element name="LicenseId" type="licensepool:LicenseIdType" maxOccurs="1" minOccurs="1"/>
-			<element name="Type" type="licensepool:LicenseType" maxOccurs="1" minOccurs="1"/>
-			<element name="StartDate" type="xsd:dateTime"  maxOccurs="1" minOccurs="1"/>
-			<element name="EndDate" type="xsd:dateTime" maxOccurs="1" minOccurs="1"/>
-			<element name="Quantity" type="licensepool:QuantityType" maxOccurs="1" minOccurs="1"/>
-			<element name="UsedLicenses" type="xsd:int" maxOccurs="1" minOccurs="1"/>
-			<element name="OrgnizationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
-			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded" minOccurs="1"/>
-			<element name="CreatedDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
-			<element name="LastUpdatedDate" type="xsd:dateTime" maxOccurs="1" minOccurs="0"/>
-			<element name="LastUpdatedBy" type="xsd:string" maxOccurs="1" minOccurs="0"/>
-			<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="0" />
-			<element name="SourceSystem" type="licensepool:SourceSystemType" maxOccurs="1" minOccurs="1" nillable="true"/>
-			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" maxOccurs="1" minOccurs="1"/>
+			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="Type" type="licensepool:LicenseType"/>
+			<element name="Status" type="licensepool:StatusType"/>
+			<element name="StartDate" type="xsd:dateTime"/>
+			<element name="EndDate" type="xsd:dateTime"/>
+			<element name="Quantity" type="licensepool:QuantityType"/>
+			<element name="UsedLicenses" type="xsd:int"/>
+			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
+			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
+			<element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>
+			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0"/>
+			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0"/>
+			<element name="CreatedBy" type="xsd:string" minOccurs="0"/>
+			<element name="SourceSystem" type="licensepool:SourceSystemType" nillable="true"/>
+			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription"/>
 		</sequence>
 	</complexType>
-	<element name="LicensePoolExceptionElement" type="licensepool:LicensePoolException"
-		nillable="true" >
-	</element>
+	<element name="LicensePoolExceptionElement" type="licensepool:LicensePoolException" nillable="true"/>
 </schema>
