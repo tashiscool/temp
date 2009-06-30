@@ -2,7 +2,7 @@ PROMPT Running script PRODUCT_LP.sql
 
 DECLARE x NUMBER;
 BEGIN
-SELECT COUNT(*) INTO x FROM user_tables WHERE TABLE_NAME = 'LicensePool_Product';
+SELECT COUNT(*) INTO x FROM user_tables WHERE TABLE_NAME = 'LICENSEPOOL_PRODUCT';
 _
 
 IF x = 0 THEN
