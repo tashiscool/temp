@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
+import com.pearson.ed.lplc.dao.api.OrganizationLPDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
@@ -72,6 +73,23 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 
 	private LicensePoolConverter licensePoolConverter;
 	private LicensePoolDAO licensePoolDAO;
+	private OrganizationLPDAO organizationLPDAO;
+
+	
+
+	/**
+	 * @return the organizationLPDAO
+	 */
+	public OrganizationLPDAO getOrganizationLPDAO() {
+		return organizationLPDAO;
+	}
+
+	/**
+	 * @param organizationLPDAO the organizationLPDAO to set
+	 */
+	public void setOrganizationLPDAO(OrganizationLPDAO organizationLPDAO) {
+		this.organizationLPDAO = organizationLPDAO;
+	}
 
 	/**
 	 * Create LicensePool Service.
@@ -84,7 +102,6 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		licensepoolDTO.setMode(LPLCConstants.CREATE_MODE);
 		if (licensepoolDTO.getStartDate().after(licensepoolDTO.getEndDate()))
 			throw new ComponentValidationException("Start Date can not be greater than End Date");
-		//licensepoolDTO.setLicensePoolStatus(getLicenseStatus(licensepoolDTO));
 		LicensePoolMapping licensepoolMapping = licensePoolConverter
 				.convertLicensePoolToLicensePoolMapping(licensepoolDTO, null);
 		manageOrganizationHierarchyForLP(licensepoolDTO.getOrganizationId(),
@@ -92,6 +109,19 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		licensePoolDAO.createLicensePool(licensepoolMapping);
 		return licensepoolMapping.getLicensepoolId();
 
+	}
+	/**
+	 * 
+	 * @param organizationId organizationId.
+	 * @param qualifyingOrgs qualifyingOrgs.
+	 * @return List.
+	 */
+	public List<OrganizationLPMapping> getLicensePoolByOrganizationId(String organizationId,
+			String qualifyingOrgs){
+		int level =999;
+		if (LPLCConstants.QUALIFYING_ORGS_ROOT.equalsIgnoreCase(qualifyingOrgs))
+			level = 0;
+		return organizationLPDAO.listOrganizationMappingByOrganizationId(organizationId, level);
 	}
 	
 	
@@ -105,20 +135,15 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	public String updateLicensePool(UpdateLicensePoolDTO updateLicensepool){
 		LicensePoolMapping licensepool = licensePoolDAO.findByLicensePoolId(updateLicensepool.getLicensepoolId());
 		if (licensepool == null)
-			throw new RequiredObjectNotFound("Licensepool Doesn't exists with ID: "+updateLicensepool.getLicensepoolId());
-	    if (updateLicensepool.getStartDate() != null)
-	    	licensepool.setStart_date(updateLicensepool.getStartDate());
-	    if (updateLicensepool.getEndDate() != null)
-	    	licensepool.setEnd_date(updateLicensepool.getEndDate());
-	    if (updateLicensepool.getQuantity()!= 0)
-	    	licensepool.setQuantity(updateLicensepool.getQuantity());
-	    if (licensepool.getStart_date().after(licensepool.getEnd_date()))
-			throw new ComponentValidationException("Start Date can not be greater than End Date");
+			throw new RequiredObjectNotFound("Licensepool doesn't exists with ID: "+updateLicensepool.getLicensepoolId());
+	    licensePoolConverter.buildLicensepoolMappingFromUpdateLicensepoolDTO(updateLicensepool,
+				licensepool);
 	   licensePoolDAO.update(licensepool);
 	   return licensepool.getLicensepoolId();
 		
 	}
 
+	
 	private void manageOrganizationHierarchyForLP(String orgId,
 			LicensePoolMapping licensepool) {
 
@@ -134,8 +159,8 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			for (OrganizationDTO organizationDTO : childOrganizaitons) {
 				organization = new OrganizationLPMapping();
 				organization.setLicensepoolMapping(licensepool);
-				organization.setOrg_id(organizationDTO.getOrg_id());
-				organization.setOrg_level(organizationDTO.getOrg_level());
+				organization.setOrganization_id(organizationDTO.getOrg_id());
+				organization.setOrganization_level(organizationDTO.getOrg_level());
 				organization.setUsed_quantity(0);
 				organization.setDenyManualSubscription(licensepool
 						.getDenyManualSubscription());
@@ -160,9 +185,9 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	private void addRootOrg(String orgId, LicensePoolMapping licensepool,
 			Set<OrganizationLPMapping> orgList) {
 		OrganizationLPMapping organizationLPMapping = new OrganizationLPMapping();
-		organizationLPMapping.setOrg_id(orgId);
+		organizationLPMapping.setOrganization_id(orgId);
 		organizationLPMapping.setLicensepoolMapping(licensepool);
-		organizationLPMapping.setOrg_level(0);
+		organizationLPMapping.setOrganization_level(0);
 		organizationLPMapping.setUsed_quantity(0);
 		organizationLPMapping.setDenyManualSubscription(licensepool
 				.getDenyManualSubscription());

@@ -78,4 +78,8 @@ public interface LPLCConstants {
 	public static final String CREATE_MODE = "Create";
 
 	public static final String UPDATE_MODE = "Update";
+	
+	public static final String 	QUALIFYING_ORGS_ROOT = 	"ROOT_ONLY";
+
+	public static final String LICENSEPOOLTYPE = "Seat based licensing";
 }

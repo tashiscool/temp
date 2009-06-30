@@ -20,7 +20,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class LicensePoolDTO implements Serializable {
 
-	
+	private static final long serialVersionUID = -6791950440540657878L;
 	private String licensepoolId;
 	
 	private String type;
@@ -30,10 +30,26 @@ public class LicensePoolDTO implements Serializable {
 	private int usedLicenses;
 	private int denyManualSubscription;
 	private List<String> productIds;
+	private String orderLineItemId;
 	private String organizationId;
 	private int organizationLevel;
 	private boolean managedChildOrganization;
 	private boolean managedParentOrganization;
+
+	/**
+	 * @return the orderLineItemId
+	 */
+	public String getOrderLineItemId() {
+		return orderLineItemId;
+	}
+
+	/**
+	 * @param orderLineItemId the orderLineItemId to set
+	 */
+	public void setOrderLineItemId(String orderLineItemId) {
+		this.orderLineItemId = orderLineItemId;
+	}
+
 	/**
 	 * @return the managedChildOrganization
 	 */
@@ -305,7 +321,7 @@ public class LicensePoolDTO implements Serializable {
 		this.mode = mode;
 	}
 
-	private static final long serialVersionUID = -6791950440540657878L;
+	
 	
 	
 	

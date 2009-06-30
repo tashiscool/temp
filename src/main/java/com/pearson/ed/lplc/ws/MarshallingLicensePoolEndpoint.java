@@ -1,11 +1,14 @@
 package com.pearson.ed.lplc.ws;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.exception.ComponentCardinalityException;
+import com.pearson.ed.lplc.exception.ComponentValidationException;
 import com.pearson.ed.lplc.exception.LPLCBaseException;
 import com.pearson.ed.lplc.exception.LicensePoolException;
 import com.pearson.ed.lplc.exception.LicensePoolExceptionFactory;
@@ -15,6 +18,8 @@ import com.pearson.ed.lplc.warning.LicensePoolWarningFactory;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolResponse;
+import com.pearson.ed.lplc.ws.schema.GetLicensePoolByOrganizationIdRequest;
+import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.ServiceResponseType;
 import com.pearson.ed.lplc.ws.schema.StatusCodeType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
@@ -138,6 +143,8 @@ public class MarshallingLicensePoolEndpoint implements
 			if (createLicensePoolSchemaObj.getProductId().size() > 1)
 				throw new ComponentCardinalityException(
 						"More than 1 product association is not supported.");
+			if (LPLCConstants.LICENSEPOOLTYPE.equalsIgnoreCase(createLicensePoolSchemaObj.getType()))
+				throw new ComponentValidationException("More than 1 product association is not supported.");
 
 			logger
 					.info("Invoking Licensepool Service CreateLicensePool method");
@@ -222,6 +229,41 @@ public class MarshallingLicensePoolEndpoint implements
 		UpdateLicensePoolResponse updateResponse = new UpdateLicensePoolResponse();
 		updateResponse.setServiceResponseType(serviceResponseType);
 		return updateResponse;
+	}
+	
+	/**
+	 * This endpoint method uses marshalling to handle message with a
+	 * <code>&lt;CreatelicensepoolRequestElement&gt;</code> payload.
+	 * 
+	 * @param licensepoolRequest
+	 *            the update licensepool request.
+	 */
+	@PayloadRoot(localPart = GET_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
+	public LicensepoolsByOrganizationId getLicensepoolByOrgIdLicensePool(
+			GetLicensePoolByOrganizationIdRequest licensepoolRequest) {
+
+		try {
+			String organizationId = licensepoolRequest
+					.getGetLicensePoolByOrganizationIdRequestType().getOrgnizationId();
+			String qualifyingOrgs = licensepoolRequest.getGetLicensePoolByOrganizationIdRequestType().getQualifyingLicensePool().toString();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Received " + GET_LICENSEPOOL_REQUEST_ELEMENT
+						+ ":" + organizationId+" and "+qualifyingOrgs);
+			}
+
+			String transactionId = licensePoolServiceEndPoint
+					.generateTransactionId();
+			licensePoolServiceEndPoint.setTransactionId(transactionId);
+			
+			logger.info("Invoking Licensepool Service GetLicensePool method");
+			return licensePoolServiceEndPoint.getLicensePoolByOrganizationId(organizationId, qualifyingOrgs);
+
+		} catch (Exception e) {
+			LicensePoolException licensepoolException = exceptionFactory
+					.getLicensePoolException(e);
+			throw licensepoolException;
+			
+		}
 	}
 
 }

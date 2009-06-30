@@ -11,7 +11,21 @@ public class UpdateLicensePoolDTO {
 	private Date startDate;
 	private Date endDate;
 	private int quantity;
+	private String orderLineItem;
 	
+	/**
+	 * @return the orderLineItem
+	 */
+	public String getOrderLineItem() {
+		return orderLineItem;
+	}
+	/**
+	 * @param orderLineItem the orderLineItem to set
+	 */
+	public void setOrderLineItem(String orderLineItem) {
+		this.orderLineItem = orderLineItem;
+	}
+
 	private String licensepoolId;
   	/**
 	 * @return the licensepoolId

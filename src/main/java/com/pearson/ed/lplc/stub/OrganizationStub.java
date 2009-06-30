@@ -15,13 +15,5 @@ public class OrganizationStub {
 		return orgList;
 	}
 	
-	public List<OrganizationDTO> getParentOrganizations(String orgId){
-		List<OrganizationDTO> orgList = new ArrayList<OrganizationDTO>();
-		orgList.add(new OrganizationDTO("DummyParentOrg1",1));
-		orgList.add(new OrganizationDTO("DummyParentOrg2",1));
-		orgList.add(new OrganizationDTO("DummyParentOrg3",2));
-		orgList.add(new OrganizationDTO("DummyParentOrg4",3));
-		return orgList;
-	}
-
+	
 }

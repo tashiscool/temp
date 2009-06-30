@@ -1,13 +1,16 @@
 package com.pearson.ed.lplc.services.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
+import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
 public class LicensePoolServiceEndPointImpl implements
@@ -67,6 +70,16 @@ public class LicensePoolServiceEndPointImpl implements
 	public String updateLicensePool(UpdateLicensePool licensepool) {
 		return licensepoolService.updateLicensePool(licensePoolConverter
 				.covertupdateRequestToUpdateLicensePoolDTO(licensepool));
+	}
+	/**
+	 * List license pools as per criteria.
+	 * @param organizationId organizationId.
+	 * @param qualifyingOrgs qualifyingOrgs.
+	 * @return the transaction ID.
+	 */
+	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs){
+		List<OrganizationLPMapping> licenses = licensepoolService.getLicensePoolByOrganizationId(organizationId, qualifyingOrgs);
+		return licensePoolConverter.convertForGetFromLPMappingToSchema(licenses);
 	}
 
 	/**

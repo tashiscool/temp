@@ -29,13 +29,29 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	/**
 	 * serialVersionUID
 	 */
-	private static final long serialVersionUID = 550158394974669789L;
+	private static final long serialVersionUID = 5501583949734569789L;
 
 	@Id
 	@GeneratedValue(generator = "hibernate-uuid")
 	@Column(name = "ORGANIZATION_LP_ID")
 	private String organizationLPId;
 
+	@Column(nullable = false, name = "denynewsubscription", length = 1)
+	private int denyManualSubscription;
+
+	@Column(nullable = true, name = "used_quantity", length = 16)
+	private int used_quantity;
+
+	@Column(nullable = false, name = "organization_id", length = 32)
+	private String organization_id;
+
+	@Column(nullable = false, name = "organization_level", length = 3)
+	private int organization_level;
+
+	@ManyToOne
+	@JoinColumn(nullable = false, name = "LICENSEPOOL_ID")
+	private LicensePoolMapping licensepoolMapping;
+	
 	/**
 	 * @return the licensepoolMapping
 	 */
@@ -49,22 +65,6 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	public void setLicensepoolMapping(LicensePoolMapping licensepoolMapping) {
 		this.licensepoolMapping = licensepoolMapping;
 	}
-
-	@Column(nullable = false, name = "denynewsubscription", length = 1)
-	private int denyManualSubscription;
-
-	@Column(nullable = true, name = "used_quantity", length = 16)
-	private int used_quantity;
-
-	@Column(nullable = false, name = "organization_id", length = 128)
-	private String org_id;
-
-	@Column(nullable = false, name = "ORGANIZATION_LEVEL", length = 3)
-	private int org_level;
-
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "LICENSEPOOL_ID")
-	private LicensePoolMapping licensepoolMapping;
 
 	/**
 	 * @return the organizationLPId
@@ -112,33 +112,31 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @return the org_id
+	 * @return the organization_id
 	 */
-	public String getOrg_id() {
-		return org_id;
+	public String getOrganization_id() {
+		return organization_id;
 	}
 
 	/**
-	 * @param org_id
-	 *            the org_id to set
+	 * @param organization_id the organization_id to set
 	 */
-	public void setOrg_id(String org_id) {
-		this.org_id = org_id;
+	public void setOrganization_id(String organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	/**
-	 * @return the org_level
+	 * @return the organization_level
 	 */
-	public int getOrg_level() {
-		return org_level;
+	public int getOrganization_level() {
+		return organization_level;
 	}
 
 	/**
-	 * @param org_level
-	 *            the org_level to set
+	 * @param organization_level the organization_level to set
 	 */
-	public void setOrg_level(int org_level) {
-		this.org_level = org_level;
+	public void setOrganization_level(int organization_level) {
+		this.organization_level = organization_level;
 	}
 
 	/**
@@ -152,7 +150,7 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(499, 911);
 		hashCodeBuilder.append(organizationLPId);
 		hashCodeBuilder.append(used_quantity);
-		hashCodeBuilder.append(org_id);
+		hashCodeBuilder.append(organization_id);
 		return hashCodeBuilder.toHashCode();
 	}
 
@@ -177,7 +175,7 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 		EqualsBuilder equalsBuilder = new EqualsBuilder();
 		equalsBuilder.append(this.organizationLPId, u.organizationLPId);
 		equalsBuilder.append(this.used_quantity, u.used_quantity);
-		equalsBuilder.append(this.org_id, u.org_id);
+		equalsBuilder.append(this.organization_id, u.organization_id);
 		return equalsBuilder.isEquals() && super.equals(obj);
 	}
 

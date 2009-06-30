@@ -1,10 +1,16 @@
 package com.pearson.ed.lplc.services.converter.api;
 
+import java.util.List;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
+import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePool;
+import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
 /**
@@ -69,4 +75,22 @@ public interface LicensePoolConverter {
 	 */
 	public UpdateLicensePoolDTO covertupdateRequestToUpdateLicensePoolDTO(
 			UpdateLicensePool licensepool);
+	/**
+	 * Build LicensepoolMapping from UpdateLicensepoolDTO.
+	 * @param updateLicensepool
+	 * @param licensepool
+	 */
+
+	public void buildLicensepoolMappingFromUpdateLicensepoolDTO(
+			UpdateLicensePoolDTO updateLicensepool,
+			LicensePoolMapping licensepool);
+	/**
+	 * 
+	 * @param licenses list of OrganizationLPMapping.
+	 * @return LicensepoolsByOrganizationId.
+	 * @throws DatatypeConfigurationException 
+	 */
+
+	public LicensepoolsByOrganizationId convertForGetFromLPMappingToSchema(
+			List<OrganizationLPMapping> licenses);
 }

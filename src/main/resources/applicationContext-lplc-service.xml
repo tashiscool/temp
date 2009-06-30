@@ -25,6 +25,7 @@
 		class="com.pearson.ed.lplc.services.impl.LicensePoolServiceImpl">
 		<property name="licensePoolConverter" ref="licensepoolConverter" />
 		<property name="licensePoolDAO" ref="licensepoolDAO" />
+		<property name="organizationLPDAO" ref="organizationLPDAO" />
 		
 	</bean>
 	

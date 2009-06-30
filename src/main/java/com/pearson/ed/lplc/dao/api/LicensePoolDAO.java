@@ -30,5 +30,5 @@ public interface LicensePoolDAO {
 	 * @param licensepool licensepool.
 	 */
 	public void update(LicensePoolMapping licensepool);
-
+	
 }

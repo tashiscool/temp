@@ -51,6 +51,7 @@
 			<list>
 				<value>com.pearson.ed.lplc.model.LicensePoolMapping</value>
 			    <value>com.pearson.ed.lplc.model.OrganizationLPMapping</value>
+			    <value>com.pearson.ed.lplc.model.OrderLineItemLPMapping</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

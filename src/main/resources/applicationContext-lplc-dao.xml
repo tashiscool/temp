@@ -20,6 +20,10 @@
 		class="com.pearson.ed.lplc.dao.impl.LicensePoolDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="organizationLPDAO"
+		class="com.pearson.ed.lplc.dao.impl.OrganizationLPDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 		
 	

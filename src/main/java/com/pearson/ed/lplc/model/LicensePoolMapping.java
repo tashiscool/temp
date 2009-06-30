@@ -1,4 +1,4 @@
-package com.pearson.ed.lplc.model;
+package com.pearson.ed.lplc.model;             
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -61,16 +61,37 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 
 	@Column(nullable = true, name = "organization_id", length = 128)
 	private String org_id;
+	
+	//private String status;
 
-	@org.hibernate.annotations.CollectionOfElements(targetElement = java.lang.String.class, fetch=FetchType.EAGER)
-	@JoinTable(name = "LicensePool_Product", joinColumns = @JoinColumn(name = "licensepool_id"))
+	@org.hibernate.annotations.CollectionOfElements(targetElement = java.lang.String.class, fetch=FetchType.LAZY)
+	@JoinTable(name = "LICENSEPOOL_PRODUCT", joinColumns = @JoinColumn(name = "licensepool_id"))
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	@Column(name = "product_id", nullable = false)
 	private List<String> products = new ArrayList<String>();
-
+	
 	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	private Set<OrderLineItemLPMapping> orderLineItems = new HashSet<OrderLineItemLPMapping>();
+
+	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<OrganizationLPMapping> organizations = new HashSet<OrganizationLPMapping>();
+
+	
+	/**
+	 * @return the orderLineItems
+	 */
+	public Set<OrderLineItemLPMapping> getOrderLineItems() {
+		return orderLineItems;
+	}
+
+	/**
+	 * @param orderLineItems the orderLineItems to set
+	 */
+	public void setOrderLineItems(Set<OrderLineItemLPMapping> orderLineItems) {
+		this.orderLineItems = orderLineItems;
+	}
 
 	/**
 	 * @return the organizations
@@ -223,6 +244,20 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	public void setOrg_id(String org_id) {
 		this.org_id = org_id;
 	}
+	
+//	/**
+//	 * @return the status
+//	 */
+//	public String getStatus() {
+//		return status;
+//	}
+//
+//	/**
+//	 * @param status the status to set
+//	 */
+//	public void setStatus(String status) {
+//		this.status = status;
+//	}
 
 	/**
 	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
