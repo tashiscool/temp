@@ -144,7 +144,7 @@ public class MarshallingLicensePoolEndpoint implements
 				throw new ComponentCardinalityException(
 						"More than 1 product association is not supported.");
 			if (LPLCConstants.LICENSEPOOLTYPE.equalsIgnoreCase(createLicensePoolSchemaObj.getType()))
-				throw new ComponentValidationException("More than 1 product association is not supported.");
+				throw new ComponentValidationException("License Type is not Valid.");
 
 			logger
 					.info("Invoking Licensepool Service CreateLicensePool method");
