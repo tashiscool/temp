@@ -17,8 +17,9 @@
 	</simpleType>
 	<xsd:simpleType name="StatusType">
 		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="P" />
 			<xsd:enumeration value="A" />
-			<xsd:enumeration value="I" />
+			<xsd:enumeration value="E" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<simpleType name="ProductIDType">
@@ -42,6 +43,7 @@
 			<maxLength value="1024"/>
 		</restriction>
 	</simpleType>
+	<!---Valid Value: Seat based licensing-->
 	<simpleType name="LicenseType">
 		<restriction base="string">
 			<whiteSpace value="collapse"/>
@@ -107,6 +109,7 @@
 		<sequence>
 			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
 			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="Status" type="licensepool:StatusType"/>
 			<element name="RootOrganizationId" type="xsd:string"/>
 			<element name="Type" type="licensepool:LicenseType"/>
 			<element name="StartDate" type="xsd:dateTime"/>
