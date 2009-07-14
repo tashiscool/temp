@@ -27,6 +27,7 @@ import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePoolByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
+import com.pearson.ed.lplc.ws.schema.StatusType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
 public class LicensePoolConverterImpl implements LicensePoolConverter {
@@ -339,6 +340,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			licensepoolSchemaObj.setQuantity(orgLPMapping.getLicensepoolMapping().getQuantity());
 			licensepoolSchemaObj.setUsedLicenses(orgLPMapping.getUsed_quantity());
 			licensepoolSchemaObj.setDenyNewSubscription(orgLPMapping.getDenyManualSubscription());
+			licensepoolSchemaObj.setStatus(getLicenseStatus(orgLPMapping.getLicensepoolMapping().getStart_date(),orgLPMapping.getLicensepoolMapping().getEnd_date()));
 			schemaList.getLicensePoolByOrganizationId().add(licensepoolSchemaObj);
 		}
 		return schemaList;
@@ -348,6 +350,22 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(date);
 		return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+	}
+	/*
+	 * This function isolate the logic to figure out license status based on
+	 * current date, start date and end date.
+	 */
+	private StatusType getLicenseStatus(Date startDate, Date endDate) {
+		Date currentDate = new Date();
+		
+		if ((currentDate.compareTo(startDate) > 0)
+				&& (currentDate.compareTo(endDate) < 0))
+			return StatusType.A;
+		else if (currentDate.compareTo(endDate) > 0)
+			return StatusType.E;
+		else if (currentDate.compareTo(startDate) < 0)
+			return StatusType.P;
+		else return null;
 	}
 
 }
