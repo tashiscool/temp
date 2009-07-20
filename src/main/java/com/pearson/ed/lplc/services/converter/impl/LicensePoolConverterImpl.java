@@ -146,7 +146,6 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		if (StringUtils.isNotBlank(type)) {
 			licensepoolMapping.setType(type);
 		}
-
 		licensepoolMapping.setDenyManualSubscription(licensepool
 				.getDenyManualSubscription());
 
@@ -164,7 +163,8 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			setCreatedValues(licensepoolMapping, licensepool);
 		}
 		setModifiedValues(licensepoolMapping, licensepool);
-		buildOrderLineItemMapping(licensepool, licensepoolMapping, mode,
+		if (StringUtils.isNotEmpty(licensepool.getOrderLineItemId()))
+			buildOrderLineItemMapping(licensepool, licensepoolMapping, mode,
 				createdBy);
 
 		return licensepoolMapping;
@@ -173,11 +173,8 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	private void buildOrderLineItemMapping(LicensePoolDTO licensepool,
 			LicensePoolMapping licensepoolMapping, String mode, String createdBy) {
 		OrderLineItemLPMapping orderLineItem = new OrderLineItemLPMapping();
-		if (StringUtils.isNotEmpty(licensepool.getOrderLineItemId()))
-		{
-			orderLineItem.setOrderLineItemId(licensepool.getOrderLineItemId());
-			orderLineItem.setLicensepoolMapping(licensepoolMapping);
-		}
+		orderLineItem.setOrderLineItemId(licensepool.getOrderLineItemId());
+		orderLineItem.setLicensepoolMapping(licensepoolMapping);
 		if (StringUtils.isNotBlank(createdBy))
 			orderLineItem.setCreatedBy(createdBy);
 
@@ -231,8 +228,9 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			CreateLicensePool createLicensePoolSchemaObj) {
 		LicensePoolDTO licensepoolDTO = new LicensePoolDTO();
 		licensepoolDTO.setType(createLicensePoolSchemaObj.getType());
-		licensepoolDTO.setDenyManualSubscription(createLicensePoolSchemaObj
-				.getDenyNewSubscription());
+		licensepoolDTO.setDenyManualSubscription((createLicensePoolSchemaObj
+				.getDenyNewSubscription()==null)?0:createLicensePoolSchemaObj
+						.getDenyNewSubscription().intValue());
 		licensepoolDTO.setStartDate(createLicensePoolSchemaObj.getStartDate()
 				.toGregorianCalendar().getTime());
 		licensepoolDTO.setEndDate(createLicensePoolSchemaObj.getEndDate()
@@ -241,7 +239,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolDTO.setOrganizationId(createLicensePoolSchemaObj
 				.getOrgnizationId());
 		licensepoolDTO.setProductId(getProducts(createLicensePoolSchemaObj));
-		licensepoolDTO.setOrderLineItemId(createLicensePoolSchemaObj.getOrderLineItemId());
+		licensepoolDTO.setOrderLineItemId((createLicensePoolSchemaObj.getOrderLineItemId()==null)?null:createLicensePoolSchemaObj.getOrderLineItemId());
 		licensepoolDTO.setSourceSystem(createLicensePoolSchemaObj
 				.getSourceSystem());
 		licensepoolDTO.setCreatedBy(createLicensePoolSchemaObj.getCreatedBy());
@@ -345,6 +343,8 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		}
 		return schemaList;
 	}
+	
+	
 
 	private XMLGregorianCalendar convertToXMLGregorianCalendar(	Date date)	throws DatatypeConfigurationException {
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
