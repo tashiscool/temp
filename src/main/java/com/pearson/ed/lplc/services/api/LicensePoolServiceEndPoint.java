@@ -1,6 +1,7 @@
 package com.pearson.ed.lplc.services.api;
 
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
+import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
@@ -34,6 +35,15 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 * @return GetLicensePoolByOrganizationIdResponse GetLicensePoolByOrganizationIdResponse.
 	 */
 	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs);
+	
+	/**
+	 * Get Licensepool to subscribe.
+	 * @param organizationId organizationId.
+	 * @param productId
+	 * @return
+	 */
+	public LicensePoolToSubscribe getLicensePoolToSubscribe(String organizationId,
+			String productId);
 
 	/**
 	 * Generates a transaction ID.
@@ -51,6 +61,8 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 *            the transaction ID.
 	 */
 	public void setTransactionId(String transactionId);
+
+	
 		
 
 }

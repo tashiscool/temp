@@ -19,6 +19,8 @@ import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolResponse;
 import com.pearson.ed.lplc.ws.schema.GetLicensePoolByOrganizationIdRequest;
+import com.pearson.ed.lplc.ws.schema.GetLicensePoolToSubscribeRequest;
+import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.ServiceResponseType;
 import com.pearson.ed.lplc.ws.schema.StatusCodeType;
@@ -257,6 +259,40 @@ public class MarshallingLicensePoolEndpoint implements
 			
 			logger.info("Invoking Licensepool Service GetLicensePool method");
 			return licensePoolServiceEndPoint.getLicensePoolByOrganizationId(organizationId, qualifyingOrgs);
+
+		} catch (Exception e) {
+			LicensePoolException licensepoolException = exceptionFactory
+					.getLicensePoolException(e);
+			throw licensepoolException;
+			
+		}
+	}
+	/**
+	 * This endpoint method uses marshalling to handle message with a
+	 * <code>&lt;CreatelicensepoolRequestElement&gt;</code> payload.
+	 * 
+	 * @param licensepoolRequest
+	 *            the update licensepool request.
+	 */
+	@PayloadRoot(localPart = GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
+	public LicensePoolToSubscribe getLicensepoolToSubscribe(
+			GetLicensePoolToSubscribeRequest licensepoolRequest) {
+
+		try {
+			String organizationId = licensepoolRequest
+					.getGetLicensePoolToSubscribeRequestType().getOrgnizationId();
+			String productId = licensepoolRequest.getGetLicensePoolToSubscribeRequestType().getProductId();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Received " + GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT
+						+ ":" + organizationId+" and "+productId);
+			}
+
+			String transactionId = licensePoolServiceEndPoint
+					.generateTransactionId();
+			licensePoolServiceEndPoint.setTransactionId(transactionId);
+			
+			logger.info("Invoking Licensepool Service GetLicensePoolToSubscribe method");
+			return licensePoolServiceEndPoint.getLicensePoolToSubscribe(organizationId, productId);
 
 		} catch (Exception e) {
 			LicensePoolException licensepoolException = exceptionFactory

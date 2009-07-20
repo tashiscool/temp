@@ -1,5 +1,7 @@
 package com.pearson.ed.lplc.dao.api;
 
+import java.util.List;
+
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 
 /**
@@ -30,5 +32,13 @@ public interface LicensePoolDAO {
 	 * @param licensepool licensepool.
 	 */
 	public void update(LicensePoolMapping licensepool);
+	/**
+     * 
+     * @param organizationId organizationId.
+     * @param productId productId.
+     * @return list of licensepoool.
+     */
+	public List<LicensePoolMapping> findOrganizationMappingToSubscribe(String organizationId,
+			String productId);
 	
 }

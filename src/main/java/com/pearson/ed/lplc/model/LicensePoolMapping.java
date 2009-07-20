@@ -63,13 +63,10 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	private String org_id;
 	
 	//private String status;
+	@Column(nullable = true, name = "product_id", length = 128)
+	private String product_id;
 
-	@org.hibernate.annotations.CollectionOfElements(targetElement = java.lang.String.class, fetch=FetchType.LAZY)
-	@JoinTable(name = "LICENSEPOOL_PRODUCT", joinColumns = @JoinColumn(name = "licensepool_id"))
-	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	@Column(name = "product_id", nullable = false)
-	private List<String> products = new ArrayList<String>();
-	
+		
 	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<OrderLineItemLPMapping> orderLineItems = new HashSet<OrderLineItemLPMapping>();
@@ -148,18 +145,17 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @return the products
+	 * @return the product_id
 	 */
-	public List<String> getProducts() {
-		return products;
+	public String getProduct_id() {
+		return product_id;
 	}
 
 	/**
-	 * @param products
-	 *            the products to set
+	 * @param product_id the product_id to set
 	 */
-	public void setProducts(List<String> products) {
-		this.products = products;
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
 	}
 
 	/**

@@ -1,7 +1,12 @@
 package com.pearson.ed.lplc.dao.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
@@ -51,6 +56,29 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements
 		Criterion eqLicensePoolId = Restrictions.eq("licensepoolId", lplcId);
 		criteria.add(eqLicensePoolId);
 		return (LicensePoolMapping) criteria.uniqueResult();
+	}
+	/**
+     * Get LicensePool for Subscription.
+     * @param organizationId organizationId.
+     * @param productId productId.
+     * @return list of LicensePoolMapping.
+     */
+	@SuppressWarnings("unchecked")
+	public List<LicensePoolMapping> findOrganizationMappingToSubscribe(String organizationId,
+			String productId){
+		Criteria criteria = getSession().createCriteria(
+				LicensePoolMapping.class);
+		criteria.createAlias("organizations", "organizations");
+		Criterion eqOrganizationId = Restrictions.like("organizations.organization_id", organizationId, MatchMode.ANYWHERE);
+		Criterion eqProductId = Restrictions.like("product_id", productId, MatchMode.ANYWHERE);
+		Criterion eqStartDate = Restrictions.le("start_date", new Date());
+		Criterion eqEndDate = Restrictions.ge("end_date", new Date());
+		Criterion eqDenyNewSubscription = Restrictions.eq("denyManualSubscription",0);
+		Criterion eqDenyNewSubscriptionOrgLevel = Restrictions.eq("organizations.denyManualSubscription",0);
+		criteria.add(eqStartDate).add(eqEndDate).add(eqProductId).add(eqDenyNewSubscription).add(eqDenyNewSubscriptionOrgLevel).add(eqOrganizationId);
+		criteria.addOrder(Order.asc("organizations.organization_level"));
+		criteria.addOrder(Order.desc("end_date"));
+		return criteria.list();
 	}
 
 }

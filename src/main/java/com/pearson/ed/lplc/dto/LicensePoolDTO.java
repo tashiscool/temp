@@ -29,7 +29,7 @@ public class LicensePoolDTO implements Serializable {
 	private int quantity;
 	private int usedLicenses;
 	private int denyManualSubscription;
-	private List<String> productIds;
+	private String productId;
 	private String orderLineItemId;
 	private String organizationId;
 	private int organizationLevel;
@@ -78,19 +78,6 @@ public class LicensePoolDTO implements Serializable {
 		this.managedParentOrganization = managedParentOrganization;
 	}
 
-	/**
-	 * @return the productIds
-	 */
-	public List<String> getProductIds() {
-		return productIds;
-	}
-
-	/**
-	 * @param productIds the productIds to set
-	 */
-	public void setProductIds(List<String> productIds) {
-		this.productIds = productIds;
-	}
 
 	/**
 	 * @return the organizationLevel
@@ -223,18 +210,20 @@ public class LicensePoolDTO implements Serializable {
 		this.denyManualSubscription = denyManualSubscription;
 	}
 
+	
+
 	/**
 	 * @return the productId
 	 */
-	public List<String> getProductId() {
-		return productIds;
+	public String getProductId() {
+		return productId;
 	}
 
 	/**
 	 * @param productId the productId to set
 	 */
-	public void setProductId(List<String> productIds) {
-		this.productIds = productIds;
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 
 	/**
@@ -352,14 +341,6 @@ public class LicensePoolDTO implements Serializable {
 		equalsBuilder.append(this.usedLicenses, u.usedLicenses);
 		
 		equalsBuilder.append(this.denyManualSubscription, u.denyManualSubscription);
-		equalsBuilder.append(this.productIds.size(), u.productIds.size());
-		if (this.productIds.size() == u.productIds.size()){
-			Iterator<String> iterator1 = productIds.iterator();
-			Iterator<String> iterator2 = u.productIds.iterator();
-			while(iterator1.hasNext()){
-				equalsBuilder.append(iterator1.next(), iterator2.next());
-			}
-		}
 		equalsBuilder.append(this.organizationId, u.organizationId);
 		equalsBuilder.append(this.lastUpdatedDate, u.lastUpdatedDate);
 		equalsBuilder.append(this.lastUpdatedBy, u.lastUpdatedBy);
@@ -383,7 +364,7 @@ public class LicensePoolDTO implements Serializable {
 		hashCodeBuilder.append(quantity);
 		hashCodeBuilder.append(usedLicenses);
 		hashCodeBuilder.append(denyManualSubscription);
-		hashCodeBuilder.append(productIds);
+		hashCodeBuilder.append(productId);
 		hashCodeBuilder.append(organizationId);
 		hashCodeBuilder.append(lastUpdatedDate);
 		hashCodeBuilder.append(lastUpdatedBy);
@@ -416,9 +397,6 @@ public class LicensePoolDTO implements Serializable {
 		sb.append(",");
 		sb.append("SubscriptionStatus:" + denyManualSubscription);
 		sb.append(",");
-		Iterator<String> iterator1 = productIds.iterator();
-		while (iterator1.hasNext())
-			sb.append("ProductIds:" + iterator1.next() + " ,");		
 		sb.append("OrganizationId:" + organizationId);
 		sb.append(",");
 		sb.append("LastUpdatedDate:" + ((lastUpdatedDate != null) ?

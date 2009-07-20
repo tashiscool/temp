@@ -18,5 +18,6 @@ public interface OrganizationLPDAO {
 	 * @return List of LicensePoolMapping.
 	 */
 	public List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(String organizationId, int level);
+    
 
 }

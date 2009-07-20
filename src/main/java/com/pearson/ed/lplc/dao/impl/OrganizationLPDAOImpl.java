@@ -31,5 +31,6 @@ OrganizationLPDAO {
 			criteria.add(eqRootOrganization);
 		return criteria.add(eqOrganizationId).list();
 	}
+	
 
 }

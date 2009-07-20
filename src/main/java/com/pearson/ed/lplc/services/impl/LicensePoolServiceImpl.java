@@ -20,6 +20,7 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
 import com.pearson.ed.lplc.exception.LPLCBaseException;
+import com.pearson.ed.lplc.exception.LicensePoolException;
 import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
@@ -116,6 +117,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * @param qualifyingOrgs qualifyingOrgs.
 	 * @return List.
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<OrganizationLPMapping> getLicensePoolByOrganizationId(String organizationId,
 			String qualifyingOrgs){
 		int level =999;
@@ -141,6 +143,19 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	   licensePoolDAO.update(licensepool);
 	   return licensepool.getLicensepoolId();
 		
+	}
+	/**
+	 * Get Licensepool to subscribe.
+	 * @param organizationId organizationId.
+	 * @param productId
+	 * @return List of Licensepool.
+	 */
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId){
+		List<LicensePoolMapping> findOrganizationMappingToSubscribe = licensePoolDAO.findOrganizationMappingToSubscribe(organizationId, productId);
+		if (findOrganizationMappingToSubscribe.size() == 0)
+			throw new LPLCBaseException("No LicensePool Available For Subscription.");
+		return findOrganizationMappingToSubscribe.get(0);
 	}
 
 	

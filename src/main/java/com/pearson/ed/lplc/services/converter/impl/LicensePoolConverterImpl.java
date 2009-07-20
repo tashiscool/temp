@@ -26,6 +26,8 @@ import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePoolByOrganizationId;
+import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
+import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribeType;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.StatusType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
@@ -54,7 +56,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolDTO.setQuantity(licensepool.getQuantity());
 		licensepoolDTO.setUsedLicenses(licensepool.getUsedLicenses());
 		licensepoolDTO.setOrganizationId(licensepool.getOrgnizationId());
-		licensepoolDTO.setProductId(getProducts(licensepool));
+		licensepoolDTO.setProductId(getProducts(licensepool).get(0));
 		licensepoolDTO.setOrderLineItemId(licensepool.getOrderLineItemId());
 		licensepoolDTO.setSourceSystem(licensepool.getSourceSystem());
 		licensepoolDTO.setCreatedBy(licensepool.getCreatedBy());
@@ -154,7 +156,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolMapping.setQuantity(licensepool.getQuantity());
 		licensepoolMapping.setSource_system(licensepool.getSourceSystem());
 		licensepoolMapping.setOrg_id(licensepool.getOrganizationId());
-		licensepoolMapping.setProducts(getProducts(licensepool));
+		licensepoolMapping.setProduct_id(licensepool.getProductId());
 		String createdBy = licensepool.getCreatedBy();
 		if (StringUtils.isNotBlank(createdBy))
 			licensepoolMapping.setCreatedBy(createdBy);
@@ -185,14 +187,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolMapping.getOrderLineItems().add(orderLineItem);
 	}
 
-	private List<String> getProducts(LicensePoolDTO licensepool) {
-		List<String> productList = new ArrayList<String>();
-		List<String> productIds = licensepool.getProductId();
-		for (String product : productIds) {
-			productList.add(product);
-		}
-		return productList;
-	}
+	
 
 	private void setModifiedValues(LPLCBaseEntity lplcBaseEntity,
 			LicensePoolDTO licensepool) {
@@ -238,7 +233,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolDTO.setQuantity(createLicensePoolSchemaObj.getQuantity());
 		licensepoolDTO.setOrganizationId(createLicensePoolSchemaObj
 				.getOrgnizationId());
-		licensepoolDTO.setProductId(getProducts(createLicensePoolSchemaObj));
+		licensepoolDTO.setProductId(getProducts(createLicensePoolSchemaObj).get(0));
 		licensepoolDTO.setOrderLineItemId((createLicensePoolSchemaObj.getOrderLineItemId()==null)?null:createLicensePoolSchemaObj.getOrderLineItemId());
 		licensepoolDTO.setSourceSystem(createLicensePoolSchemaObj
 				.getSourceSystem());
@@ -325,7 +320,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			OrganizationLPMapping orgLPMapping = iterator.next();
 			if (orgLPMapping == null)
 				continue;
-			licensepoolSchemaObj.getProductId().add(orgLPMapping.getLicensepoolMapping().getProducts().get(0).toString());
+			licensepoolSchemaObj.getProductId().add(orgLPMapping.getLicensepoolMapping().getProduct_id().toString());
 			licensepoolSchemaObj.setLicenseId(orgLPMapping.getLicensepoolMapping().getLicensepoolId());
 			licensepoolSchemaObj.setRootOrganizationId(orgLPMapping.getLicensepoolMapping().getOrg_id());
 			licensepoolSchemaObj.setType(orgLPMapping.getLicensepoolMapping().getType());
@@ -342,6 +337,27 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			schemaList.getLicensePoolByOrganizationId().add(licensepoolSchemaObj);
 		}
 		return schemaList;
+	}
+	
+	/**
+	 * Convert method to convert LPMapping object to Schema object.
+	 * @param organizationLPMapping organizationLPMapping.
+	 * @return LicensePoolToSubscribe.
+	 */
+
+	public LicensePoolToSubscribe convertForGetLicensepoolToSubscribe(
+			LicensePoolMapping organizationLPMapping){
+		LicensePoolToSubscribe licensePoolToSubscribe = new LicensePoolToSubscribe();
+		LicensePoolToSubscribeType licensepoolSchema = new LicensePoolToSubscribeType();
+		try {
+			licensepoolSchema.setStartDate(convertToXMLGregorianCalendar(organizationLPMapping.getStart_date()));
+			licensepoolSchema.setEndDate(convertToXMLGregorianCalendar(organizationLPMapping.getEnd_date()));
+			licensepoolSchema.setLicenseId(organizationLPMapping.getLicensepoolId());
+		} catch (DatatypeConfigurationException e) {
+			logger.log(Level.ERROR, e.getMessage());
+		}
+		licensePoolToSubscribe.setLicensePoolToSubscribeType(licensepoolSchema);
+		return licensePoolToSubscribe;
 	}
 	
 	

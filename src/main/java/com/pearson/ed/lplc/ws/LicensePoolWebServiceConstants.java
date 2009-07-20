@@ -15,6 +15,10 @@ public interface LicensePoolWebServiceConstants {
 	 * Get licensepool request element.
 	 */
 	String GET_LICENSEPOOL_REQUEST_ELEMENT = "GetLicensePoolByOrganizationIdRequest";
+	/**
+	 * Get licensepool  to subscribe request element.
+	 */
+	String GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT = "GetLicensePoolToSubscribeRequest";	                                                       
 	
 	/**
 	 * The licensepool namespace.

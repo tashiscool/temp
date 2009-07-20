@@ -10,6 +10,7 @@ import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
+import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
@@ -80,6 +81,16 @@ public class LicensePoolServiceEndPointImpl implements
 	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs){
 		List<OrganizationLPMapping> licenses = licensepoolService.getLicensePoolByOrganizationId(organizationId, qualifyingOrgs);
 		return licensePoolConverter.convertForGetFromLPMappingToSchema(licenses);
+	}
+	/**
+	 * Get Licensepool for subscription.
+	 * @param organizationId organizationId.
+	 * @param productId
+	 * @return
+	 */
+	public LicensePoolToSubscribe getLicensePoolToSubscribe(String organizationId,
+			String productId){
+		return licensePoolConverter.convertForGetLicensepoolToSubscribe(licensepoolService.getLicensePoolToSubscribeId(organizationId, productId));
 	}
 
 	/**

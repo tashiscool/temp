@@ -10,6 +10,7 @@ import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.LicensePool;
+import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
@@ -93,4 +94,13 @@ public interface LicensePoolConverter {
 
 	public LicensepoolsByOrganizationId convertForGetFromLPMappingToSchema(
 			List<OrganizationLPMapping> licenses);
+	/**
+	 * Convert method to convert LPMapping object to Schema object.
+	 * @param organizationLPMapping organizationLPMapping.
+	 * @return LicensePoolToSubscribe.
+	 */
+
+	public LicensePoolToSubscribe convertForGetLicensepoolToSubscribe(
+			LicensePoolMapping organizationLPMapping);
+	
 }

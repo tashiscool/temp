@@ -101,8 +101,14 @@
 	</complexType>
 	<complexType name="GetLicensePoolByOrganizationIdRequestType">
 		<sequence>
-			<element name="OrgnizationId" type="xsd:string"/>
+			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
 			<element name="QualifyingLicensePool" type="licensepool:QualifyingLicensePool"/>
+		</sequence>
+	</complexType>
+	<complexType name="GetLicensePoolToSubscribeRequestType">
+		<sequence>
+			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="ProductId" type="licensepool:ProductIDType"/>
 		</sequence>
 	</complexType>
 	<complexType name="LicensePoolByOrganizationId">
@@ -119,10 +125,31 @@
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription"/>
 		</sequence>
 	</complexType>
+	<complexType name="LicensePoolToSubscribeType">
+		<sequence>
+			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="StartDate" type="xsd:dateTime"/>
+			<element name="EndDate" type="xsd:dateTime"/>
+		</sequence>
+	</complexType>
 	<element name="GetLicensePoolByOrganizationIdRequest">
 		<complexType>
 			<sequence>
 				<element name="GetLicensePoolByOrganizationIdRequestType" type="licensepool:GetLicensePoolByOrganizationIdRequestType" nillable="true"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetLicensePoolToSubscribeRequest">
+		<complexType>
+			<sequence>
+				<element name="GetLicensePoolToSubscribeRequestType" type="licensepool:GetLicensePoolToSubscribeRequestType" nillable="true"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LicensePoolToSubscribe">
+		<complexType>
+			<sequence>
+				<element name="LicensePoolToSubscribeType" type="licensepool:LicensePoolToSubscribeType" nillable="true"/>
 			</sequence>
 		</complexType>
 	</element>
@@ -182,7 +209,7 @@
 			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0"/>
 			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0"/>
 			<element name="CreatedBy" type="xsd:string" minOccurs="0"/>
-			<element name="SourceSystem" type="licensepool:SourceSystemType"/>
+			<element name="SourceSystem" type="licensepool:SourceSystemType" />
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription"/>
 		</sequence>
 	</complexType>

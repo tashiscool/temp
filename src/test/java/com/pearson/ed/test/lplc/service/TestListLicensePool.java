@@ -33,6 +33,21 @@ public class TestListLicensePool extends BaseIntegrationTest {
     	assertEquals(lpList.size(), 1);
 	}
     
+    @Test
+	public void testGetLicensePoolToSubscribe() {
+		LicensePoolService licensepoolService = loadLicensePoolService();
+		LicensePoolDTO licensepool = loadLicensePool();
+		LicensePoolDTO licensepool2 = loadLicensePool2();
+    	LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
+    	String licensepoolId = licensepoolService
+			.createLicensePool(licensepool);
+    	String licensepoolId2 = licensepoolService
+		.createLicensePool(licensepool2);
+
+    	List<LicensePoolMapping> lpList = licensepoolDAO.findOrganizationMappingToSubscribe("UnitTestOrganizationID","TestProductId1");
+    	assertEquals(licensepoolId2,lpList.get(0).getLicensepoolId());
+	}
+    
    	public LicensePoolService loadLicensePoolService() {
 		return (LicensePoolService) applicationContext
 				.getBean("licensepoolService");
@@ -41,6 +56,10 @@ public class TestListLicensePool extends BaseIntegrationTest {
 	public LicensePoolDTO loadLicensePool() {
 		return (LicensePoolDTO) applicationContext
 				.getBean("serviceTestLicensePool");
+	}
+	public LicensePoolDTO loadLicensePool2() {
+		return (LicensePoolDTO) applicationContext
+				.getBean("serviceTestLicensePool2");
 	}
 
 	public LicensePoolDAO loadLicensePoolDAO() {

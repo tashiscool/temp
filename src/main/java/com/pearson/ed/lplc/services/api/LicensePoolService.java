@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
+import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 
 /**
@@ -43,5 +44,13 @@ public interface LicensePoolService {
 	 */
 	List<OrganizationLPMapping> getLicensePoolByOrganizationId(
 			String organizationId, String qualifyingOrgs);
+	/**
+	 * Get Licensepool For Subscription.
+	 * @param organizationId
+	 * @param productId
+	 * @return OrganizationLPMapping
+	 */
+
+	LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId);
 
 }
