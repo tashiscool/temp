@@ -87,7 +87,7 @@
 			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" minOccurs="0"/>
 			<element name="CreatedBy" type="xsd:string" nillable="true"/>
-			<element name="SourceSystem" type="licensepool:SourceSystemType" nillable="true"/>
+			<element name="SourceSystem" type="licensepool:SourceSystemType"/>
 		</sequence>
 	</complexType>
 	<complexType name="UpdateLicensePool">
@@ -182,7 +182,7 @@
 			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0"/>
 			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0"/>
 			<element name="CreatedBy" type="xsd:string" minOccurs="0"/>
-			<element name="SourceSystem" type="licensepool:SourceSystemType" nillable="true"/>
+			<element name="SourceSystem" type="licensepool:SourceSystemType"/>
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription"/>
 		</sequence>
 	</complexType>
