@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -15,9 +16,11 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
+import com.pearson.ed.lplc.common.LPLCErrorMessages;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
+import com.pearson.ed.lplc.exception.LPLCBaseException;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrderLineItemLPMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
@@ -55,7 +58,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 				.toGregorianCalendar().getTime());
 		licensepoolDTO.setQuantity(licensepool.getQuantity());
 		licensepoolDTO.setUsedLicenses(licensepool.getUsedLicenses());
-		licensepoolDTO.setOrganizationId(licensepool.getOrgnizationId());
+		licensepoolDTO.setOrganizationId(licensepool.getOrganizationId());
 		licensepoolDTO.setProductId(getProducts(licensepool).get(0));
 		licensepoolDTO.setOrderLineItemId(licensepool.getOrderLineItemId());
 		licensepoolDTO.setSourceSystem(licensepool.getSourceSystem());
@@ -232,7 +235,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 				.toGregorianCalendar().getTime());
 		licensepoolDTO.setQuantity(createLicensePoolSchemaObj.getQuantity());
 		licensepoolDTO.setOrganizationId(createLicensePoolSchemaObj
-				.getOrgnizationId());
+				.getOrganizationId());
 		licensepoolDTO.setProductId(getProducts(createLicensePoolSchemaObj).get(0));
 		licensepoolDTO.setOrderLineItemId((createLicensePoolSchemaObj.getOrderLineItemId()==null)?null:createLicensePoolSchemaObj.getOrderLineItemId());
 		licensepoolDTO.setSourceSystem(createLicensePoolSchemaObj
@@ -272,6 +275,10 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			updateDTO.setQuantity(licensepool.getQuantity());
 		if (licensepool.getOrderLineItemId()!=null)
 			updateDTO.setOrderLineItem(licensepool.getOrderLineItemId());
+		if (licensepool.getUsedLicenses().getUsedLicenses()!=0){
+			updateDTO.setUsedLicenses(licensepool.getUsedLicenses().getUsedLicenses());
+		    updateDTO.setOrganizationId(licensepool.getUsedLicenses().getOrganizationId());
+		}
 		return updateDTO;
 
 	}
@@ -289,8 +296,24 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	    	licensepool.setEnd_date(updateLicensepool.getEndDate());
 	    if (updateLicensepool.getQuantity()!= 0)
 	    	licensepool.setQuantity(updateLicensepool.getQuantity());
+	    if (updateLicensepool.getUsedLicenses()!=0){
+	    	boolean update= false;
+	       Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
+	        for (OrganizationLPMapping organizationLPMapping : organizations) {
+	        	if (organizationLPMapping.getOrganization_id().trim().equalsIgnoreCase(updateLicensepool.getOrganizationId().trim())){
+	        		int usedlicenses = organizationLPMapping.getUsed_quantity()+updateLicensepool.getUsedLicenses();
+	        		if (usedlicenses<0 )
+	        			throw new ComponentValidationException(LPLCErrorMessages.LICENSEPOOL_CONSUMPTION_NEGATIVE);
+	        		organizationLPMapping.setUsed_quantity(usedlicenses);
+	        		update=true;
+	        	}
+	        }
+	        if (update==false)
+	        	 throw new LPLCBaseException(LPLCErrorMessages.NO_ORGNAIZATION_FOUND_UPDATE_LICENSEPOOL);
+	       licensepool.setOrganizations(organizations);
+	    }
 	    if (licensepool.getStart_date().after(licensepool.getEnd_date()))
-			throw new ComponentValidationException("Start Date can not be greater than End Date");
+			throw new ComponentValidationException(LPLCErrorMessages.DATE_ERROR);
 	    if (updateLicensepool.getOrderLineItem()!= null){
 	    	OrderLineItemLPMapping orderLineItem = new OrderLineItemLPMapping();
 	    	orderLineItem.setLicensepoolMapping(licensepool);

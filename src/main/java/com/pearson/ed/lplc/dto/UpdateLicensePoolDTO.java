@@ -12,7 +12,33 @@ public class UpdateLicensePoolDTO {
 	private Date endDate;
 	private int quantity;
 	private String orderLineItem;
+	private int usedLicenses;
+	private String organizationId;
 	
+	/**
+	 * @return the organizationId
+	 */
+	public String getOrganizationId() {
+		return organizationId;
+	}
+	/**
+	 * @param organizationId the organizationId to set
+	 */
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
+	}
+	/**
+	 * @return the usedLicenses
+	 */
+	public int getUsedLicenses() {
+		return usedLicenses;
+	}
+	/**
+	 * @param usedLicenses the usedLicenses to set
+	 */
+	public void setUsedLicenses(int usedLicenses) {
+		this.usedLicenses = usedLicenses;
+	}
 	/**
 	 * @return the orderLineItem
 	 */

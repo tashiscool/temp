@@ -76,6 +76,13 @@
 			<enumeration value="RootAndParents"/>
 		</restriction>
 	</simpleType>
+	<complexType name="UpdateUsedLicenses">
+		<sequence>
+		   <element name="UsedLicenses" type="xsd:int" />
+		  </sequence>
+	  <xsd:attribute name="OrganizationId" type="licensepool:OrganizationIDType"
+			use="required" />
+	</complexType>
 	<complexType name="CreateLicensePool">
 		<sequence>
 			<element name="Type" type="licensepool:LicenseType"/>
@@ -83,7 +90,7 @@
 			<element name="EndDate" type="xsd:dateTime"/>
 			<element name="Quantity" type="licensepool:QuantityType"/>
 			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
-			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="OrganizationId" type="licensepool:OrganizationIDType"/>
 			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" minOccurs="0"/>
 			<element name="CreatedBy" type="xsd:string" nillable="true"/>
@@ -97,17 +104,20 @@
 			<element name="StartDate" type="xsd:dateTime" minOccurs="0"/>
 			<element name="EndDate" type="xsd:dateTime" minOccurs="0"/>
 			<element name="Quantity" type="xsd:int" minOccurs="0"/>
+			<!-- If this is set to -X, usedlicenses= usedLcienses-X-->
+			<element name="UsedLicenses" type="licensepool:UpdateUsedLicenses" minOccurs="0"/>
+				
 		</sequence>
 	</complexType>
 	<complexType name="GetLicensePoolByOrganizationIdRequestType">
 		<sequence>
-			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="OrganizationId" type="licensepool:OrganizationIDType"/>
 			<element name="QualifyingLicensePool" type="licensepool:QualifyingLicensePool"/>
 		</sequence>
 	</complexType>
 	<complexType name="GetLicensePoolToSubscribeRequestType">
 		<sequence>
-			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="OrganizationId" type="licensepool:OrganizationIDType"/>
 			<element name="ProductId" type="licensepool:ProductIDType"/>
 		</sequence>
 	</complexType>
@@ -203,7 +213,7 @@
 			<element name="Quantity" type="licensepool:QuantityType"/>
 			<element name="UsedLicenses" type="xsd:int"/>
 			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
-			<element name="OrgnizationId" type="licensepool:OrganizationIDType"/>
+			<element name="OrganizationId" type="licensepool:OrganizationIDType"/>
 			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
 			<element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>
 			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0"/>

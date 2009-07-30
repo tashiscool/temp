@@ -246,7 +246,7 @@ public class MarshallingLicensePoolEndpoint implements
 
 		try {
 			String organizationId = licensepoolRequest
-					.getGetLicensePoolByOrganizationIdRequestType().getOrgnizationId();
+					.getGetLicensePoolByOrganizationIdRequestType().getOrganizationId();
 			String qualifyingOrgs = licensepoolRequest.getGetLicensePoolByOrganizationIdRequestType().getQualifyingLicensePool().toString();
 			if (logger.isDebugEnabled()) {
 				logger.debug("Received " + GET_LICENSEPOOL_REQUEST_ELEMENT
@@ -280,7 +280,7 @@ public class MarshallingLicensePoolEndpoint implements
 
 		try {
 			String organizationId = licensepoolRequest
-					.getGetLicensePoolToSubscribeRequestType().getOrgnizationId();
+					.getGetLicensePoolToSubscribeRequestType().getOrganizationId();
 			String productId = licensepoolRequest.getGetLicensePoolToSubscribeRequestType().getProductId();
 			if (logger.isDebugEnabled()) {
 				logger.debug("Received " + GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT
