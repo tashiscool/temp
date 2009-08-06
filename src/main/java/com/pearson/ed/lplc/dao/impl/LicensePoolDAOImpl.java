@@ -69,8 +69,8 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements
 		Criteria criteria = getSession().createCriteria(
 				LicensePoolMapping.class);
 		criteria.createAlias("organizations", "organizations");
-		Criterion eqOrganizationId = Restrictions.like("organizations.organization_id", organizationId, MatchMode.ANYWHERE);
-		Criterion eqProductId = Restrictions.like("product_id", productId, MatchMode.ANYWHERE);
+		Criterion eqOrganizationId = Restrictions.eq("organizations.organization_id", organizationId);
+		Criterion eqProductId = Restrictions.eq("product_id", productId);
 		Criterion eqStartDate = Restrictions.le("start_date", new Date());
 		Criterion eqEndDate = Restrictions.ge("end_date", new Date());
 		Criterion eqDenyNewSubscription = Restrictions.eq("denyManualSubscription",0);

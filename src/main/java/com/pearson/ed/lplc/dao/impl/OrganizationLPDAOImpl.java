@@ -25,7 +25,7 @@ OrganizationLPDAO {
 			String organizationId, int level) {
 		Criteria criteria = getSession().createCriteria(
 				OrganizationLPMapping.class);
-		Criterion eqOrganizationId = Restrictions.like("organization_id", organizationId, MatchMode.ANYWHERE);
+		Criterion eqOrganizationId = Restrictions.eq("organization_id", organizationId);
 		Criterion eqRootOrganization = Restrictions.like("organization_level", 0);
 		if (level == 0)
 			criteria.add(eqRootOrganization);
