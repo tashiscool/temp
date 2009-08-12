@@ -2,14 +2,10 @@ package com.pearson.ed.lplc.exception;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.dao.DataAccessException;
 
-import com.pearson.ed.lplc.ws.MarshallingLicensePoolEndpoint;
-
 public class LicensePoolExceptionFactory {
-	private static final Logger logger = Logger.getLogger(LicensePoolExceptionFactory.class);
 	private String defaultKey;
 	private Properties codeDescProperties;
 		
@@ -56,6 +52,18 @@ public class LicensePoolExceptionFactory {
 		}		
 		else if (cause instanceof ObjectAlreadyExists) {
 			code = "LPLC0009";
+		}
+		else if (cause instanceof NewSubscriptionsDeniedException) {
+			code = "LPLC0010";
+		}
+		else if (cause instanceof LicensePoolExpiredException) {
+			code = "'LPLC0011";
+		}
+		else if (cause instanceof LicensePoolForFutureException) {
+			code = "LPLC0012";
+		}
+		else if (cause instanceof LicensePoolUnavailableException) {
+			code = "LPLC0013";
 		}
 		else if (cause instanceof LPLCBaseException) {
 			code = "LPLC0002";

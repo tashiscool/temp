@@ -50,6 +50,16 @@ public interface LPLCConstants {
 	 * About email.
 	 */
 	public static final String EMAIL_VALIDATED = "Y";
+	
+	/**
+	 * Constant to denote denial of new subscriptions 
+	 */
+	public static final int DENY_SUBSCRIPTIONS_TRUE = 1;
+	
+	/**
+	 * Constant to denote non-denial of new subscriptions
+	 */
+	public static final int DENY_SUBSCRIPTIONS_FALSE = 0;
 
 	/**
 	 * Service response constants

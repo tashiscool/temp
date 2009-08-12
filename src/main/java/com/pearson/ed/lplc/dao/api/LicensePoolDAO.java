@@ -1,5 +1,6 @@
 package com.pearson.ed.lplc.dao.api;
 
+import java.util.Date;
 import java.util.List;
 
 import com.pearson.ed.lplc.model.LicensePoolMapping;
@@ -36,9 +37,13 @@ public interface LicensePoolDAO {
      * 
      * @param organizationId organizationId.
      * @param productId productId.
+     * @param asOfDate - To check license pool start date and end date lie within the given date
+     * @param considerDenySubscriptions - if true checks if denySubscriptions is not set
+     * 
      * @return list of licensepoool.
+     * 
      */
 	public List<LicensePoolMapping> findOrganizationMappingToSubscribe(String organizationId,
-			String productId);
+			String productId, Date asOfDate, boolean considerDenySubscriptions);
 	
 }

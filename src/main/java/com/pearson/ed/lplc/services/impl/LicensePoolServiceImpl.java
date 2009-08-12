@@ -20,7 +20,10 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
 import com.pearson.ed.lplc.exception.LPLCBaseException;
-import com.pearson.ed.lplc.exception.LicensePoolException;
+import com.pearson.ed.lplc.exception.LicensePoolExpiredException;
+import com.pearson.ed.lplc.exception.LicensePoolForFutureException;
+import com.pearson.ed.lplc.exception.LicensePoolUnavailableException;
+import com.pearson.ed.lplc.exception.NewSubscriptionsDeniedException;
 import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
@@ -144,18 +147,84 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	   return licensepool.getLicensepoolId();
 		
 	}
+	
 	/**
-	 * Get Licensepool to subscribe.
-	 * @param organizationId organizationId.
-	 * @param productId
-	 * @return List of Licensepool.
+	 * 
+	 * Get License pool to subscribe. Fetches the license pool Id that qualifies to be used for subscription for the given organizationId 
+	 * and ProductId.
+	 * 
+	 * @param organizationId - id of the organization.
+	 * @param productId - Id of the product
+	 * @return instance of qualifying LicensePoolMapping object
+	 * 
+	 * @throw NewSubscriptionsDeniedException 
+	 * 	- throws this exception if new subscriptions are denied for the license pool or organization
+	 * @throw LicensePoolExpiredException 
+	 * 	- throws this exception if license pool's start and end dates are out of bound of the current date
+	 * @throw LicensePoolForFutureException 
+	 * 	- throws this exception if existing license pools are configured for future use and not available currently
+	 * @throw LicensePoolUnavailableException 
+	 * 	- if no license pools exist for the given product and organization
 	 */
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId){
-		List<LicensePoolMapping> findOrganizationMappingToSubscribe = licensePoolDAO.findOrganizationMappingToSubscribe(organizationId, productId);
-		if (findOrganizationMappingToSubscribe.size() == 0)
-			throw new LPLCBaseException("No LicensePool Available For Subscription.");
-		return findOrganizationMappingToSubscribe.get(0);
+		Date currentDate = new Date();
+		List<LicensePoolMapping> qualifyingLicensePools = 
+			licensePoolDAO.findOrganizationMappingToSubscribe(organizationId, productId, currentDate, true);
+		
+		if (qualifyingLicensePools != null && qualifyingLicensePools.size() > 0) {
+			return qualifyingLicensePools.get(0);
+		}
+		
+		// No license pools found, check other conditions
+		// Remove date and deny subscription restrictions and check for qualifying license pools
+		qualifyingLicensePools = licensePoolDAO.findOrganizationMappingToSubscribe(organizationId, productId, null, false);
+		
+		if (qualifyingLicensePools == null || qualifyingLicensePools.isEmpty()) {
+			throw new LicensePoolUnavailableException("No LicensePool Available For Subscription.");				
+		}
+		boolean lpExpired = false;
+		boolean denySubscriptionsSet = false;
+		boolean lpForFuture = false;
+		
+		for (LicensePoolMapping licensePool : qualifyingLicensePools) {			
+			if (currentDate.after(licensePool.getStart_date()) && !currentDate.before(licensePool.getEnd_date())) {
+				lpExpired = true;
+			}
+
+			if (currentDate.before(licensePool.getStart_date())) {
+				lpForFuture = true;
+			}
+			
+			if (licensePool.getDenyManualSubscription() == LPLCConstants.DENY_SUBSCRIPTIONS_TRUE) {
+				denySubscriptionsSet = true;				
+			}
+			Set<OrganizationLPMapping> licensePoolOrgMaps = licensePool.getOrganizations();
+			
+			if (!lpExpired && !denySubscriptionsSet && !lpForFuture) {
+				// Check if there are any denials for subscriptions  at Organization level.
+				for(OrganizationLPMapping orgLPMapping : licensePoolOrgMaps ) {
+					if (orgLPMapping.getDenyManualSubscription() == LPLCConstants.DENY_SUBSCRIPTIONS_TRUE) {
+						denySubscriptionsSet = true;
+						break;
+					}
+				}
+			}
+			
+			if (lpForFuture) {
+				throw new  LicensePoolForFutureException(" LicensePool are available for future subscriptions.");
+			}
+			if (lpExpired && denySubscriptionsSet) {
+				throw new LicensePoolExpiredException("License pool(s) for the given organization and product have expired");
+			}			
+			if (lpExpired && !denySubscriptionsSet) {
+				throw new LicensePoolExpiredException("License pool(s) for the given organization and product have expired");
+			}			
+			if (denySubscriptionsSet) {
+				throw new NewSubscriptionsDeniedException("Existing License pools have new subscriptions denied");
+			}
+		}	
+		return null;
 	}
 
 	

@@ -7,7 +7,7 @@ import org.springframework.ws.soap.server.endpoint.annotation.SoapFault;
 public class LicensePoolException extends LPLCBaseException {
 
 	/**
-	 * 
+	 * Serial version UID
 	 */
 	private static final long serialVersionUID = 8970181489659198621L;
 

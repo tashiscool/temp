@@ -18,8 +18,8 @@
 		scope="prototype">
 		<property name="type" value="Seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
-		<property name="endDate" value="03/30/2010"/>
-		<property name="startDate"  value="01/30/2009"/>
+		<property name="endDate" value="03/30/2050"/>
+		<property name="startDate"  value="01/30/1900"/>
 		<property name="organizationId" value="UnitTestOrganizationID"/>
 		<property name="orderLineItemId" value="TestOrderLineItemID"/>
 		<property name="productId" value="TestProductId1"/>
@@ -32,8 +32,8 @@
 		scope="prototype">
 		<property name="type" value="Seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
-		<property name="endDate" value="03/30/2011"/>
-		<property name="startDate"  value="01/30/2009"/>
+		<property name="endDate" value="03/30/9999"/>
+		<property name="startDate"  value="01/30/1900"/>
 		<property name="organizationId" value="UnitTestOrganizationID"/>
 		<property name="orderLineItemId" value="TestOrderLineItemID"/>
 		<property name="productId" value="TestProductId1"/>
