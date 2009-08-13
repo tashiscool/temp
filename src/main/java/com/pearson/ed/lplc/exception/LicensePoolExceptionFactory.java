@@ -57,7 +57,7 @@ public class LicensePoolExceptionFactory {
 			code = "LPLC0010";
 		}
 		else if (cause instanceof LicensePoolExpiredException) {
-			code = "'LPLC0011";
+			code = "LPLC0011";
 		}
 		else if (cause instanceof LicensePoolForFutureException) {
 			code = "LPLC0012";
