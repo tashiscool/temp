@@ -3,8 +3,8 @@ package com.pearson.ed.lplc.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import com.pearson.ed.lplc.dao.api.OrganizationLPDAO;
@@ -24,7 +24,8 @@ OrganizationLPDAO {
 	public List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(
 			String organizationId, int level) {
 		Criteria criteria = getSession().createCriteria(
-				OrganizationLPMapping.class);
+				OrganizationLPMapping.class)
+				.setFetchMode("licensepoolMapping", FetchMode.JOIN);
 		Criterion eqOrganizationId = Restrictions.eq("organization_id", organizationId);
 		Criterion eqRootOrganization = Restrictions.like("organization_level", 0);
 		if (level == 0)
