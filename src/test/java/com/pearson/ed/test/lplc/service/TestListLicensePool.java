@@ -336,7 +336,7 @@ public class TestListLicensePool extends BaseIntegrationTest {
     
    	public LicensePoolService loadLicensePoolService() {
 		return (LicensePoolService) applicationContext
-				.getBean("licensepoolService");
+				.getBean("licensepoolServiceUnitTest");
 	}
 
 	public LicensePoolDTO loadLicensePool() {

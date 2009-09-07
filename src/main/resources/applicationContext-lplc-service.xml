@@ -3,6 +3,7 @@
 	Application context definition for the lplc service.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -12,6 +13,7 @@
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
@@ -26,7 +28,7 @@
 		<property name="licensePoolConverter" ref="licensepoolConverter" />
 		<property name="licensePoolDAO" ref="licensepoolDAO" />
 		<property name="organizationLPDAO" ref="organizationLPDAO" />
-		
+		<property name="organizationServiceClient"  ref="organizationServiceClient" />		
 	</bean>
 	
 	<bean id="licensepoolServiceEndPoint"
@@ -36,7 +38,37 @@
 	</bean>
 	
 	<bean id="licensepoolConverter"
-		class="com.pearson.ed.lplc.services.converter.impl.LicensePoolConverterImpl">
-			
+		class="com.pearson.ed.lplc.services.converter.impl.LicensePoolConverterImpl">			
 	</bean>
+	
+	<bean id="organizationServiceClient" class="com.pearson.ed.lplc.stub.impl.OrganizationServiceClientImpl">
+  		<property name="webServiceTemplate" ref="webServiceTemplate"/> 
+	</bean>
+	
+	<bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
+		<property name="messageFactory" ref="messageFactoryBean"/>
+		<property name="defaultUri" value="${organization.service.endpoint}"/>
+		<property name="messageSender">
+			<bean class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender"/>
+		</property>
+		<property name="marshaller" ref="marshallerBean"/>
+		<property name="unmarshaller" ref="marshallerBean"/>
+	</bean>
+	
+	<bean id="messageFactoryBean"
+		class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory">
+		<property name="soapVersion">
+			<util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12" />
+		</property>
+		<property name="payloadCaching" value="true" />
+	</bean>
+	
+	<bean id="marshallerBean" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPaths">
+        	<list>
+        		<value>com.pearson.ed.lplc.ws.schema</value>
+        	</list>
+        </property>
+        <property name="mtomEnabled" value="true"/>
+    </bean>
 </beans>

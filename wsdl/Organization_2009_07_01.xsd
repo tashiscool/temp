@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://organization.rws.pearson.com/doc/2009/07/01/"
+	xmlns:org="http://organization.rws.pearson.com/doc/2009/07/01/"
+	xmlns:serv="http://common.rws.pearson.com/doc/2008/06/01/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xsd:import schemaLocation="Service.xsd"
+		namespace="http://common.rws.pearson.com/doc/2008/06/01/" />
+	
+	<!-- ************************-->
+	<!--        Core  Elements   -->
+	<!-- ************************-->
+
+	<xsd:simpleType name="DisplayGroupType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="K-12" />
+			<xsd:enumeration value="Pearson Business Unit" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="StateCodeType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="2" />
+			<xsd:maxLength value="3" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="PostalCodeType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="12" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CountryCodeType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="3" />
+			<xsd:maxLength value="3" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="DisplayGroupInfoType">
+		<xsd:sequence>
+			<xsd:element name="OrganizationDisplayGroupId" type="org:DisplayGroupIdType"
+				minOccurs="0" maxOccurs="1" />
+			<xsd:element name="GroupType" type="org:DisplayGroupType"
+				minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="DisplayGroupIdType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:maxLength value="32" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="OrganizationIdType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="32" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AddressType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="32" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="OrganizationNameType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="512" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="OrganizationDescriptionType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="512" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="UserIdType">
+		<xsd:restriction base="string">
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="32" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="RelatedOrganizationsType">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" maxOccurs="unbounded" name="Organization" 
+				type="org:OrganizationSummary" />
+		</xsd:sequence>
+		<xsd:attribute name="relationship" type="xsd:string" />
+	</xsd:complexType>
+
+	<xsd:complexType name="Organization">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="Name"
+				 type="org:OrganizationNameType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Description"
+				 type="org:OrganizationDescriptionType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Address1"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Address2"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="City"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="StateCode"
+				 type="org:StateCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="CountryCode"
+				 type="org:CountryCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="PostalCode"
+				 type="org:PostalCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="StatusCode"
+				 type="org:OrganizationStatusType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="CreatedDate"
+				 type="xsd:dateTime" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="LastUpdatedDate"
+				 type="xsd:dateTime" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="LastUpdatedBy"
+				 type="org:UserIdType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="CreatedBy"
+				 type="org:UserIdType" />
+			<xsd:element minOccurs="0" maxOccurs="unbounded"
+				name="RelatedOrganization"  type="org:RelatedOrganizationsType" />
+			<xsd:element maxOccurs="unbounded" minOccurs="1"
+				name="OrganizationDisplayGroupInfo" type="org:DisplayGroupInfoType" />
+			<xsd:element maxOccurs="1" minOccurs="1"
+				name="Identifiers" type="org:IdentifiersType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="SourceSystem"
+				type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpdateOrganizationRelation">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1"
+				name="RelatedOrganizationId"  type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="RelationshipTypeCode"
+				 type="org:RelationshipTypeCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="StatusCode"
+				 type="org:OrganizationStatusType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="IdentifiersType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="1"
+				name="Identifier" type="org:IdentifierType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="IdentifierType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="IdentifierType"
+				type="org:IdTypeType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="IdentifierValue"
+				type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="IdTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Mdr Id" />
+			<xsd:enumeration value="Sap Customer Id" />
+			<xsd:enumeration value="Pegasus Id"/>
+			<xsd:enumeration value="Socrates Id"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="OrganizationRelationType">
+		<xsd:attribute name="RelatedOrganizationId" type="org:OrganizationIdType"
+			use="required" />
+		<xsd:attribute name="RelationType" type="org:RelationshipTypeCodeType"
+			use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="CreateOrganizationType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="Name"
+				 type="org:OrganizationNameType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Description"
+				 type="org:OrganizationDescriptionType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationType"
+				 type="org:OrganizationTypeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Address1"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Address2"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="City"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="StateCode"
+				 type="org:StateCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="CountryCode"
+				 type="org:CountryCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="PostalCode"
+				 type="org:PostalCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="CreatedBy"
+				 type="org:UserIdType" />
+			<xsd:element maxOccurs="unbounded" minOccurs="1"
+				name="OrganizationDisplayGroupInfo" type="org:DisplayGroupInfoType" />
+			<xsd:element maxOccurs="unbounded" minOccurs="0"
+				name="RelatedOrganization" type="org:OrganizationRelationType" />
+			<xsd:element maxOccurs="1" minOccurs="1"
+				name="Identifiers" type="org:IdentifiersType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="SourceSystem"
+				type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpdateOrganizationType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="Name"
+				 type="org:OrganizationNameType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Description"
+				 type="org:OrganizationDescriptionType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="OrganizationType"
+				 type="org:OrganizationTypeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="StatusCode"
+				 type="org:OrganizationStatusType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Address1"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="Address2"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="City"
+				 type="org:AddressType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="StateCode"
+				 type="org:StateCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="CountryCode"
+				 type="org:CountryCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="PostalCode"
+				 type="org:PostalCodeType" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="LastUpdatedBy"
+				 type="org:UserIdType" />
+			<xsd:element maxOccurs="unbounded" minOccurs="0"
+				name="OrganizationDisplayGroupInfo" type="org:DisplayGroupInfoType" />
+			<xsd:element maxOccurs="1" minOccurs="0"
+				name="Identifiers" type="org:IdentifiersType" />			
+			<xsd:element maxOccurs="1" minOccurs="1" name="SourceSystem"
+				type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="OrganizationSummary">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="Name"
+				 type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<!-- ************ Comments for the OrganizationStatusType ************ -->
+	<!--
+A = Active
+I = InActive
+-->
+	<!-- ********************************************************* -->
+	<xsd:simpleType name="OrganizationStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A" />
+			<xsd:enumeration value="I" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- ************ Comments for the OrganizationTypeType ************ -->
+
+
+	<xsd:simpleType name="OrganizationTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="School" />
+			<xsd:enumeration value="Unknown" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<!--
+		************ Comments for the RelationshipTypeCodeType ************
+	-->
+	<!--
+C = Child Of
+O = Contains
+-->
+	<xsd:simpleType name="RelationshipTypeCodeType">
+		<xsd:restriction base="xsd:string">
+			<!-- Child -->
+			<xsd:enumeration value="C" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- ************************-->
+	<!-- Input Request Elements -->
+	<!-- ************************-->
+
+	<xsd:complexType name="UpdateOrganizationStatus">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="StatusCode"
+				 type="org:OrganizationStatusType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+ 
+	<xsd:element name="UpdateOrganizationStatusRequestElement">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="UpdateOrganizationStatus"
+					 type="org:UpdateOrganizationStatus" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="UpdateOrganizationStatusResponseElement">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="ServiceResponseType"  type="serv:ServiceResponseType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:element name="CreateOrganizationRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="CreateOrganizationType" 
+					type="org:CreateOrganizationType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="CreateOrganizationResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="ServiceResponseType"  type="serv:ServiceResponseType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="UpdateOrganizationRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="UpdateOrganizationType" 
+					type="org:UpdateOrganizationType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="UpdateOrganizationResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="ServiceResponseType"  type="serv:ServiceResponseType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="UpdateOrganizationRelationElement">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="UpdateOrganizationRelation"
+					 type="org:UpdateOrganizationRelation" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="DeleteOrganizationResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="ServiceResponseType"  type="serv:ServiceResponseType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:element name="CreateUpdateOrganizationRelationResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1"
+					name="ServiceResponseType"  type="serv:ServiceResponseType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="GetOrganizationResponseElement">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="Organization"
+					 type="org:Organization" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+
+	<!-- ************************-->
+	<!--     Common Elements    -->
+	<!-- ************************-->
+	<xsd:element name="OrganizationException" type="org:OrganizationException"
+		 />
+
+	<xsd:complexType name="OrganizationException">
+		<xsd:sequence>
+			<xsd:element type="xsd:string" name="message"  />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="OrganizationIdRequestType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="OrganizationResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="Organization"
+					 type="org:Organization" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="GetOrganizationByIdRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationIdRequestType"
+					 type="org:OrganizationIdRequestType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+ 	<xsd:element name="GetOrganizationDetailByIdRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationIdRequestType"
+					 type="org:OrganizationIdRequestType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+	<xsd:element name="GetChildrenByIdRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationIdRequestType"
+					 type="org:OrganizationIdRequestType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="GetParentsByIdRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationIdRequestType"
+					 type="org:OrganizationIdRequestType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="OrganizationRelation">
+		<xsd:attribute name="OrganizationId" type="org:OrganizationIdType"
+			use="required" />
+		<xsd:attribute name="RelatedOrganizationId" type="org:OrganizationIdType"
+			use="required" />
+		<xsd:attribute name="RelationTypeCode" type="org:RelationshipTypeCodeType" />
+	</xsd:complexType>
+
+	<xsd:element name="CreateUpdateOrganizationRelationRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs= "unbounded" name="OrganizationRelation" 
+					type="org:OrganizationRelation" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	 
+	<xsd:element name="OrganizationTreeResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="Organization"
+					 type="org:OrganizationTreeType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="OrganizationTreeType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+				 type="org:OrganizationIdType" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="Name"
+				 type="xsd:string" />	
+			<xsd:element maxOccurs="unbounded" minOccurs="0" name="Organization"
+				 type="org:OrganizationTreeType" />	
+				
+		</xsd:sequence>
+		<xsd:attribute name="level" type="xsd:int" use="required" />
+	</xsd:complexType>
+
+	<xsd:element name="GetChildTreeByOrganizationIdRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId" type="org:OrganizationIdType" />
+				<xsd:element maxOccurs="1" minOccurs="0" name="MaxLevel"  type="xsd:int" />            
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="GetOrganizationByIdTypeRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="IdType" type="org:IdTypeType" />
+				<xsd:element maxOccurs="1" minOccurs="1" name="IdValue" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="MutipleOrganizationsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" name="Organization"
+					 type="org:Organization" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="GetByDisplayGroupRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="DisplayGroup" type="org:DisplayGroupType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="TopLevelOrganizations">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" name="Organization"
+					 type="org:OrganizationSummary" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="DeleteOrganizationRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" name="OrganizationId"
+					 type="org:OrganizationIdType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

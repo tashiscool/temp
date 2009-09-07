@@ -351,6 +351,9 @@
 			<configuration>
                   <generatePackage>com.pearson.ed.lplc.ws.schema</generatePackage>
                   <schemaDirectory>wsdl</schemaDirectory>
+                  <schemaIncludes>
+					<include>*.xsd</include>
+				  </schemaIncludes> 
 				  <strict>true</strict>
               </configuration>
 		</plugin>

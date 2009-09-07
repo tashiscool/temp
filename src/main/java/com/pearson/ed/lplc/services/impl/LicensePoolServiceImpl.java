@@ -29,8 +29,8 @@ import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
-import com.pearson.ed.lplc.stub.OrganizationDTO;
-import com.pearson.ed.lplc.stub.OrganizationStub;
+import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
+import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
 
 /**
  * The LPLC's primary implementation of the licensepool service.
@@ -78,8 +78,15 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	private LicensePoolConverter licensePoolConverter;
 	private LicensePoolDAO licensePoolDAO;
 	private OrganizationLPDAO organizationLPDAO;
+	private OrganizationServiceClient organizationServiceClient;
 
-	
+	/**
+	 * @param organizationServiceClient
+	 *            the organizationServiceClient to set
+	 */
+	public void setOrganizationServiceClient(OrganizationServiceClient organizationServiceClient) {
+		this.organizationServiceClient = organizationServiceClient;
+	}
 
 	/**
 	 * @return the organizationLPDAO
@@ -231,13 +238,10 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	private void manageOrganizationHierarchyForLP(String orgId,
 			LicensePoolMapping licensepool) {
 
-		OrganizationStub orgStub = new OrganizationStub();
 		Set<OrganizationLPMapping> orgList = new HashSet<OrganizationLPMapping>();
 		addRootOrg(orgId, licensepool, orgList);
 		try {
-
-			List<OrganizationDTO> childOrganizaitons = orgStub
-					.getChildOrganizaitons(orgId);
+			List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(orgId);
 
 			OrganizationLPMapping organization;
 			for (OrganizationDTO organizationDTO : childOrganizaitons) {

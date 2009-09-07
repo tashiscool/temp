@@ -1,11 +1,7 @@
-package com.pearson.ed.lplc.stub;
+package com.pearson.ed.lplc.stub.dto;
 
 public class OrganizationDTO {
-	public OrganizationDTO(String org_id, int org_level) {
-		super();
-		this.org_id = org_id;
-		this.org_level = org_level;
-	}
+
 	private String org_id;
 	private int org_level;
 	/**

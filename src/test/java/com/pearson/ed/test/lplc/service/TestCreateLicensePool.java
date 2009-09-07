@@ -38,13 +38,13 @@ public class TestCreateLicensePool extends BaseIntegrationTest {
 		LicensePoolMapping findLicensePool = licensepoolDAO
 				.findByLicensePoolId(licensepoolId);
 		Set<OrganizationLPMapping> organizations = findLicensePool.getOrganizations();
-	    assertEquals(7,organizations.size());
+	    assertEquals(2,organizations.size());
 		
 	}
 
 	public LicensePoolService loadLicensePoolService() {
 		return (LicensePoolService) applicationContext
-				.getBean("licensepoolService");
+				.getBean("licensepoolServiceUnitTest");
 	}
 
 	public LicensePoolDTO loadLicensePool() {
