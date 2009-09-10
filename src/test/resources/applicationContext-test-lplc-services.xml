@@ -11,18 +11,9 @@
             http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
           http://www.springframework.org/schema/tx
           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-
-	<bean id="licensepoolServiceUnitTest"
-		class="com.pearson.ed.lplc.services.impl.LicensePoolServiceImpl">
-		<property name="licensePoolConverter" ref="licensepoolConverter" />
-		<property name="licensePoolDAO" ref="licensepoolDAO" />
-		<property name="organizationLPDAO" ref="organizationLPDAO" />
-		<property name="organizationServiceClient"  ref="organizationServiceClientUnitTest" />		
-	</bean>
-	
-	<bean id="organizationServiceClientUnitTest" class="com.pearson.ed.lplc.stub.impl.OrganizationServiceClientImpl">
-  		<property name="webServiceTemplate" ref="webServiceTemplate"/> 
-  		<property name="modeUnitTest" value="Y"/>
+    
+    <!-- Stub implementation of OrganizationServiceClient -->     
+    <bean id="organizationServiceClient" class="com.pearson.ed.lplc.stub.impl.OrganizationServiceClientStubImpl">  		
 	</bean>
 	
 	<!-- LicensePool Service testing -->

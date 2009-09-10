@@ -247,8 +247,8 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			for (OrganizationDTO organizationDTO : childOrganizaitons) {
 				organization = new OrganizationLPMapping();
 				organization.setLicensepoolMapping(licensepool);
-				organization.setOrganization_id(organizationDTO.getOrg_id());
-				organization.setOrganization_level(organizationDTO.getOrg_level());
+				organization.setOrganization_id(organizationDTO.getOrgId());
+				organization.setOrganization_level(organizationDTO.getOrgLevel());
 				organization.setUsed_quantity(0);
 				organization.setDenyManualSubscription(licensepool
 						.getDenyManualSubscription());

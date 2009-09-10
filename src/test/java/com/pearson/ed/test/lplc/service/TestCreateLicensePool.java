@@ -30,7 +30,7 @@ public class TestCreateLicensePool extends BaseIntegrationTest {
     
     @Test
 	public void testCreateLicensePoolForOrganization() {
-		LicensePoolService licensepoolService = loadLicensePoolService();
+		LicensePoolService licensepoolService = loadLicensePoolService();		
 		LicensePoolDTO licensepool = loadLicensePool();
     	LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
 	    String licensepoolId = licensepoolService
@@ -38,21 +38,8 @@ public class TestCreateLicensePool extends BaseIntegrationTest {
 		LicensePoolMapping findLicensePool = licensepoolDAO
 				.findByLicensePoolId(licensepoolId);
 		Set<OrganizationLPMapping> organizations = findLicensePool.getOrganizations();
-	    assertEquals(2,organizations.size());
-		
+	    assertEquals(7,organizations.size());		
 	}
 
-	public LicensePoolService loadLicensePoolService() {
-		return (LicensePoolService) applicationContext
-				.getBean("licensepoolServiceUnitTest");
-	}
 
-	public LicensePoolDTO loadLicensePool() {
-		return (LicensePoolDTO) applicationContext
-				.getBean("serviceTestLicensePool");
-	}
-
-	public LicensePoolDAO loadLicensePoolDAO() {
-		return (LicensePoolDAO) applicationContext.getBean("licensepoolDAO");
-	}
 }

@@ -27,16 +27,6 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 
 	private WebServiceTemplate webServiceTemplate;
 
-	private String modeUnitTest = "N";
-
-	/**
-	 * @param modeUnitTest
-	 *            the modeUnitTest to set
-	 */
-	public void setModeUnitTest(String modeUnitTest) {
-		this.modeUnitTest = modeUnitTest;
-	}
-
 	/**
 	 * @return the webServiceTemplate
 	 */
@@ -60,42 +50,34 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 	public List<OrganizationDTO> getChildOrganizations(String organizationId) {
 
 		List<OrganizationDTO> organizationDTOList = new ArrayList<OrganizationDTO>();
-		if (!modeUnitTest.equals("Y")) {
-			Object request = getChildTreeByOrganizationIdRequest(organizationId);
-			try {
-				OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
-						.marshalSendAndReceive(request);
-				OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
-				if (null != organizationTreeType && organizationTreeType.getOrganization().size() > 0) {
-					for (OrganizationTreeType orgTreeType : organizationTreeType.getOrganization()) {
-						OrganizationDTO organizationDTO = new OrganizationDTO();
-						organizationDTO.setOrg_id(orgTreeType.getOrganizationId());
-						organizationDTO.setOrg_level(orgTreeType.getLevel());
-						organizationDTOList.add(organizationDTO);
-					}
-				} else {
-					throw new OrganizationNotValidException("No Organization found for Organization ID: "
-							+ organizationId);
-				}
-			} catch (Exception exception) {
-				if (exception instanceof OrganizationNotValidException)
-					throw new OrganizationNotValidException("No Organization found for Organization ID: "
-							+ organizationId);
-				else {
-					logger
-							.error("Call to Organization Service failed when fetching ChildOrganizaitons for Organization Id: "
-									+ organizationId);
-					throw new ExternalServiceCallException();
-				}
-
+		Object request = getChildTreeByOrganizationIdRequest(organizationId);
+		try {
+			OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
+					.marshalSendAndReceive(request);
+			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
+			OrganizationDTO organizationDTO = null;
+			for (OrganizationTreeType orgTreeType : organizationTreeType.getOrganization()) {
+				organizationDTO = new OrganizationDTO();
+				organizationDTO.setOrgId(orgTreeType.getOrganizationId());
+				organizationDTO.setOrgLevel(orgTreeType.getLevel());
+				organizationDTOList.add(organizationDTO);
 			}
-		} else {
-			OrganizationDTO organizationDTO = new OrganizationDTO();
-			organizationDTO.setOrg_id("DummyChildOrg1");
-			organizationDTO.setOrg_level(1);
-			organizationDTOList.add(organizationDTO);
-		}
-
+		} catch (Exception exception) {	
+			//FIXME: These needs to be removed once error codes are defined.			
+			if (exception.getMessage().contains("Invalid Organization Id")){		
+				throw new OrganizationNotValidException("No Organization found for Organization ID: " + organizationId);
+			}
+			if (exception.getMessage().contains("No child organizations found for organization Id "))
+			{
+				logger.debug("No child organizations found for organization Id");				
+				return organizationDTOList;
+			}
+			logger
+					.error("Call to Organization Service failed when fetching ChildOrganizaitons for Organization Id: "
+							+ organizationId);
+				throw new ExternalServiceCallException(exception.getMessage());
+	  }
+		
 		return organizationDTOList;
 	}
 

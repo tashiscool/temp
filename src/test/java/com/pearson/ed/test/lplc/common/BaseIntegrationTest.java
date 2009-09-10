@@ -7,6 +7,11 @@ import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
+import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
+import com.pearson.ed.lplc.dao.api.OrganizationLPDAO;
+import com.pearson.ed.lplc.dto.LicensePoolDTO;
+import com.pearson.ed.lplc.services.api.LicensePoolService;
+
 
 
 /**
@@ -76,7 +81,25 @@ public abstract class BaseIntegrationTest extends
 				"classpath:applicationContext-lplc-service.xml",
 				"classpath:applicationContext-test-lplc-services.xml"};
 	}
-
 	
+	protected LicensePoolService loadLicensePoolService() {
+		return (LicensePoolService) applicationContext.getBean("licensepoolService");
+	}
 
+	protected LicensePoolDTO loadLicensePool() {
+		return (LicensePoolDTO) applicationContext.getBean("serviceTestLicensePool");
+	}
+
+	protected LicensePoolDAO loadLicensePoolDAO() {
+		return (LicensePoolDAO) applicationContext.getBean("licensepoolDAO");
+	}
+
+	protected OrganizationLPDAO loadOrganizationLPDAO() {
+		return (OrganizationLPDAO) applicationContext.getBean("organizationLPDAO");
+	}
+
+	protected LicensePoolDTO loadLicensePool2() {
+		return (LicensePoolDTO) applicationContext.getBean("serviceTestLicensePool2");
+	}
+	
 }

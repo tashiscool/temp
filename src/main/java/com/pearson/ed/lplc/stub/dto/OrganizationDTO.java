@@ -2,31 +2,40 @@ package com.pearson.ed.lplc.stub.dto;
 
 public class OrganizationDTO {
 
-	private String org_id;
-	private int org_level;
+	private String orgId;
+	private int orgLevel;
+
+	public OrganizationDTO() {
+	}
+	
+	public OrganizationDTO(String orgId, int orgLevel) {
+		this.orgId = orgId;
+		this.orgLevel = orgLevel;
+	}
+	
 	/**
 	 * @return the org_id
 	 */
-	public String getOrg_id() {
-		return org_id;
+	public String getOrgId() {
+		return orgId;
 	}
 	/**
 	 * @param org_id the org_id to set
 	 */
-	public void setOrg_id(String org_id) {
-		this.org_id = org_id;
+	public void setOrgId(String org_id) {
+		this.orgId = org_id;
 	}
 	/**
 	 * @return the org_level
 	 */
-	public int getOrg_level() {
-		return org_level;
+	public int getOrgLevel() {
+		return orgLevel;
 	}
 	/**
 	 * @param org_level the org_level to set
 	 */
-	public void setOrg_level(int org_level) {
-		this.org_level = org_level;
+	public void setOrgLevel(int org_level) {
+		this.orgLevel = org_level;
 	}
 
 }

@@ -334,24 +334,5 @@ public class TestListLicensePool extends BaseIntegrationTest {
     	
     }
     
-   	public LicensePoolService loadLicensePoolService() {
-		return (LicensePoolService) applicationContext
-				.getBean("licensepoolServiceUnitTest");
-	}
-
-	public LicensePoolDTO loadLicensePool() {
-		return (LicensePoolDTO) applicationContext
-				.getBean("serviceTestLicensePool");
-	}
-	public LicensePoolDTO loadLicensePool2() {
-		return (LicensePoolDTO) applicationContext
-				.getBean("serviceTestLicensePool2");
-	}
-
-	public LicensePoolDAO loadLicensePoolDAO() {
-		return (LicensePoolDAO) applicationContext.getBean("licensepoolDAO");
-	}
-	public OrganizationLPDAO loadOrganizationLPDAO() {
-		return (OrganizationLPDAO) applicationContext.getBean("organizationLPDAO");
-	}
+   
 }

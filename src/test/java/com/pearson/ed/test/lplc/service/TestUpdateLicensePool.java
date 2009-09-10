@@ -68,17 +68,4 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 		}
 	}
 
-	public LicensePoolService loadLicensePoolService() {
-		return (LicensePoolService) applicationContext
-				.getBean("licensepoolServiceUnitTest");
-	}
-
-	public LicensePoolDTO loadLicensePool() {
-		return (LicensePoolDTO) applicationContext
-				.getBean("serviceTestLicensePool");
-	}
-
-	public LicensePoolDAO loadLicensePoolDAO() {
-		return (LicensePoolDAO) applicationContext.getBean("licensepoolDAO");
-	}
 }
