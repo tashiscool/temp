@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:licensepool="http://licensepool.rws.pearson.com/doc/2009/04/01/" xmlns:serv="http://common.rws.pearson.com/doc/2008/06/01/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<import namespace="http://common.rws.pearson.com/doc/2008/06/01/" schemaLocation="Service.xsd"/>
-	<simpleType name="LicenseIdType">
+	<simpleType name="LicensePoolIdType">
 		<restriction base="string">
 			<whiteSpace value="collapse"/>
 			<minLength value="1"/>
@@ -83,6 +83,30 @@
 	  <xsd:attribute name="OrganizationId" type="licensepool:OrganizationIDType"
 			use="required" />
 	</complexType>
+	<complexType name="OrgnizationDetails">
+		<sequence>
+			<element name="UsedLicenses" type="licensepool:QuantityType" />
+			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" />
+			<element name="OrganizationLevel" type="xsd:int" />
+			<element name="CreatedDate" type="xsd:dateTime" minOccurs="0" />
+			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0" />
+			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0" />
+			<element name="CreatedBy" type="xsd:string" minOccurs="0" />			
+		</sequence>
+		<xsd:attribute name="OrganizationId" type="licensepool:OrganizationIDType"
+			use="required" />
+	</complexType>
+
+	<complexType name="OrderLineItemDetails">
+		<sequence>
+			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0" />
+			<element name="CreatedDate" type="xsd:dateTime" minOccurs="0" />
+			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0" />
+			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0" />
+			<element name="CreatedBy" type="xsd:string" minOccurs="0" />			
+		</sequence>
+	</complexType>
+	
 	<complexType name="CreateLicensePool">
 		<sequence>
 			<element name="Type" type="licensepool:LicenseType"/>
@@ -99,7 +123,7 @@
 	</complexType>
 	<complexType name="UpdateLicensePool">
 		<sequence>
-			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="LicensePoolId" type="licensepool:LicensePoolIdType"/>
 			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
 			<element name="StartDate" type="xsd:dateTime" minOccurs="0"/>
 			<element name="EndDate" type="xsd:dateTime" minOccurs="0"/>
@@ -124,7 +148,7 @@
 	<complexType name="LicensePoolByOrganizationId">
 		<sequence>
 			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
-			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="LicensePoolId" type="licensepool:LicensePoolIdType"/>
 			<element name="Status" type="licensepool:StatusType"/>
 			<element name="RootOrganizationId" type="xsd:string"/>
 			<element name="Type" type="licensepool:LicenseType"/>
@@ -137,11 +161,26 @@
 	</complexType>
 	<complexType name="LicensePoolToSubscribeType">
 		<sequence>
-			<element name="LicenseId" type="licensepool:LicenseIdType"/>
+			<element name="LicensePoolId" type="licensepool:LicensePoolIdType"/>
 			<element name="StartDate" type="xsd:dateTime"/>
 			<element name="EndDate" type="xsd:dateTime"/>
 		</sequence>
 	</complexType>
+
+	<xsd:complexType name="OrderListType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="1"
+				name="OrderLineItem" type="licensepool:OrderLineItemDetails" />
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="QualifyingOrganizationListType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="1"
+				name="QualifyingOrganization" type="licensepool:OrgnizationDetails" />
+		</xsd:sequence>
+	</xsd:complexType>		
+
 	<element name="GetLicensePoolByOrganizationIdRequest">
 		<complexType>
 			<sequence>
@@ -203,25 +242,43 @@
 			<element name="message" type="xsd:string" nillable="true"/>
 		</sequence>
 	</complexType>
-	<complexType name="LicensePool">
+	<complexType name="LicensePoolDetails">
 		<sequence>
-			<element name="LicenseId" type="licensepool:LicenseIdType"/>
-			<element name="Type" type="licensepool:LicenseType"/>
-			<element name="Status" type="licensepool:StatusType"/>
-			<element name="StartDate" type="xsd:dateTime"/>
-			<element name="EndDate" type="xsd:dateTime"/>
-			<element name="Quantity" type="licensepool:QuantityType"/>
-			<element name="UsedLicenses" type="xsd:int"/>
-			<element name="OrderLineItemId" type="licensepool:OrderLineItemIdType" minOccurs="0"/>
-			<element name="OrganizationId" type="licensepool:OrganizationIDType"/>
-			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded"/>
-			<element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>
-			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0"/>
-			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0"/>
-			<element name="CreatedBy" type="xsd:string" minOccurs="0"/>
+			<element name="LicensePoolId" type="licensepool:LicensePoolIdType" />
+			<element name="Type" type="licensepool:LicenseType" />
+			<element name="StartDate" type="xsd:dateTime" />
+			<element name="EndDate" type="xsd:dateTime" />
+			<element name="Status" type="licensepool:StatusType" />
+			<element name="Quantity" type="licensepool:QuantityType" />
+			<element name="UsedLicenses" type="licensepool:QuantityType" />
 			<element name="SourceSystem" type="licensepool:SourceSystemType" />
-			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription"/>
+			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" />
+			<element name="CreatedDate" type="xsd:dateTime" minOccurs="0" />
+			<element name="LastUpdatedDate" type="xsd:dateTime" minOccurs="0" />
+			<element name="LastUpdatedBy" type="xsd:string" minOccurs="0" />
+			<element name="CreatedBy" type="xsd:string" minOccurs="0" />			
+			<element name="ProductId" type="licensepool:ProductIDType" maxOccurs="unbounded" />			
+			<element name="QualifyingOrganizations" type="licensepool:QualifyingOrganizationListType" />
+			<element name="OrderLineItems" type="licensepool:OrderListType"
+				maxOccurs="unbounded" minOccurs="0" />
 		</sequence>
 	</complexType>
-	<element name="LicensePoolExceptionElement" type="licensepool:LicensePoolException" nillable="true"/>
+	<element name="GetLicensePoolDetailsByIdRequest">
+		<complexType>
+			<sequence>
+				<element name="LicensePoolId" type="licensepool:LicensePoolIdType"
+					nillable="false" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetLicensePoolDetailsByIdResponse">
+		<complexType>
+			<sequence>
+				<element name="LicensePool" type="licensepool:LicensePoolDetails"
+					maxOccurs="1" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LicensePoolExceptionElement" type="licensepool:LicensePoolException"
+		nillable="true" />
 </schema>

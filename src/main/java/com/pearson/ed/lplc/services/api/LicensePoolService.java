@@ -9,6 +9,7 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
+import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 
 /**
  * Serves as the interface for user services in the LPLC.
@@ -64,5 +65,15 @@ public interface LicensePoolService {
 	 * 	- if no license pools exist for the given product and organization
 	 */
 	LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId);
+
+	/**
+	 * Gets license pool details for the given license pool id.
+	 * 
+	 * @param licensePoolId
+	 *            id of the license pool.
+	 * @return LicensePoolDetails 
+	 *            details of license pool.
+	 */
+	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
 
 }

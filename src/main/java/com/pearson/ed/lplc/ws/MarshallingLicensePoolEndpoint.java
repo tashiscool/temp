@@ -19,7 +19,9 @@ import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolResponse;
 import com.pearson.ed.lplc.ws.schema.GetLicensePoolByOrganizationIdRequest;
+import com.pearson.ed.lplc.ws.schema.GetLicensePoolDetailsByIdResponse;
 import com.pearson.ed.lplc.ws.schema.GetLicensePoolToSubscribeRequest;
+import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.ServiceResponseType;
@@ -27,6 +29,7 @@ import com.pearson.ed.lplc.ws.schema.StatusCodeType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePoolResponse;
+import com.pearson.ed.lplc.ws.schema.GetLicensePoolDetailsByIdRequest;
 
 /**
  * A LicensePool Life Cycle endpoint that processes marshaled messages.
@@ -298,7 +301,40 @@ public class MarshallingLicensePoolEndpoint implements
 			LicensePoolException licensepoolException = exceptionFactory
 					.getLicensePoolException(e);
 			throw licensepoolException;
-			
+
+		}
+	}
+
+	/**
+	 * This endpoint method uses marshalling to handle message with a
+	 * <code>&lt;GetLicensePoolDetailsByIdRequest&gt;</code> payload.
+	 * 
+	 * @param getLicensePoolDetailsByIdRequest
+	 *            GetLicensePoolDetailsByIdRequest element.
+	 * @return GetLicensePoolDetailsByIdResponse
+	 */
+	@PayloadRoot(localPart = GET_LICENCEPOOL_DETAILS_BY_ID_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
+	public GetLicensePoolDetailsByIdResponse getLicensepoolDetailsByIdrequest(
+			GetLicensePoolDetailsByIdRequest getLicensePoolDetailsByIdRequest) {
+
+		try {
+			String licensePoolId = getLicensePoolDetailsByIdRequest.getLicensePoolId();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Received " + GET_LICENCEPOOL_DETAILS_BY_ID_REQUEST_ELEMENT + ":" + licensePoolId);
+			}
+
+			logger.info("Invoking license pool service getLicensePoolDetailsById method");
+
+			LicensePoolDetails licensePoolSummary = licensePoolServiceEndPoint.getLicensePoolDetailsById(licensePoolId);
+
+			GetLicensePoolDetailsByIdResponse response = new GetLicensePoolDetailsByIdResponse();
+			response.setLicensePool(licensePoolSummary);
+			return response;
+
+		} catch (Exception exception) {
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(exception);
+			throw licensepoolException;
+
 		}
 	}
 

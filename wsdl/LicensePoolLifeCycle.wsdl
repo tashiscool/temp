@@ -32,6 +32,12 @@
 	<wsdl:message name="GetLicensePoolToSubscribeResponse">
 		<wsdl:part name="GetLicensePoolToSubscribeResponse" element="tns:LicensePoolToSubscribe"/>
 	</wsdl:message>
+	<wsdl:message name="GetLicensePoolDetailsByIdRequest">
+		<wsdl:part name="GetLicensePoolDetailsByIdRequest" element="tns:GetLicensePoolDetailsByIdRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GetLicensePoolDetailsByIdResponse">
+		<wsdl:part name="GetLicensePoolDetailsByIdResponse" element="tns:GetLicensePoolDetailsByIdResponse"/>
+	</wsdl:message>	
 	<wsdl:portType name="LicensePoolLifeCyclePort">
 		<wsdl:operation name="CreateLicensePool">
 			<wsdl:input message="tns:CreateLicensePoolRequest"/>
@@ -53,6 +59,11 @@
 			<wsdl:output message="tns:GetLicensePoolToSubscribeResponse"/>
 			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
 		</wsdl:operation>
+		<wsdl:operation name="GetLicensePoolDetailsById">
+			<wsdl:input message="tns:GetLicensePoolDetailsByIdRequest"/>
+			<wsdl:output message="tns:GetLicensePoolDetailsByIdResponse"/>
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+		</wsdl:operation>		
 	</wsdl:portType>
 	<wsdl:binding name="LicensePoolLifeCycleBinding" type="tns:LicensePoolLifeCyclePort">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -94,6 +105,18 @@
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolToSubscribe">
 			<soap:operation soapAction="GetLicensePoolToSubscribe" soapActionRequired="true" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="LicensePoolException">
+				<soap:fault name="LicensePoolException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetLicensePoolDetailsById">
+			<soap:operation soapAction="GetLicensePoolDetailsById" soapActionRequired="true" style="document"/>
 			<wsdl:input>
 				<soap:body use="literal"/>
 			</wsdl:input>

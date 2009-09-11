@@ -1,6 +1,7 @@
 package com.pearson.ed.lplc.services.api;
 
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
+import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
@@ -62,7 +63,14 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 */
 	public void setTransactionId(String transactionId);
 
-	
-		
+	/**
+	 * Gets license pool details for the given license pool id.
+	 * 
+	 * @param licensePoolId
+	 *            id of the license pool.
+	 * @return LicensePoolDetails 
+	 * 			  details of license pool.
+	 */
+	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
 
 }

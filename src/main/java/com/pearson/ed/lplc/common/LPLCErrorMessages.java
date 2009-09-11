@@ -14,4 +14,8 @@ public class LPLCErrorMessages {
 	 * When licensepool consumption is updated to negative.
 	 */
 	public static final String LICENSEPOOL_CONSUMPTION_NEGATIVE = "License consuption can not be updated to a negative value.";
+	/**
+	 * Error message for date format exception.
+	 */	
+	public static final String DATE_FORMAT_ERROR = "Could not format date to XMLGregorianCalendar.";
 }

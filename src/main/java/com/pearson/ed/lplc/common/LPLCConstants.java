@@ -92,4 +92,13 @@ public interface LPLCConstants {
 	public static final String 	QUALIFYING_ORGS_ROOT = 	"ROOT_ONLY";
 
 	public static final String LICENSEPOOLTYPE = "Seat based licensing";
+	
+	/**
+	 * Different status codes for license pool.
+	 */
+	public static final String A = "A";
+	
+	public static final String P = "P";
+	
+	public static final String E = "E";
 }

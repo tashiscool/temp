@@ -31,6 +31,7 @@ import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
 import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
+import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 
 /**
  * The LPLC's primary implementation of the licensepool service.
@@ -306,4 +307,25 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		return licenseType;
 	}
 
+	/**
+	 * Gets license pool details for the given license pool Id.
+	 * 
+	 * @param licensePoolId
+	 *            id of the license pool.
+	 * 
+	 * @return licensePoolDetails 
+	 * 			  license pool details object.
+	 */
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public LicensePoolDetails getLicensePoolDetailsById(String licensePoolId) {
+		LicensePoolMapping licensePool = licensePoolDAO.findByLicensePoolId(licensePoolId);
+		if (null == licensePool) {
+			throw new RequiredObjectNotFound("Licensepool for license pool id: " + licensePoolId+ " not found.");
+		}
+		LicensePoolDetails licensePoolDetails = licensePoolConverter
+				.convertLicensePoolMappingToLicensePoolDetails(licensePool);
+
+		return licensePoolDetails;
+
+	}
 }

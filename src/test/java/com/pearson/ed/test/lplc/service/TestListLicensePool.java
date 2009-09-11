@@ -16,9 +16,11 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.exception.LicensePoolExpiredException;
 import com.pearson.ed.lplc.exception.LicensePoolUnavailableException;
 import com.pearson.ed.lplc.exception.NewSubscriptionsDeniedException;
+import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
+import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
 
@@ -334,5 +336,39 @@ public class TestListLicensePool extends BaseIntegrationTest {
     	
     }
     
-   
+	/**
+	 * Test to ensure that GetLicensePoolDetailsById fetches the proper
+	 * requested license pool object.
+	 */
+	@Test
+	public void testGetLicensePoolDetailsById() {
+		LicensePoolService licensePoolService = loadLicensePoolService();
+		LicensePoolDTO licensePool = loadLicensePool();
+		LicensePoolDetails licensePoolDetails = null;
+		try {
+			String licensePoolId = licensePoolService
+					.createLicensePool(licensePool);
+			licensePoolDetails = licensePoolService
+					.getLicensePoolDetailsById(licensePoolId);
+
+			assertNotNull("License pool object was not fetched.",
+					licensePoolDetails);
+			assertEquals("Required license pool object was not fetched.",
+					licensePoolDetails.getLicensePoolId(), licensePoolId);
+		} catch (RequiredObjectNotFound e) {
+			assertNull("testGetLicensePoolDetailsById failed ",
+					licensePoolDetails);
+		}
+
+		try {
+			licensePoolDetails = licensePoolService
+					.getLicensePoolDetailsById("licensePoolId");
+			assertNull("License pool object was fetched.", licensePoolDetails);
+		} catch (RequiredObjectNotFound e) {
+			assertNotNull("testGetLicensePoolDetailsById failed ",
+					licensePoolDetails);
+		}
+
+	}
+    
 }

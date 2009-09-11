@@ -49,17 +49,19 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	@Column(nullable = false, name = "start_date")
 	private Date start_date;
 
-	@Column(nullable = true, name = "end_date")
+	@Column(nullable = false, name = "end_date")
 	private Date end_date;
 
-	@Column(nullable = true, name = "quantity", length = 16)
+	@Column(nullable = false, name = "quantity", length = 16)
 	private int quantity;
 
-	@Column(nullable = true, name = "organization_id", length = 128)
+	@Column(nullable = false, name = "organization_id", length = 128)
 	private String org_id;
 	
-	//private String status;
-	@Column(nullable = true, name = "product_id", length = 128)
+	@Column(nullable = true, name = "status", insertable = false, updatable = false, length = 25)
+	private String status;
+	
+	@Column(nullable = false, name = "product_id", length = 128)
 	private String product_id;
 
 		
@@ -237,19 +239,19 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		this.org_id = org_id;
 	}
 	
-//	/**
-//	 * @return the status
-//	 */
-//	public String getStatus() {
-//		return status;
-//	}
-//
-//	/**
-//	 * @param status the status to set
-//	 */
-//	public void setStatus(String status) {
-//		this.status = status;
-//	}
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	/**
 	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
