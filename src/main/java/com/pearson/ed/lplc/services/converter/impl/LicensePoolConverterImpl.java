@@ -34,7 +34,7 @@ import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribeType;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.OrderLineItemDetails;
 import com.pearson.ed.lplc.ws.schema.OrderListType;
-import com.pearson.ed.lplc.ws.schema.OrgnizationDetails;
+import com.pearson.ed.lplc.ws.schema.OrganizationDetails;
 import com.pearson.ed.lplc.ws.schema.QualifyingOrganizationListType;
 import com.pearson.ed.lplc.ws.schema.StatusType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
@@ -431,10 +431,10 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			LicensePoolDetails licensePoolDetails) {
 		QualifyingOrganizationListType qualifyingOrganizationList = new QualifyingOrganizationListType();
 
-		OrgnizationDetails qualifyingOrganizationDetails = null;
+		OrganizationDetails qualifyingOrganizationDetails = null;
 		
 		for (OrganizationLPMapping organizationLPMapping : qualifyingOrganizations) {
-			qualifyingOrganizationDetails = new OrgnizationDetails();
+			qualifyingOrganizationDetails = new OrganizationDetails();
 			qualifyingOrganizationDetails.setOrganizationId(organizationLPMapping.getOrganization_id());
 			qualifyingOrganizationDetails.setUsedLicenses(organizationLPMapping.getUsed_quantity());
 			qualifyingOrganizationDetails.setDenyNewSubscription(organizationLPMapping.getDenyManualSubscription());
@@ -496,11 +496,11 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		StatusType statusType = null;
 		if (StringUtils.isNotBlank(status)) {
 			status = status.trim();
-			if (status.compareTo(LPLCConstants.P) == 0) {
+			if (status.compareTo(LPLCConstants.STATUS_PROCESS) == 0) {
 				statusType = StatusType.P;
-			} else if (status.compareTo(LPLCConstants.A) == 0) {
+			} else if (status.compareTo(LPLCConstants.STATUS_ACTIVE) == 0) {
 				statusType = StatusType.A;
-			} else if (status.compareTo(LPLCConstants.E) == 0) {
+			} else if (status.compareTo(LPLCConstants.STATUS_EXPIRED) == 0) {
 				statusType = StatusType.E;
 			}
 		}

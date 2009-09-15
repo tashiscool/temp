@@ -83,7 +83,7 @@
 	  <xsd:attribute name="OrganizationId" type="licensepool:OrganizationIDType"
 			use="required" />
 	</complexType>
-	<complexType name="OrgnizationDetails">
+	<complexType name="OrganizationDetails">
 		<sequence>
 			<element name="UsedLicenses" type="licensepool:QuantityType" />
 			<element name="DenyNewSubscription" type="licensepool:DenyNewSubscription" />
@@ -177,7 +177,7 @@
 	<xsd:complexType name="QualifyingOrganizationListType">
 		<xsd:sequence>
 			<xsd:element maxOccurs="unbounded" minOccurs="1"
-				name="QualifyingOrganization" type="licensepool:OrgnizationDetails" />
+				name="QualifyingOrganization" type="licensepool:OrganizationDetails" />
 		</xsd:sequence>
 	</xsd:complexType>		
 

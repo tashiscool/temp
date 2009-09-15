@@ -96,9 +96,9 @@ public interface LPLCConstants {
 	/**
 	 * Different status codes for license pool.
 	 */
-	public static final String A = "A";
+	public static final String STATUS_ACTIVE = "A";
 	
-	public static final String P = "P";
+	public static final String STATUS_PROCESS = "P";
 	
-	public static final String E = "E";
+	public static final String STATUS_EXPIRED = "E";
 }
