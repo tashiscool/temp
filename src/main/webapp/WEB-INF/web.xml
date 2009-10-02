@@ -15,9 +15,10 @@
 			classpath:applicationContext-lplc-dao.xml
 			classpath:applicationContext-lplc-service.xml
 			classpath:applicationContext-lplc-hibernate.xml
+			classpath:applicationContext-lplc-jms.xml
+			classpath:applicationContext-lplc-scheduler.xml
 			classpath:applicationContext-lplc-exception.xml
-            classpath:applicationContext-lplc-warning.xml
-            
+            classpath:applicationContext-lplc-warning.xml            
 		</param-value>
 	</context-param>
 

@@ -101,4 +101,5 @@ public interface LPLCConstants {
 	public static final String STATUS_PROCESS = "P";
 	
 	public static final String STATUS_EXPIRED = "E";
+	
 }

@@ -45,5 +45,13 @@ public interface LicensePoolDAO {
      */
 	public List<LicensePoolMapping> findOrganizationMappingToSubscribe(String organizationId,
 			String productId, Date asOfDate, boolean considerDenySubscriptions);
+	/**
+	 * This service will find expired license pools that expired yesterday.
+	 * It returns list of  license pool id.
+	 * @return List 
+	 *            List of license pool id.
+	 */
+	
+	public List<String> findExpiredLicensePool();
 	
 }

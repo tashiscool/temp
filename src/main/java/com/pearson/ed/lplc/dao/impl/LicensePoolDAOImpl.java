@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
@@ -103,5 +104,25 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements
 					new ArrayList<LicensePoolMapping>(new LinkedHashSet<LicensePoolMapping>(criteria.list()));
 		
 		return qualifyingLicensePools;
+	}
+	/**
+	 * This service will find expired license pools that expired yesterday.
+	 * It returns list of  license pool id.
+	 * @return List 
+	 *            List of license pool id.
+	 */
+	
+	@SuppressWarnings("unchecked")
+	public List<String> findExpiredLicensePool(){
+		Criteria criteria = getSession().createCriteria(
+				LicensePoolMapping.class);
+		criteria.setProjection(Projections.property("licensepoolId"));
+		long oneDay = (long) 1000.0 * 60 * 60 * 24;
+		Date today = new Date(System.currentTimeMillis());
+		Date yesterday = new Date(System.currentTimeMillis()-oneDay);
+		Criterion betweenEnddate = Restrictions.between("end_date",yesterday, today );
+		criteria.add(betweenEnddate);
+		return (List) criteria.list();
+		
 	}
 }

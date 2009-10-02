@@ -35,6 +35,11 @@
 </pluginRepositories>
 
 	<dependencies>
+	<dependency>
+		<groupId>sonic</groupId>
+			<artifactId>sonic-client</artifactId>
+			<version>7.6</version>	
+		</dependency>		
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -297,6 +302,29 @@
 			<artifactId>jms</artifactId>
 			<version>1.1</version>
 		</dependency>
+		
+		
+		<dependency>
+      		<groupId>opensymphony</groupId>
+      		<artifactId>quartz</artifactId>
+      		<version>1.6.0</version>
+      		<scope>compile</scope>
+    	</dependency>
+   			 <!-- Quartz 1.6.0 depends on commons collections -->
+	    <dependency>
+	      <groupId>commons-collections</groupId>
+	      <artifactId>commons-collections</artifactId>
+	      <version>3.1</version>
+	      <scope>runtime</scope>
+	    </dependency>
+	    <!-- Quartz 1.6.0 requires JTA in non J2EE environments -->
+	    <dependency>
+	      <groupId>javax.transaction</groupId>
+	      <artifactId>jta</artifactId>
+	      <version>1.0.1b</version>
+	      <scope>runtime</scope>
+	    </dependency>
+		   
 	</dependencies>
 	
 	<build>

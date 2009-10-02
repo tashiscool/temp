@@ -220,7 +220,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			}
 			
 			if (lpForFuture) {
-				throw new  LicensePoolForFutureException(" LicensePool are available for future subscriptions.");
+				throw new  LicensePoolForFutureException("LicensePool are available for future subscriptions.");
 			}
 			if (lpExpired && denySubscriptionsSet) {
 				throw new LicensePoolExpiredException("License pool(s) for the given organization and product have expired");
@@ -328,4 +328,15 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		return licensePoolDetails;
 
 	}
+	/**
+	 * This service will find expired license pools that expired yesterday.
+	 * It returns list of  license pool id.
+	 * @return List 
+	 *            List of license pool id.
+	 */
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public	List<String> findExpiredLicensePool(){
+		return licensePoolDAO.findExpiredLicensePool();
+	}
+	
 }

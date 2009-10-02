@@ -75,5 +75,13 @@ public interface LicensePoolService {
 	 *            details of license pool.
 	 */
 	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
+	/**
+	 * This service will find expired license pools that expired yesterday.
+	 * It returns list of  license pool id.
+	 * @return List 
+	 *            List of license pool id.
+	 */
+	List<String> findExpiredLicensePool();
+	
 
 }
