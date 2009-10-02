@@ -22,7 +22,7 @@
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
   		<property name="jobDetail" ref="lplcJob"/>
   		<!-- run every morning at 12 AM -->  		
-		<property name="cronExpression" value="0 * 24 * * ?"/>
+		<property name="cronExpression" value="0 0 0 * * ?"/>
 	</bean>
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
   		<property name="triggers">
