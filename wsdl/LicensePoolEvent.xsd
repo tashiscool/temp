@@ -4,8 +4,8 @@ elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<element name="LicensepoolMessage" type="licensepool:LicensePoolEvent"></element>
 	<simpleType name="EventTypeType">
 		<restriction base="string">
-			<enumeration value="LICENSEPOOL_EXPIRATION" />
-			<enumeration value="LICENSEPOOL_CANCEL" />
+			<enumeration value="LP_EXPIRE" />
+			<enumeration value="LP_CANCEL" />
 		</restriction>
 	</simpleType>
 	<complexType name="LicensePoolEvent">

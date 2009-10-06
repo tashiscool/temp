@@ -57,7 +57,7 @@ public class LicensepoolJMSUtils {
 			Marshaller marshaller = jaxbcontext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 	        LicensePoolEvent event  =new LicensePoolEvent();
-	        event.setEventType(EventTypeType.LICENSEPOOL_EXPIRATION);
+	        event.setEventType(EventTypeType.LP_EXPIRE);
 	        event.setLicensePoolId(licensepool.getLicensepoolId());
 	        JAXBElement<LicensePoolEvent> createLicensepoolMessage = new ObjectFactory().createLicensepoolMessage(event);
  	        marshaller.marshal(createLicensepoolMessage, new FileOutputStream("jaxbOutput.xml"));
