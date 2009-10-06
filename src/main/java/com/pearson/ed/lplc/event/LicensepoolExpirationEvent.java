@@ -60,7 +60,7 @@ public class LicensepoolExpirationEvent {
 				lplcDTO = new LicensePoolDTO();
 				lplcDTO.setLicensepoolId(lplcId);
 				try {
-					jmsUtils.publish(lplcDTO, EventTypeType.LICENSEPOOL_EXPIRATION);
+					jmsUtils.publish(lplcDTO, EventTypeType.LP_EXPIRE);
 				} catch (Exception e) {
 					logger.log(Level.ERROR,
 							"Exception while sending Licensepool expiration message with ID :"
