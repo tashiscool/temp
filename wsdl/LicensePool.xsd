@@ -81,7 +81,7 @@
 		   <element name="UsedLicenses" type="xsd:int" />
 		  </sequence>
 	  <xsd:attribute name="OrganizationId" type="licensepool:OrganizationIDType"
-			use="required" />
+			use="optional" />
 	</complexType>
 	<complexType name="OrganizationDetails">
 		<sequence>

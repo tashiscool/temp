@@ -1,6 +1,7 @@
 package com.pearson.ed.test.lplc.service;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.internal.runners.JUnit4ClassRunner;
@@ -10,6 +11,7 @@ import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
+import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
@@ -65,6 +67,27 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 		}
 		catch(Exception e){
 			assertEquals("Start Date can not be greater than End Date", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testUpdateLicensePoolForConsumption() {
+		LicensePoolService licensepoolService = loadLicensePoolService();
+		LicensePoolDTO licensepool = loadLicensePool();
+		LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
+		String licensepoolId = licensepoolService
+				.createLicensePool(licensepool);
+		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
+		updateDTO.setLicensepoolId(licensepoolId);
+		updateDTO.setUsedLicenses(0);
+		updateDTO.setOrganizationId("UnitTestOrganizationID");
+			licensepoolService.updateLicensePool(updateDTO);
+		LicensePoolMapping findByLicensePoolId = licensepoolDAO
+			.findByLicensePoolId(licensepoolId);
+		Set<OrganizationLPMapping> organizations = findByLicensePoolId.getOrganizations();
+		for (OrganizationLPMapping organizationLPMapping : organizations) {
+			assertEquals(0, organizationLPMapping.getUsed_quantity());
+			
 		}
 	}
 

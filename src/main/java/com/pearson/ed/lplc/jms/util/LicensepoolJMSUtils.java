@@ -18,9 +18,8 @@ import org.apache.log4j.Logger;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.jms.api.JMSWriter;
-import com.pearson.ed.lplc.ws.schema.EventDetailType;
 import com.pearson.ed.lplc.ws.schema.EventTypeType;
-import com.pearson.ed.lplc.ws.schema.MessageType;
+import com.pearson.ed.lplc.ws.schema.LicensePoolEvent;
 import com.pearson.ed.lplc.ws.schema.ObjectFactory;
 
 public class LicensepoolJMSUtils {
@@ -54,16 +53,13 @@ public class LicensepoolJMSUtils {
 	public void publish(LicensePoolDTO licensepool, EventTypeType type) throws JMSException, Exception{
 		
 		try {
-			JAXBContext jaxbcontext = JAXBContext.newInstance(MessageType.class);
+	        JAXBContext jaxbcontext = JAXBContext.newInstance(LicensePoolEvent.class);
 			Marshaller marshaller = jaxbcontext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-	        MessageType message  =new MessageType();
-	        message.setEventType(type);
-	        EventDetailType eventDetail = new EventDetailType();
-	        eventDetail.setName("ID");
-	        eventDetail.setValue(licensepool.getLicensepoolId());       
-	        message.getEventDetail().add(eventDetail);
-	        JAXBElement<MessageType> createLicensepoolMessage = new ObjectFactory().createLicensepoolMessage(message);
+	        LicensePoolEvent event  =new LicensePoolEvent();
+	        event.setEventType(EventTypeType.LICENSEPOOL_EXPIRATION);
+	        event.setLicensePoolId(licensepool.getLicensepoolId());
+	        JAXBElement<LicensePoolEvent> createLicensepoolMessage = new ObjectFactory().createLicensepoolMessage(event);
  	        marshaller.marshal(createLicensepoolMessage, new FileOutputStream("jaxbOutput.xml"));
  	        BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("jaxbOutput.xml"))));
  	        StringBuffer buf = new StringBuffer();

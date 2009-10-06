@@ -236,7 +236,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			updateDTO.setQuantity(licensepool.getQuantity());
 		if (licensepool.getOrderLineItemId()!=null)
 			updateDTO.setOrderLineItem(licensepool.getOrderLineItemId());
-		if (licensepool.getUsedLicenses().getUsedLicenses()!=0){
+		if (licensepool.getUsedLicenses()!=null){
 			updateDTO.setUsedLicenses(licensepool.getUsedLicenses().getUsedLicenses());
 		    updateDTO.setOrganizationId(licensepool.getUsedLicenses().getOrganizationId());
 		}
@@ -272,6 +272,13 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	        if (update==false)
 	        	 throw new LPLCBaseException(LPLCErrorMessages.NO_ORGNAIZATION_FOUND_UPDATE_LICENSEPOOL);
 	       licensepool.setOrganizations(organizations);
+	    }
+	    if ((updateLicensepool.getUsedLicenses()==0) && (updateLicensepool.getOrganizationId()==null))
+	    {
+	    	 Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
+	    	 for (OrganizationLPMapping organizationLPMapping : organizations) {
+	    		 organizationLPMapping.setUsed_quantity(0);	    		
+	    	}
 	    }
 	    if (licensepool.getStart_date().after(licensepool.getEnd_date()))
 			throw new ComponentValidationException(LPLCErrorMessages.DATE_ERROR);
