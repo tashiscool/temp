@@ -1,7 +1,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:licensepool="http://licensepool.rws.pearson.com/doc/2009/04/01/" xmlns:serv="http://common.rws.pearson.com/doc/2008/06/01/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/" 
 elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:include targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/" schemaLocation="LicensePool.xsd"/>
-	<element name="LicensepoolMessage" type="licensepool:LicensePoolEvent"></element>
+	<xsd:include schemaLocation="LicensePool.xsd"/>
+       <element name="LicensepoolMessage" type="licensepool:LicensePoolEvent"></element>
 	<simpleType name="EventTypeType">
 		<restriction base="string">
 			<enumeration value="LP_EXPIRE" />
