@@ -26,6 +26,11 @@ public interface LicensePoolWebServiceConstants {
 	String GET_LICENCEPOOL_DETAILS_BY_ID_REQUEST_ELEMENT = "GetLicensePoolDetailsByIdRequest";
 	
 	/**
+	 * Denies New Subscriptions request element.
+	 */
+	String DENY_NEW_SUBSCRIPTIONS_REQUEST = "DenyNewSubscriptionsRequest";
+	
+	/**
 	 * The licensepool namespace.
 	 */
 	String LICENSEPOOL_NAMESPACE = "http://licensepool.rws.pearson.com/doc/2009/04/01/";

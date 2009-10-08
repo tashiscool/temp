@@ -1,7 +1,5 @@
 package com.pearson.ed.lplc.ws;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -18,7 +16,10 @@ import com.pearson.ed.lplc.warning.LicensePoolWarningFactory;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePoolResponse;
+import com.pearson.ed.lplc.ws.schema.DenyNewSubscriptionsRequest;
+import com.pearson.ed.lplc.ws.schema.DenyNewSubscriptionsResponse;
 import com.pearson.ed.lplc.ws.schema.GetLicensePoolByOrganizationIdRequest;
+import com.pearson.ed.lplc.ws.schema.GetLicensePoolDetailsByIdRequest;
 import com.pearson.ed.lplc.ws.schema.GetLicensePoolDetailsByIdResponse;
 import com.pearson.ed.lplc.ws.schema.GetLicensePoolToSubscribeRequest;
 import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
@@ -29,7 +30,6 @@ import com.pearson.ed.lplc.ws.schema.StatusCodeType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePoolResponse;
-import com.pearson.ed.lplc.ws.schema.GetLicensePoolDetailsByIdRequest;
 
 /**
  * A LicensePool Life Cycle endpoint that processes marshaled messages.
@@ -38,10 +38,8 @@ import com.pearson.ed.lplc.ws.schema.GetLicensePoolDetailsByIdRequest;
  */
 
 @Endpoint
-public class MarshallingLicensePoolEndpoint implements
-		LicensePoolWebServiceConstants {
-	private static final Logger logger = Logger
-			.getLogger(MarshallingLicensePoolEndpoint.class);
+public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceConstants {
+	private static final Logger logger = Logger.getLogger(MarshallingLicensePoolEndpoint.class);
 	/**
 	 * LicensePool Life Cycle service
 	 */
@@ -61,8 +59,7 @@ public class MarshallingLicensePoolEndpoint implements
 	 * @param licensePoolServiceEndPoint
 	 *            the licensePoolServiceEndPoint to set
 	 */
-	public void setLicensePoolServiceEndPoint(
-			LicensePoolServiceEndPoint licensePoolServiceEndPoint) {
+	public void setLicensePoolServiceEndPoint(LicensePoolServiceEndPoint licensePoolServiceEndPoint) {
 		this.licensePoolServiceEndPoint = licensePoolServiceEndPoint;
 	}
 
@@ -70,8 +67,7 @@ public class MarshallingLicensePoolEndpoint implements
 	 * @param licensepoolServiceEndPoint
 	 *            the licensepoolServiceEndPoint to set
 	 */
-	public void setLicensepoolServiceEndPoint(
-			LicensePoolServiceEndPoint licensePoolServiceEndPoint) {
+	public void setLicensepoolServiceEndPoint(LicensePoolServiceEndPoint licensePoolServiceEndPoint) {
 		this.licensePoolServiceEndPoint = licensePoolServiceEndPoint;
 	}
 
@@ -116,8 +112,7 @@ public class MarshallingLicensePoolEndpoint implements
 	 * @param licensePoolConverter
 	 *            the licensePoolConverter to set
 	 */
-	public void setLicensePoolConverter(
-			LicensePoolConverter licensePoolConverter) {
+	public void setLicensePoolConverter(LicensePoolConverter licensePoolConverter) {
 		this.licensePoolConverter = licensePoolConverter;
 	}
 
@@ -129,50 +124,38 @@ public class MarshallingLicensePoolEndpoint implements
 	 *            the create licensepool request.
 	 */
 	@PayloadRoot(localPart = CREATE_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public CreateLicensePoolResponse createLicensePool(
-			CreateLicensePoolRequest licensepoolRequest) {
+	public CreateLicensePoolResponse createLicensePool(CreateLicensePoolRequest licensepoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
 		try {
-			CreateLicensePool createLicensePoolSchemaObj = licensepoolRequest
-					.getCreateLicensePool();
+			CreateLicensePool createLicensePoolSchemaObj = licensepoolRequest.getCreateLicensePool();
 			if (logger.isDebugEnabled()) {
-				logger.debug("Received " + CREATE_LICENSEPOOL_REQUEST_ELEMENT
-						+ ":" + createLicensePoolSchemaObj.toString());
+				logger.debug("Received " + CREATE_LICENSEPOOL_REQUEST_ELEMENT + ":"
+						+ createLicensePoolSchemaObj.toString());
 			}
 
-			String transactionId = licensePoolServiceEndPoint
-					.generateTransactionId();
+			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
 
 			if (createLicensePoolSchemaObj.getProductId().size() > 1)
-				throw new ComponentCardinalityException(
-						"More than 1 product association is not supported.");
+				throw new ComponentCardinalityException("More than 1 product association is not supported.");
 			if (LPLCConstants.LICENSEPOOLTYPE.equalsIgnoreCase(createLicensePoolSchemaObj.getType()))
 				throw new ComponentValidationException("License Type is not Valid.");
 
-			logger
-					.info("Invoking Licensepool Service CreateLicensePool method");
-			String licensepoolId = licensePoolServiceEndPoint
-					.createLicensePool(createLicensePoolSchemaObj);
+			logger.info("Invoking Licensepool Service CreateLicensePool method");
+			String licensepoolId = licensePoolServiceEndPoint.createLicensePool(createLicensePoolSchemaObj);
 			serviceResponseType.setReturnValue(licensepoolId);
-			serviceResponseType.setTransactionId(licensePoolServiceEndPoint
-					.getTransactionId());
+			serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
 			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);
-			serviceResponseType.getStatusMessage().add(
-					"LicensePool created successfully");
+			serviceResponseType.getStatusMessage().add("LicensePool created successfully");
 
 		} catch (Exception e) {
-			LicensePoolException licensepoolException = exceptionFactory
-					.getLicensePoolException(e);
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(e);
 			if (e instanceof LPLCBaseException) {
-				serviceResponseType.setTransactionId(licensePoolServiceEndPoint
-						.getTransactionId());
-				serviceResponseType
-						.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
+				serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
+				serviceResponseType.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
 				serviceResponseType.setStatusCode(StatusCodeType.FAILURE);
-				serviceResponseType.getStatusMessage().add(
-						licensepoolException.getCause().toString());
+				serviceResponseType.getStatusMessage().add(licensepoolException.getCause().toString());
 			} else {
 				throw licensepoolException;
 			}
@@ -190,43 +173,33 @@ public class MarshallingLicensePoolEndpoint implements
 	 *            the update licensepool request.
 	 */
 	@PayloadRoot(localPart = UPDATE_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public UpdateLicensePoolResponse createLicensePool(
-			UpdateLicensePoolRequest licensepoolRequest) {
+	public UpdateLicensePoolResponse createLicensePool(UpdateLicensePoolRequest licensepoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
 		try {
-			UpdateLicensePool updateLicensePoolSchemaObj = licensepoolRequest
-					.getUpdateLicensePool();
+			UpdateLicensePool updateLicensePoolSchemaObj = licensepoolRequest.getUpdateLicensePool();
 			if (logger.isDebugEnabled()) {
-				logger.debug("Received " + UPDATE_LICENSEPOOL_REQUEST_ELEMENT
-						+ ":" + updateLicensePoolSchemaObj.toString());
+				logger.debug("Received " + UPDATE_LICENSEPOOL_REQUEST_ELEMENT + ":"
+						+ updateLicensePoolSchemaObj.toString());
 			}
 
-			String transactionId = licensePoolServiceEndPoint
-					.generateTransactionId();
+			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
-			
+
 			logger.info("Invoking Licensepool Service UpdateLicensePool method");
-			String licensepoolId = licensePoolServiceEndPoint
-					.updateLicensePool(updateLicensePoolSchemaObj);
+			String licensepoolId = licensePoolServiceEndPoint.updateLicensePool(updateLicensePoolSchemaObj);
 			serviceResponseType.setReturnValue(licensepoolId);
-			serviceResponseType.setTransactionId(licensePoolServiceEndPoint
-					.getTransactionId());
+			serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
 			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);
-			serviceResponseType.getStatusMessage().add(
-					"LicensePool updated successfully");
+			serviceResponseType.getStatusMessage().add("LicensePool updated successfully");
 
 		} catch (Exception e) {
-			LicensePoolException licensepoolException = exceptionFactory
-					.getLicensePoolException(e);
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(e);
 			if (e instanceof LPLCBaseException) {
-				serviceResponseType.setTransactionId(licensePoolServiceEndPoint
-						.getTransactionId());
-				serviceResponseType
-						.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
+				serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
+				serviceResponseType.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
 				serviceResponseType.setStatusCode(StatusCodeType.FAILURE);
-				serviceResponseType.getStatusMessage().add(
-						licensepoolException.getCause().toString());
+				serviceResponseType.getStatusMessage().add(licensepoolException.getCause().toString());
 			} else {
 				throw licensepoolException;
 			}
@@ -235,7 +208,7 @@ public class MarshallingLicensePoolEndpoint implements
 		updateResponse.setServiceResponseType(serviceResponseType);
 		return updateResponse;
 	}
-	
+
 	/**
 	 * This endpoint method uses marshalling to handle message with a
 	 * <code>&lt;CreatelicensepoolRequestElement&gt;</code> payload.
@@ -248,28 +221,28 @@ public class MarshallingLicensePoolEndpoint implements
 			GetLicensePoolByOrganizationIdRequest licensepoolRequest) {
 
 		try {
-			String organizationId = licensepoolRequest
-					.getGetLicensePoolByOrganizationIdRequestType().getOrganizationId();
-			String qualifyingOrgs = licensepoolRequest.getGetLicensePoolByOrganizationIdRequestType().getQualifyingLicensePool().toString();
+			String organizationId = licensepoolRequest.getGetLicensePoolByOrganizationIdRequestType()
+					.getOrganizationId();
+			String qualifyingOrgs = licensepoolRequest.getGetLicensePoolByOrganizationIdRequestType()
+					.getQualifyingLicensePool().toString();
 			if (logger.isDebugEnabled()) {
-				logger.debug("Received " + GET_LICENSEPOOL_REQUEST_ELEMENT
-						+ ":" + organizationId+" and "+qualifyingOrgs);
+				logger.debug("Received " + GET_LICENSEPOOL_REQUEST_ELEMENT + ":" + organizationId + " and "
+						+ qualifyingOrgs);
 			}
 
-			String transactionId = licensePoolServiceEndPoint
-					.generateTransactionId();
+			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
-			
+
 			logger.info("Invoking Licensepool Service GetLicensePool method");
 			return licensePoolServiceEndPoint.getLicensePoolByOrganizationId(organizationId, qualifyingOrgs);
 
 		} catch (Exception e) {
-			LicensePoolException licensepoolException = exceptionFactory
-					.getLicensePoolException(e);
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(e);
 			throw licensepoolException;
-			
+
 		}
 	}
+
 	/**
 	 * This endpoint method uses marshalling to handle message with a
 	 * <code>&lt;CreatelicensepoolRequestElement&gt;</code> payload.
@@ -278,28 +251,24 @@ public class MarshallingLicensePoolEndpoint implements
 	 *            the update licensepool request.
 	 */
 	@PayloadRoot(localPart = GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public LicensePoolToSubscribe getLicensepoolToSubscribe(
-			GetLicensePoolToSubscribeRequest licensepoolRequest) {
+	public LicensePoolToSubscribe getLicensepoolToSubscribe(GetLicensePoolToSubscribeRequest licensepoolRequest) {
 
 		try {
-			String organizationId = licensepoolRequest
-					.getGetLicensePoolToSubscribeRequestType().getOrganizationId();
+			String organizationId = licensepoolRequest.getGetLicensePoolToSubscribeRequestType().getOrganizationId();
 			String productId = licensepoolRequest.getGetLicensePoolToSubscribeRequestType().getProductId();
 			if (logger.isDebugEnabled()) {
-				logger.debug("Received " + GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT
-						+ ":" + organizationId+" and "+productId);
+				logger.debug("Received " + GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT + ":" + organizationId
+						+ " and " + productId);
 			}
 
-			String transactionId = licensePoolServiceEndPoint
-					.generateTransactionId();
+			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
-			
+
 			logger.info("Invoking Licensepool Service GetLicensePoolToSubscribe method");
 			return licensePoolServiceEndPoint.getLicensePoolToSubscribe(organizationId, productId);
 
 		} catch (Exception e) {
-			LicensePoolException licensepoolException = exceptionFactory
-					.getLicensePoolException(e);
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(e);
 			throw licensepoolException;
 
 		}
@@ -338,4 +307,49 @@ public class MarshallingLicensePoolEndpoint implements
 		}
 	}
 
+	/**
+	 * This endpoint method uses marshalling to handle message with a
+	 * <code>&lt;DenyNewSubscriptionsRequest&gt;</code> payload.
+	 * 
+	 * @param denyNewSubscriptionsRequest
+	 *            DenyNewSubscriptionsRequest element.
+	 * @return DenyNewSubscriptionsResponse
+	 */
+	@PayloadRoot(localPart = DENY_NEW_SUBSCRIPTIONS_REQUEST, namespace = LICENSEPOOL_NAMESPACE)
+	public DenyNewSubscriptionsResponse denyNewSubscriptions(DenyNewSubscriptionsRequest denyNewSubscriptionsRequest) {
+		ServiceResponseType serviceResponseType = new ServiceResponseType();
+
+		try {
+			String requestLicensePoolId = denyNewSubscriptionsRequest.getLicensePoolId();
+			String requestCreatedBy = denyNewSubscriptionsRequest.getCreatedBy();
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Received " + DENY_NEW_SUBSCRIPTIONS_REQUEST + ":" + requestLicensePoolId + " : " + requestCreatedBy);
+			}
+
+			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
+			licensePoolServiceEndPoint.setTransactionId(transactionId);
+
+			logger.info("Invoking Licensepool Service DenyNewSubscriptions method");
+			String licensepoolId = licensePoolServiceEndPoint.denyNewSubscriptions(requestLicensePoolId, requestCreatedBy);
+			serviceResponseType.setReturnValue(licensepoolId);
+			serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
+			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);
+			serviceResponseType.getStatusMessage().add("Subscriptions denied successfully");
+
+		} catch (Exception e) {
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(e);
+			if (e instanceof LPLCBaseException) {
+				serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
+				serviceResponseType.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
+				serviceResponseType.setStatusCode(StatusCodeType.FAILURE);
+				serviceResponseType.getStatusMessage().add(licensepoolException.getCause().toString());
+			} else {
+				throw licensepoolException;
+			}
+		}
+		DenyNewSubscriptionsResponse denyNewSubscriptionsResponse = new DenyNewSubscriptionsResponse();
+		denyNewSubscriptionsResponse.setServiceResponseType(serviceResponseType);
+		return denyNewSubscriptionsResponse;
+	}
 }

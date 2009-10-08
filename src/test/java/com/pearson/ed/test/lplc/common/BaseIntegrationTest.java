@@ -102,4 +102,11 @@ public abstract class BaseIntegrationTest extends
 		return (LicensePoolDTO) applicationContext.getBean("serviceTestLicensePool2");
 	}
 	
+	/**
+	 * Loading the bean for TestDenyNewSubscriptions.
+	 */
+	protected LicensePoolDTO loadDenyNewSubscription() {
+		return (LicensePoolDTO) applicationContext.getBean("serviceTestDenyNewSubscription");
+	}
+	
 }

@@ -1,136 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:tns="http://licensepool.rws.pearson.com/doc/2009/04/01/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:licensepool="http://licensepool.rws.pearson.com/doc/2009/04/01/" name="User" targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/">
+<wsdl:definitions xmlns:tns="http://licensepool.rws.pearson.com/doc/2009/04/01/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:licensepool="http://licensepool.rws.pearson.com/doc/2009/04/01/"
+	name="User" targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/">
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://licensepool.rws.pearson.com/doc/2009/04/01/">
-			<xsd:include schemaLocation="LicensePool.xsd"/>
+			<xsd:include schemaLocation="LicensePool.xsd" />
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="LicensePoolException">
-		<wsdl:part name="LicensePoolException" element="tns:LicensePoolExceptionElement"/>
+		<wsdl:part name="LicensePoolException" element="tns:LicensePoolExceptionElement" />
 	</wsdl:message>
 	<wsdl:message name="CreateLicensePoolRequest">
-		<wsdl:part name="CreateLicensePoolRequest" element="tns:CreateLicensePoolRequest"/>
+		<wsdl:part name="CreateLicensePoolRequest" element="tns:CreateLicensePoolRequest" />
 	</wsdl:message>
 	<wsdl:message name="CreateLicensePoolResponse">
-		<wsdl:part name="CreateLicensePoolResponse" element="tns:CreateLicensePoolResponse"/>
+		<wsdl:part name="CreateLicensePoolResponse" element="tns:CreateLicensePoolResponse" />
 	</wsdl:message>
 	<wsdl:message name="UpdateLicensePoolRequest">
-		<wsdl:part name="UpdateLicensePoolRequest" element="tns:UpdateLicensePoolRequest"/>
+		<wsdl:part name="UpdateLicensePoolRequest" element="tns:UpdateLicensePoolRequest" />
 	</wsdl:message>
 	<wsdl:message name="UpdateLicensePoolResponse">
-		<wsdl:part name="UpdateLicensePoolResponse" element="tns:UpdateLicensePoolResponse"/>
+		<wsdl:part name="UpdateLicensePoolResponse" element="tns:UpdateLicensePoolResponse" />
 	</wsdl:message>
 	<wsdl:message name="GetLicensePoolByOrganizationIdRequest">
-		<wsdl:part name="GetLicensePoolByOrganizationIdRequest" element="tns:GetLicensePoolByOrganizationIdRequest"/>
+		<wsdl:part name="GetLicensePoolByOrganizationIdRequest"
+			element="tns:GetLicensePoolByOrganizationIdRequest" />
 	</wsdl:message>
 	<wsdl:message name="GetLicensePoolByOrganizationIdResponse">
-		<wsdl:part name="GetLicensePoolByOrganizationIdResponse" element="tns:LicensepoolsByOrganizationId"/>
+		<wsdl:part name="GetLicensePoolByOrganizationIdResponse"
+			element="tns:LicensepoolsByOrganizationId" />
 	</wsdl:message>
 	<wsdl:message name="GetLicensePoolToSubscribeRequest">
-		<wsdl:part name="GetLicensePoolToSubscribeRequest" element="tns:GetLicensePoolToSubscribeRequest"/>
+		<wsdl:part name="GetLicensePoolToSubscribeRequest" element="tns:GetLicensePoolToSubscribeRequest" />
 	</wsdl:message>
 	<wsdl:message name="GetLicensePoolToSubscribeResponse">
-		<wsdl:part name="GetLicensePoolToSubscribeResponse" element="tns:LicensePoolToSubscribe"/>
+		<wsdl:part name="GetLicensePoolToSubscribeResponse" element="tns:LicensePoolToSubscribe" />
 	</wsdl:message>
 	<wsdl:message name="GetLicensePoolDetailsByIdRequest">
-		<wsdl:part name="GetLicensePoolDetailsByIdRequest" element="tns:GetLicensePoolDetailsByIdRequest"/>
+		<wsdl:part name="GetLicensePoolDetailsByIdRequest" element="tns:GetLicensePoolDetailsByIdRequest" />
 	</wsdl:message>
 	<wsdl:message name="GetLicensePoolDetailsByIdResponse">
-		<wsdl:part name="GetLicensePoolDetailsByIdResponse" element="tns:GetLicensePoolDetailsByIdResponse"/>
-	</wsdl:message>	
+		<wsdl:part name="GetLicensePoolDetailsByIdResponse" element="tns:GetLicensePoolDetailsByIdResponse" />
+	</wsdl:message>
+	<wsdl:message name="DenyNewSubscriptionsRequest">
+		<wsdl:part name="DenyNewSubscriptionsRequest" element="tns:DenyNewSubscriptionsRequest" />
+	</wsdl:message>
+	<wsdl:message name="DenyNewSubscriptionsResponse">
+		<wsdl:part name="DenyNewSubscriptionsResponse" element="tns:DenyNewSubscriptionsResponse" />
+	</wsdl:message>
+
 	<wsdl:portType name="LicensePoolLifeCyclePort">
 		<wsdl:operation name="CreateLicensePool">
-			<wsdl:input message="tns:CreateLicensePoolRequest"/>
-			<wsdl:output message="tns:CreateLicensePoolResponse"/>
-			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+			<wsdl:input message="tns:CreateLicensePoolRequest" />
+			<wsdl:output message="tns:CreateLicensePoolResponse" />
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
 		</wsdl:operation>
 		<wsdl:operation name="UpdateLicensePool">
-			<wsdl:input message="tns:UpdateLicensePoolRequest"/>
-			<wsdl:output message="tns:UpdateLicensePoolResponse"/>
-			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+			<wsdl:input message="tns:UpdateLicensePoolRequest" />
+			<wsdl:output message="tns:UpdateLicensePoolResponse" />
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolByOrganizationId">
-			<wsdl:input message="tns:GetLicensePoolByOrganizationIdRequest"/>
-			<wsdl:output message="tns:GetLicensePoolByOrganizationIdResponse"/>
-			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+			<wsdl:input message="tns:GetLicensePoolByOrganizationIdRequest" />
+			<wsdl:output message="tns:GetLicensePoolByOrganizationIdResponse" />
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolToSubscribe">
-			<wsdl:input message="tns:GetLicensePoolToSubscribeRequest"/>
-			<wsdl:output message="tns:GetLicensePoolToSubscribeResponse"/>
-			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+			<wsdl:input message="tns:GetLicensePoolToSubscribeRequest" />
+			<wsdl:output message="tns:GetLicensePoolToSubscribeResponse" />
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolDetailsById">
-			<wsdl:input message="tns:GetLicensePoolDetailsByIdRequest"/>
-			<wsdl:output message="tns:GetLicensePoolDetailsByIdResponse"/>
-			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
-		</wsdl:operation>		
+			<wsdl:input message="tns:GetLicensePoolDetailsByIdRequest" />
+			<wsdl:output message="tns:GetLicensePoolDetailsByIdResponse" />
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
+		</wsdl:operation>
+		<wsdl:operation name="DenyNewSubscriptions">
+			<wsdl:input message="tns:DenyNewSubscriptionsRequest" />
+			<wsdl:output message="tns:DenyNewSubscriptionsResponse" />
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
+		</wsdl:operation>
 	</wsdl:portType>
+
 	<wsdl:binding name="LicensePoolLifeCycleBinding" type="tns:LicensePoolLifeCyclePort">
-		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="CreateLicensePool">
-			<soap:operation soapAction="CreateLicensePool" soapActionRequired="true" style="document"/>
+			<soap:operation soapAction="CreateLicensePool"
+				soapActionRequired="true" style="document" />
 			<wsdl:input>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="LicensePoolException">
-				<soap:fault name="LicensePoolException" use="literal"/>
+				<soap:fault name="LicensePoolException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="UpdateLicensePool">
-			<soap:operation soapAction="UpdateLicensePool" soapActionRequired="true" style="document"/>
+			<soap:operation soapAction="UpdateLicensePool"
+				soapActionRequired="true" style="document" />
 			<wsdl:input>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="LicensePoolException">
-				<soap:fault name="LicensePoolException" use="literal"/>
+				<soap:fault name="LicensePoolException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolByOrganizationId">
-			<soap:operation soapAction="GetLicensePoolByOrganizationId" soapActionRequired="true" style="document"/>
+			<soap:operation soapAction="GetLicensePoolByOrganizationId"
+				soapActionRequired="true" style="document" />
 			<wsdl:input>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="LicensePoolException">
-				<soap:fault name="LicensePoolException" use="literal"/>
+				<soap:fault name="LicensePoolException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolToSubscribe">
-			<soap:operation soapAction="GetLicensePoolToSubscribe" soapActionRequired="true" style="document"/>
+			<soap:operation soapAction="GetLicensePoolToSubscribe"
+				soapActionRequired="true" style="document" />
 			<wsdl:input>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="LicensePoolException">
-				<soap:fault name="LicensePoolException" use="literal"/>
+				<soap:fault name="LicensePoolException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="GetLicensePoolDetailsById">
-			<soap:operation soapAction="GetLicensePoolDetailsById" soapActionRequired="true" style="document"/>
+			<soap:operation soapAction="GetLicensePoolDetailsById"
+				soapActionRequired="true" style="document" />
 			<wsdl:input>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body use="literal"/>
+				<soap:body use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="LicensePoolException">
-				<soap:fault name="LicensePoolException" use="literal"/>
+				<soap:fault name="LicensePoolException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="DenyNewSubscriptions">
+			<soap:operation soapAction="DenyNewSubscriptions"
+				soapActionRequired="true" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LicensePoolException">
+				<soap:fault name="LicensePoolException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="LicensePoolLifeCycleWebService">
 		<wsdl:port name="LicensePoolLifeCyclePort" binding="tns:LicensePoolLifeCycleBinding">
-			<soap:address location="http://www.pearson.com/LicensePoolLifeCycle/services"/>
+			<soap:address location="http://www.pearson.com/LicensePoolLifeCycle/services" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

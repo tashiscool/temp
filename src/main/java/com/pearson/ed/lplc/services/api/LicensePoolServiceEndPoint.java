@@ -28,31 +28,33 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 * @return licenseId
 	 */
 	String updateLicensePool(UpdateLicensePool licensepool);
-	
+
 	/**
 	 * Get LicensePool data based on organization
 	 * 
-	 * @param request organizationID.
-	 * @return GetLicensePoolByOrganizationIdResponse GetLicensePoolByOrganizationIdResponse.
+	 * @param request
+	 *            organizationID.
+	 * @return GetLicensePoolByOrganizationIdResponse
+	 *         GetLicensePoolByOrganizationIdResponse.
 	 */
 	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs);
-	
+
 	/**
 	 * Get Licensepool to subscribe.
-	 * @param organizationId organizationId.
+	 * 
+	 * @param organizationId
+	 *            organizationId.
 	 * @param productId
 	 * @return
 	 */
-	public LicensePoolToSubscribe getLicensePoolToSubscribe(String organizationId,
-			String productId);
+	public LicensePoolToSubscribe getLicensePoolToSubscribe(String organizationId, String productId);
 
 	/**
 	 * Generates a transaction ID.
 	 * 
 	 * @return the transaction ID.
 	 */
-	
-	
+
 	public String generateTransactionId();
 
 	/**
@@ -68,9 +70,19 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @return LicensePoolDetails 
-	 * 			  details of license pool.
+	 * @return LicensePoolDetails details of license pool.
 	 */
 	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
+
+	/**
+	 * Deny New Subscriptions for the given license pool id.
+	 * 
+	 * @param licensePoolId
+	 *            id of the license pool.
+	 * @param createdBy
+	 *            the created by.
+	 * @return licenseId.
+	 */
+	String denyNewSubscriptions(String licensePoolId, String createdBy);
 
 }

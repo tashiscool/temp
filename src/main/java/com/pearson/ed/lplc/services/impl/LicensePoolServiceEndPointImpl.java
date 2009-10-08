@@ -15,11 +15,9 @@ import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
-public class LicensePoolServiceEndPointImpl implements
-		LicensePoolServiceEndPoint {
+public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoint {
 
-	private static final Logger logger = Logger
-			.getLogger(LicensePoolServiceEndPointImpl.class);
+	private static final Logger logger = Logger.getLogger(LicensePoolServiceEndPointImpl.class);
 
 	private LicensePoolService licensepoolService;
 	private String transactionId;
@@ -36,8 +34,7 @@ public class LicensePoolServiceEndPointImpl implements
 	 * @param licensePoolConverter
 	 *            the licensePoolConverter to set
 	 */
-	public void setLicensePoolConverter(
-			LicensePoolConverter licensePoolConverter) {
+	public void setLicensePoolConverter(LicensePoolConverter licensePoolConverter) {
 		this.licensePoolConverter = licensePoolConverter;
 	}
 
@@ -73,19 +70,27 @@ public class LicensePoolServiceEndPointImpl implements
 		return licensepoolService.updateLicensePool(licensePoolConverter
 				.covertupdateRequestToUpdateLicensePoolDTO(licensepool));
 	}
+
 	/**
 	 * List license pools as per criteria.
-	 * @param organizationId organizationId.
-	 * @param qualifyingOrgs qualifyingOrgs.
+	 * 
+	 * @param organizationId
+	 *            organizationId.
+	 * @param qualifyingOrgs
+	 *            qualifyingOrgs.
 	 * @return the transaction ID.
 	 */
-	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs){
-		List<OrganizationLPMapping> licenses = licensepoolService.getLicensePoolByOrganizationId(organizationId, qualifyingOrgs);
+	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs) {
+		List<OrganizationLPMapping> licenses = licensepoolService.getLicensePoolByOrganizationId(organizationId,
+				qualifyingOrgs);
 		return licensePoolConverter.convertForGetFromLPMappingToSchema(licenses);
 	}
+
 	/**
 	 * Get Licensepool for subscription.
-	 * @param organizationId organizationId.
+	 * 
+	 * @param organizationId
+	 *            organizationId.
 	 * @param productId
 	 * @return
 	 */
@@ -99,11 +104,23 @@ public class LicensePoolServiceEndPointImpl implements
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @return licensePoolDetails 
-	 * 			  details of license pool.
+	 * @return licensePoolDetails details of license pool.
 	 */
 	public LicensePoolDetails getLicensePoolDetailsById(String licensePoolId) {
 		return licensepoolService.getLicensePoolDetailsById(licensePoolId);
+	}
+
+	/**
+	 * Denies New Subscriptions for the given license pool id.
+	 * 
+	 * @param licensePoolId
+	 *            id of the license pool.
+	 * @param createdBy
+	 *            the created by.
+	 * @return licenseId.
+	 */
+	public String denyNewSubscriptions(String licensePoolId, String createdBy) {
+		return licensepoolService.denyNewSubscriptions(licensePoolId, createdBy);
 	}
 
 	/**

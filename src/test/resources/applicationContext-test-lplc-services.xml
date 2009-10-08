@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
@@ -11,39 +9,52 @@
             http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
           http://www.springframework.org/schema/tx
           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-    
-    <!-- Stub implementation of OrganizationServiceClient -->     
-    <bean id="organizationServiceClient" class="com.pearson.ed.lplc.stub.impl.OrganizationServiceClientStubImpl">  		
+
+	<!-- Stub implementation of OrganizationServiceClient -->
+	<bean id="organizationServiceClient"
+		class="com.pearson.ed.lplc.stub.impl.OrganizationServiceClientStubImpl">
 	</bean>
-	
+
 	<!-- LicensePool Service testing -->
 	<bean id="serviceTestLicensePool" name="serviceTestLicensePool"
-		class="com.pearson.ed.lplc.dto.LicensePoolDTO"
-		scope="prototype">
+		class="com.pearson.ed.lplc.dto.LicensePoolDTO" scope="prototype">
 		<property name="type" value="Seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
-		<property name="endDate" value="03/30/2050"/>
-		<property name="startDate"  value="01/30/1900"/>
-		<property name="organizationId" value="UnitTestOrganizationID"/>
-		<property name="orderLineItemId" value="TestOrderLineItemID"/>
-		<property name="productId" value="TestProductId1"/>
-		<property name="createdBy" value="TestUser1"/>
-		<property name="quantity" value="100"/>
-		<property name="sourceSystem" value="Radmin"/>
+		<property name="endDate" value="03/30/2050" />
+		<property name="startDate" value="01/30/1900" />
+		<property name="organizationId" value="UnitTestOrganizationID" />
+		<property name="orderLineItemId" value="TestOrderLineItemID" />
+		<property name="productId" value="TestProductId1" />
+		<property name="createdBy" value="TestUser1" />
+		<property name="quantity" value="100" />
+		<property name="sourceSystem" value="Radmin" />
 	</bean>
 	<bean id="serviceTestLicensePool2" name="serviceTestLicensePool2"
-		class="com.pearson.ed.lplc.dto.LicensePoolDTO"
-		scope="prototype">
+		class="com.pearson.ed.lplc.dto.LicensePoolDTO" scope="prototype">
 		<property name="type" value="Seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
-		<property name="endDate" value="03/30/9999"/>
-		<property name="startDate"  value="01/30/1900"/>
-		<property name="organizationId" value="UnitTestOrganizationID"/>
-		<property name="orderLineItemId" value="TestOrderLineItemID"/>
-		<property name="productId" value="TestProductId1"/>
-		<property name="createdBy" value="TestUser1"/>
-		<property name="quantity" value="100"/>
-		<property name="sourceSystem" value="Radmin"/>
+		<property name="endDate" value="03/30/9999" />
+		<property name="startDate" value="01/30/1900" />
+		<property name="organizationId" value="UnitTestOrganizationID" />
+		<property name="orderLineItemId" value="TestOrderLineItemID" />
+		<property name="productId" value="TestProductId1" />
+		<property name="createdBy" value="TestUser1" />
+		<property name="quantity" value="100" />
+		<property name="sourceSystem" value="Radmin" />
 	</bean>
-	
+	<!-- Test data for Denies New Subscription-->
+	<bean id="serviceTestDenyNewSubscription" name="serviceTestDenyNewSubscription"
+		class="com.pearson.ed.lplc.dto.LicensePoolDTO" scope="prototype">
+		<property name="type" value="Seat based licensing" />
+		<property name="denyManualSubscription" value="0" />
+		<property name="endDate" value="01/30/2010" />
+		<property name="startDate" value="01/30/2009" />
+		<property name="organizationId" value="12345678901234567890defafabcdef" />
+		<property name="orderLineItemId" value="12345678901234567890defadefadef" />
+		<property name="productId" value="12345678901234567890abcdededdef" />
+		<property name="createdBy" value="TestUser3" />
+		<property name="quantity" value="100" />
+		<property name="sourceSystem" value="Radmin" />
+	</bean>
+
 </beans>

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.pearson.ed.lplc.services.api;
 
 import java.util.List;
@@ -43,26 +40,28 @@ public interface LicensePoolService {
 	 *            qualifyingOrgs.
 	 * @return List.
 	 */
-	List<OrganizationLPMapping> getLicensePoolByOrganizationId(
-			String organizationId, String qualifyingOrgs);
-	
+	List<OrganizationLPMapping> getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs);
+
 	/**
 	 * 
-	 * Get License pool to subscribe. Fetches the license pool Id that qualifies to be used for subscription for the given organizationId 
-	 * and ProductId.
+	 * Get License pool to subscribe. Fetches the license pool Id that qualifies
+	 * to be used for subscription for the given organizationId and ProductId.
 	 * 
-	 * @param organizationId - id of the organization.
-	 * @param productId - Id of the product
+	 * @param organizationId
+	 *            - id of the organization.
+	 * @param productId
+	 *            - Id of the product
 	 * @return instance of qualifying LicensePoolMapping object
 	 * 
-	 * @throw NewSubscriptionsDeniedException 
-	 * 	- throws this exception if new subscriptions are denied for the license pool or organization
-	 * @throw LicensePoolExpiredException 
-	 * 	- throws this exception if license pool's start and end dates are out of bound of the current date
-	 * @throw LicensePoolForFutureException 
-	 * 	- throws this exception if existing license pools are configured for future use and not available currently
-	 * @throw LicensePoolUnavailableException 
-	 * 	- if no license pools exist for the given product and organization
+	 * @throw NewSubscriptionsDeniedException - throws this exception if new
+	 *        subscriptions are denied for the license pool or organization
+	 * @throw LicensePoolExpiredException - throws this exception if license
+	 *        pool's start and end dates are out of bound of the current date
+	 * @throw LicensePoolForFutureException - throws this exception if existing
+	 *        license pools are configured for future use and not available
+	 *        currently
+	 * @throw LicensePoolUnavailableException - if no license pools exist for
+	 *        the given product and organization
 	 */
 	LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId);
 
@@ -71,17 +70,26 @@ public interface LicensePoolService {
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @return LicensePoolDetails 
-	 *            details of license pool.
+	 * @return LicensePoolDetails details of license pool.
 	 */
 	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
+
 	/**
-	 * This service will find expired license pools that expired yesterday.
-	 * It returns list of  license pool id.
-	 * @return List 
-	 *            List of license pool id.
+	 * This service will find expired license pools that expired yesterday. It
+	 * returns list of license pool id.
+	 * 
+	 * @return List List of license pool id.
 	 */
 	List<String> findExpiredLicensePool();
-	
 
+	/**
+	 * Denies New Subscriptions for the given license pool id.
+	 * 
+	 * @param licensePoolId
+	 *            id of the license pool.
+	 * @param createdBy
+	 *            the created by.
+	 * @return licensePoolId.
+	 */
+	String denyNewSubscriptions(String licensePoolId, String createdBy);
 }
