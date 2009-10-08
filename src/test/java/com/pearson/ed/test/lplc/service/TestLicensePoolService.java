@@ -10,14 +10,7 @@ import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
-/**
- * TestDenyNewSubscriptions test class tests the functionality of
- * denyNewSubscriptions() method of LicensePoolService.
- * 
- * @author vc999el
- * 
- */
-public class TestDenyNewSubscriptions extends BaseIntegrationTest {
+public class TestLicensePoolService extends BaseIntegrationTest {
 
 	/**
 	 * testDenyNewSubscriptions() method to test the functionality of
@@ -57,4 +50,5 @@ public class TestDenyNewSubscriptions extends BaseIntegrationTest {
 			licensePoolMapping = null;
 		}
 	}
+
 }
