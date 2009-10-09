@@ -63,6 +63,9 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	
 	@Column(nullable = false, name = "product_id", length = 128)
 	private String product_id;
+	
+	@Column(nullable = false, name = "IS_CANCELLED", length = 3)
+	private String isCancelled;
 
 		
 	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
@@ -254,6 +257,20 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
+	 * @return the isCancelled
+	 */
+	public String getIsCancelled() {
+		return isCancelled;
+	}
+
+	/**
+	 * @param isCancelled the isCancelled to set
+	 */
+	public void setIsCancelled(String isCancelled) {
+		this.isCancelled = isCancelled;
+	}
+
+	/**
 	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
 	 * persistent member variables in order to maintain the hashCode contract
 	 * that equal objects must have the same hash code.
@@ -268,6 +285,7 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		hashCodeBuilder.append(end_date);
 		hashCodeBuilder.append(quantity);
 		hashCodeBuilder.append(org_id);
+		hashCodeBuilder.append(isCancelled);
 		return hashCodeBuilder.toHashCode();
 	}
 
@@ -296,6 +314,7 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		equalsBuilder.append(this.end_date, u.end_date);
 		equalsBuilder.append(this.quantity, u.quantity);
 		equalsBuilder.append(this.org_id, u.org_id);
+		equalsBuilder.append(this.isCancelled, u.isCancelled);
 		return equalsBuilder.isEquals() && super.equals(obj);
 	}
 

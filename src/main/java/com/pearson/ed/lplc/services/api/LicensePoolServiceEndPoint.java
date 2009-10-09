@@ -87,4 +87,18 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 */
 	String denyNewSubscriptions(String licensePoolId, int denyNewSubscription, String createdBy);
 
+	/**
+	 * Cancels or Revokes a License Pool.
+	 * 
+	 * @param licensePoolId
+	 * 			id of the license pool.
+	 * @param createdBy
+	 * 			the created by.
+	 * @param cancelSubscription
+	 * 			cancels a subscription.
+	 * 
+	 * @return licensepoolId
+	 */
+	String cancelLicensePool(String licensePoolId, String createdBy, int cancelSubscription);
+
 }

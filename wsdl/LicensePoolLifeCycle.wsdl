@@ -49,7 +49,12 @@
 	<wsdl:message name="DenyNewSubscriptionsResponse">
 		<wsdl:part name="DenyNewSubscriptionsResponse" element="tns:DenyNewSubscriptionsResponse" />
 	</wsdl:message>
-
+	<wsdl:message name="CancelLicensePoolRequest">
+		<wsdl:part name="CancelLicensePoolRequest" element="tns:CancelLicensePoolRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CancelLicensePoolResponse">
+		<wsdl:part name="CancelLicensePoolResponse" element="tns:CancelLicensePoolResponse"/>
+	</wsdl:message>
 	<wsdl:portType name="LicensePoolLifeCyclePort">
 		<wsdl:operation name="CreateLicensePool">
 			<wsdl:input message="tns:CreateLicensePoolRequest" />
@@ -81,6 +86,11 @@
 			<wsdl:output message="tns:DenyNewSubscriptionsResponse" />
 			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException" />
 		</wsdl:operation>
+		<wsdl:operation name="CancelLicensePool">
+			<wsdl:input message="tns:CancelLicensePoolRequest"/>
+			<wsdl:output message="tns:CancelLicensePoolResponse"/>
+			<wsdl:fault name="LicensePoolException" message="tns:LicensePoolException"/>
+		</wsdl:operation>	
 	</wsdl:portType>
 
 	<wsdl:binding name="LicensePoolLifeCycleBinding" type="tns:LicensePoolLifeCyclePort">
@@ -162,6 +172,18 @@
 			</wsdl:output>
 			<wsdl:fault name="LicensePoolException">
 				<soap:fault name="LicensePoolException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CancelLicensePool">
+			<soap:operation soapAction="CancelLicensePool" soapActionRequired="true" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="LicensePoolException">
+				<soap:fault name="LicensePoolException" use="literal"/>
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

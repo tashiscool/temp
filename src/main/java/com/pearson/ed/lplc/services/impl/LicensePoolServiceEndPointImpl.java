@@ -68,7 +68,7 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 */
 	public String updateLicensePool(UpdateLicensePool licensepool) {
 		return licensepoolService.updateLicensePool(licensePoolConverter
-				.covertupdateRequestToUpdateLicensePoolDTO(licensepool));
+				.convertupdateRequestToUpdateLicensePoolDTO(licensepool));
 	}
 
 	/**
@@ -123,6 +123,22 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 */
 	public String denyNewSubscriptions(String licensePoolId, int denyNewSubscription, String createdBy) {
 		return licensepoolService.denyNewSubscriptions(licensePoolId, denyNewSubscription, createdBy);
+	}
+
+	/**
+	 * Cancels or Revokes a License Pool.
+	 * 
+	 * @param licensePoolId
+	 * 			id of the license pool.
+	 * @param createdBy
+	 * 			the created by.
+	 * @param cancelSubscription
+	 * 			cancels a subscription.
+	 * 
+	 * @return licensepoolId
+	 */
+	public String cancelLicensePool(String licensePoolId,String createdBy,int cancelSubscription) {		
+		return licensepoolService.cancelLicensePool(licensePoolId,createdBy,cancelSubscription);
 	}
 
 	/**

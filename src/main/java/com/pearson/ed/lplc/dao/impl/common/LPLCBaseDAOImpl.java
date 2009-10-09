@@ -46,12 +46,8 @@ public abstract class LPLCBaseDAOImpl extends HibernateDaoSupport {
 		if (lastUpdatedBy == null || lastUpdatedBy.length() <= 0) {
 			lastUpdatedBy = "System";
 		}
-		Date lastUpdatedDate = baseEntity.getLastUpdatedDate();
-		if (lastUpdatedDate == null) {
-			lastUpdatedDate = new Date();
-		}
 		baseEntity.setLastUpdatedBy(lastUpdatedBy);
-		baseEntity.setLastUpdatedDate(lastUpdatedDate);
+		baseEntity.setLastUpdatedDate(new Date());
 	}
 
 	/**

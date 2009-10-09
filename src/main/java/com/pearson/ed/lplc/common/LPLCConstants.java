@@ -102,4 +102,13 @@ public interface LPLCConstants {
 	
 	public static final String STATUS_EXPIRED = "E";
 	
+	/**
+	 * Represents a licensepool has cancelled.
+	 */
+	public static final String IS_CANCELLED_YES = "Yes";
+	
+	/**
+	 * Represents a licensepool has not cancelled.
+	 */
+	public static final String IS_CANCELLED_NO = "No";
 }

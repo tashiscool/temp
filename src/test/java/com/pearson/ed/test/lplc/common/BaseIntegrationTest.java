@@ -109,4 +109,17 @@ public abstract class BaseIntegrationTest extends
 		return (LicensePoolDTO) applicationContext.getBean("serviceTestDenyNewSubscription");
 	}
 	
+	/**
+	 * Loading the test data for createdBy value.
+	 */
+	protected String getCreatedBy() {
+		return "System";
+	}
+	
+	/**
+	 * Loading the test data for cancellation of license pool.
+	 */
+	protected int getCancelationRequest() {
+		return 1;
+	}
 }

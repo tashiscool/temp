@@ -154,6 +154,35 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		return licensepool.getLicensepoolId();
 
 	}
+	
+	/**
+	 * Cancels or Revokes a License Pool.
+	 * 
+	 * @param licensePoolId
+	 * 			id of the license pool.
+	 * @param createdBy
+	 * 			the created by.
+	 * @param cancelSubscription
+	 * 			cancels a subscription.
+	 * 
+	 * @return licensepoolId
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public String cancelLicensePool(String licensePoolId, String createdBy, int cancelSubscription) {
+		LicensePoolMapping licensepool = licensePoolDAO.findByLicensePoolId(licensePoolId);
+		if (licensepool == null)
+			throw new RequiredObjectNotFound("Licensepool doesn't exists with ID: " + licensePoolId);
+		if (cancelSubscription == 1) {
+			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_YES);
+		} else {
+			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_NO);
+		}
+		if (createdBy != null) {
+			licensepool.setLastUpdatedBy(createdBy);
+		}
+		licensePoolDAO.update(licensepool);
+		return licensepool.getLicensepoolId();
+	}
 
 	/**
 	 * 

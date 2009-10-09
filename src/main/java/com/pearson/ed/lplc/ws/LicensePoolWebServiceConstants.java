@@ -29,6 +29,11 @@ public interface LicensePoolWebServiceConstants {
 	 * Denies New Subscriptions request element.
 	 */
 	String DENY_NEW_SUBSCRIPTIONS_REQUEST = "DenyNewSubscriptionsRequest";
+
+	/**
+	 * Cancel licensepool request element.
+	 */
+	String CANCEL_LICENSEPOOL_REQUEST_ELEMENT = "CancelLicensePoolRequest";
 	
 	/**
 	 * The licensepool namespace.
