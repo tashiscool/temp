@@ -340,38 +340,37 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
+	 * @param denyNewSubscription
+	 *            denies new Subscription of the license pool.
 	 * @param createdBy
 	 *            the created by.
 	 * @throws RequiredObjectNotFound
 	 *             - throws this exception at required license pool is not
 	 *             found.
-	 * @throws NewSubscriptionsDeniedException
-	 *             - throws this exception if new subscriptions are already
-	 *             denied for the license pool.
 	 * @return licensePoolId.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public String denyNewSubscriptions(String licensePoolId, String createdBy) {
+	public String denyNewSubscriptions(String licensePoolId, int denyNewSubscription, String createdBy) {
 		LicensePoolMapping licensePool = licensePoolDAO.findByLicensePoolId(licensePoolId);
 		if (null == licensePool) {
 			throw new RequiredObjectNotFound("Licensepool for license pool id: " + licensePoolId + " not found.");
 		}
-		if (licensePool.getDenyManualSubscription() == LPLCConstants.DENY_SUBSCRIPTIONS_FALSE) {
-			licensePool.setDenyManualSubscription(LPLCConstants.DENY_SUBSCRIPTIONS_TRUE);
-		} else {
-			throw new NewSubscriptionsDeniedException("new subscriptions are already denied for this licensepool.");
-		}
+		licensePool.setDenyManualSubscription(denyNewSubscription);
 		if (null != createdBy) {
 			licensePool.setLastUpdatedBy(createdBy);
 		}
-		Set<OrganizationLPMapping> organizationLPMappings = licensePool.getOrganizations();
-		for (OrganizationLPMapping organizationLPMapping : organizationLPMappings) {
-			organizationLPMapping.setDenyManualSubscription(LPLCConstants.DENY_SUBSCRIPTIONS_TRUE);
-			if (null != createdBy) {
-				organizationLPMapping.setLastUpdatedBy(createdBy);
-			}
-			licensePool.setOrganizations(organizationLPMappings);
-		}
+
+		/*
+		 * Set<OrganizationLPMapping> organizationLPMappings =
+		 * licensePool.getOrganizations(); for (OrganizationLPMapping
+		 * organizationLPMapping : organizationLPMappings) {
+		 * organizationLPMapping
+		 * .setDenyManualSubscription(LPLCConstants.DENY_SUBSCRIPTIONS_TRUE); if
+		 * (null != createdBy) {
+		 * organizationLPMapping.setLastUpdatedBy(createdBy); }
+		 * licensePool.setOrganizations(organizationLPMappings); }
+		 */
+
 		licensePoolDAO.update(licensePool);
 		return licensePool.getLicensepoolId();
 	}

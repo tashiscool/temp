@@ -311,6 +311,8 @@
 					nillable="false" />
 				<element name="CreatedBy" type="xsd:string" minOccurs="0" />
 			</sequence>
+			<xsd:attribute name="DenyNewSubscription" type="licensepool:DenyNewSubscription"
+				use="required" />
 		</complexType>
 	</element>
 	<element name="DenyNewSubscriptionsResponse">

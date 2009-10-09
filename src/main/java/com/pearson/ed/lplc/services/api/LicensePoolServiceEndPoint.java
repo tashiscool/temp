@@ -75,14 +75,16 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
 
 	/**
-	 * Deny New Subscriptions for the given license pool id.
+	 * Denies New Subscriptions for the given license pool id.
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
+	 * @param denyNewSubscription
+	 * 			  denies new Subscription of the license pool.           
 	 * @param createdBy
 	 *            the created by.
 	 * @return licenseId.
 	 */
-	String denyNewSubscriptions(String licensePoolId, String createdBy);
+	String denyNewSubscriptions(String licensePoolId, int denyNewSubscription, String createdBy);
 
 }

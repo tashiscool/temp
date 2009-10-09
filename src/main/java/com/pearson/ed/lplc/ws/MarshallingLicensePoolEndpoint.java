@@ -322,16 +322,18 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 		try {
 			String requestLicensePoolId = denyNewSubscriptionsRequest.getLicensePoolId();
 			String requestCreatedBy = denyNewSubscriptionsRequest.getCreatedBy();
-
+			int requestDenyNewSubscription = denyNewSubscriptionsRequest.getDenyNewSubscription();
 			if (logger.isDebugEnabled()) {
-				logger.debug("Received " + DENY_NEW_SUBSCRIPTIONS_REQUEST + ":" + requestLicensePoolId + " : " + requestCreatedBy);
+				logger.debug("Received " + DENY_NEW_SUBSCRIPTIONS_REQUEST + ":" + requestLicensePoolId + " : "
+						+ requestCreatedBy + " : " + requestDenyNewSubscription);
 			}
 
 			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
 
 			logger.info("Invoking Licensepool Service DenyNewSubscriptions method");
-			String licensepoolId = licensePoolServiceEndPoint.denyNewSubscriptions(requestLicensePoolId, requestCreatedBy);
+			String licensepoolId = licensePoolServiceEndPoint.denyNewSubscriptions(requestLicensePoolId,
+					requestDenyNewSubscription, requestCreatedBy);
 			serviceResponseType.setReturnValue(licensepoolId);
 			serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
 			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);

@@ -323,7 +323,11 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			}
 			licensepoolSchemaObj.setQuantity(orgLPMapping.getLicensepoolMapping().getQuantity());
 			licensepoolSchemaObj.setUsedLicenses(orgLPMapping.getUsed_quantity());
-			licensepoolSchemaObj.setDenyNewSubscription(orgLPMapping.getDenyManualSubscription());
+			/*
+			 * Setting the licensepool's DenyManualSubscription value to licensepoolSchemaObj 
+			 * explicitly as per the business requirement.
+			 */
+			licensepoolSchemaObj.setDenyNewSubscription(orgLPMapping.getLicensepoolMapping().getDenyManualSubscription());
 			licensepoolSchemaObj.setStatus(getStatusType(orgLPMapping.getLicensepoolMapping().getStatus()));
 			schemaList.getLicensePoolByOrganizationId().add(licensepoolSchemaObj);
 		}

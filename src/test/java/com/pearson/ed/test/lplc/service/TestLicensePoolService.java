@@ -5,7 +5,6 @@ import org.junit.Test;
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
-import com.pearson.ed.lplc.exception.NewSubscriptionsDeniedException;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
@@ -25,30 +24,18 @@ public class TestLicensePoolService extends BaseIntegrationTest {
 
 		try {
 			String licensepoolId = licensepoolService.createLicensePool(licensepoolForDeny1);
-			licensepoolService.denyNewSubscriptions(licensepoolId, LPLCConstants.DEFAULT_USER);
+			licensepoolService.denyNewSubscriptions(licensepoolId, LPLCConstants.DENY_SUBSCRIPTIONS_TRUE,
+					LPLCConstants.DEFAULT_USER);
 			licensePoolMapping = licensepoolDAO.findByLicensePoolId(licensepoolId);
-			assertTrue("Subscription were not denied for this licensepool.", licensepoolForDeny1
-					.getDenyManualSubscription() != licensePoolMapping.getDenyManualSubscription());
-			assertNotSame("Subscription were not denied for this licensepool.", licensepoolForDeny1
-					.getDenyManualSubscription(), licensePoolMapping.getDenyManualSubscription());
+			assertEquals("Subscription were not denied for this licensepool.", LPLCConstants.DENY_SUBSCRIPTIONS_TRUE,
+					licensePoolMapping.getDenyManualSubscription());
+			assertSame("Subscription were not denied for this licensepool.", LPLCConstants.DENY_SUBSCRIPTIONS_TRUE,
+					licensePoolMapping.getDenyManualSubscription());
 		} catch (Exception exception) {
-			assertTrue("Subscription were not denied for this licensepool.", licensepoolForDeny1
-					.getDenyManualSubscription() != licensePoolMapping.getDenyManualSubscription());
-		} finally {
-			licensePoolMapping = null;
-		}
-
-		try {
-			LicensePoolDTO licensepoolForDeny2 = loadDenyNewSubscription();
-			licensepoolForDeny2.setDenyManualSubscription(LPLCConstants.DENY_SUBSCRIPTIONS_TRUE);
-			String licensepoolId = licensepoolService.createLicensePool(licensepoolForDeny2);
-			licensepoolService.denyNewSubscriptions(licensepoolId, LPLCConstants.DEFAULT_USER);
-			licensePoolMapping = licensepoolDAO.findByLicensePoolId(licensepoolId);
-		} catch (NewSubscriptionsDeniedException newSubscriptionsDeniedException) {
-			assertNotNull("New subscriptions are already denied for this licensepool", newSubscriptionsDeniedException);
+			assertEquals("Subscription were not denied for this licensepool.", LPLCConstants.DENY_SUBSCRIPTIONS_TRUE,
+					licensePoolMapping.getDenyManualSubscription());
 		} finally {
 			licensePoolMapping = null;
 		}
 	}
-
 }
