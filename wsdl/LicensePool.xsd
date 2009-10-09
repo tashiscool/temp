@@ -25,6 +25,7 @@
 			<xsd:enumeration value="P" />
 			<xsd:enumeration value="A" />
 			<xsd:enumeration value="E" />
+			<xsd:enumeration value="C" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<simpleType name="ProductIDType">

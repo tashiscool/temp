@@ -166,6 +166,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * 			cancels a subscription.
 	 * 
 	 * @return licensepoolId
+	 * @throws RequiredObjectNotFoundException when there is no license pool exists.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public String cancelLicensePool(String licensePoolId, String createdBy, int cancelSubscription) {

@@ -516,6 +516,8 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 				statusType = StatusType.A;
 			} else if (status.compareTo(LPLCConstants.STATUS_EXPIRED) == 0) {
 				statusType = StatusType.E;
+			} else if (status.compareTo(LPLCConstants.STATUS_CANCELLED) == 0) {
+				statusType = StatusType.C;
 			}
 		}
 		return statusType;
