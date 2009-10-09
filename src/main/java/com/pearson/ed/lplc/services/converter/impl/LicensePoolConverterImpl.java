@@ -121,6 +121,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolMapping.setSource_system(licensepool.getSourceSystem());
 		licensepoolMapping.setOrg_id(licensepool.getOrganizationId());
 		licensepoolMapping.setProduct_id(licensepool.getProductId());
+		licensepoolMapping.setIsCancelled(LPLCConstants.IS_CANCELLED_NO);
 		String createdBy = licensepool.getCreatedBy();
 		if (StringUtils.isNotBlank(createdBy))
 			licensepoolMapping.setCreatedBy(createdBy);
@@ -222,7 +223,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	 * @param licensepool
 	 * @return update licensepool DTO.
 	 */
-	public UpdateLicensePoolDTO covertupdateRequestToUpdateLicensePoolDTO(
+	public UpdateLicensePoolDTO convertupdateRequestToUpdateLicensePoolDTO(
 			UpdateLicensePool licensepool) {
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepool.getLicensePoolId());
@@ -243,6 +244,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		return updateDTO;
 
 	}
+	
 	/**
 	 * Convert mapping object to DTO for update licensepool.
 	 * @param updateLicensepool UpdateLicensePoolDTO.
@@ -293,6 +295,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	        licensepool.getOrderLineItems().add(orderLineItem);
 	    }
 	}
+	
 	/**
 	 * This will convert Mapping object to Schema object for GetLicensepoolsByOrganizationId.
 	 *

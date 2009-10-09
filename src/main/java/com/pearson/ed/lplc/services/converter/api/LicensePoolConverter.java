@@ -9,7 +9,6 @@ import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
-
 import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
@@ -67,8 +66,9 @@ public interface LicensePoolConverter {
 	 * @param licensepool
 	 * @return update licensepool DTO.
 	 */
-	public UpdateLicensePoolDTO covertupdateRequestToUpdateLicensePoolDTO(
+	public UpdateLicensePoolDTO convertupdateRequestToUpdateLicensePoolDTO(
 			UpdateLicensePool licensepool);
+	
 	/**
 	 * Build LicensepoolMapping from UpdateLicensepoolDTO.
 	 * @param updateLicensepool
@@ -78,6 +78,7 @@ public interface LicensePoolConverter {
 	public void buildLicensepoolMappingFromUpdateLicensepoolDTO(
 			UpdateLicensePoolDTO updateLicensepool,
 			LicensePoolMapping licensepool);
+	
 	/**
 	 *
 	 * @param licenses list of OrganizationLPMapping.
