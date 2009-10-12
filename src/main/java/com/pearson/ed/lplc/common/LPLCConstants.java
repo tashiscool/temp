@@ -107,10 +107,10 @@ public interface LPLCConstants {
 	/**
 	 * Represents a licensepool has cancelled.
 	 */
-	public static final String IS_CANCELLED_YES = "Yes";
+	public static final String IS_CANCELLED_YES = "Y";
 	
 	/**
 	 * Represents a licensepool has not cancelled.
 	 */
-	public static final String IS_CANCELLED_NO = "No";
+	public static final String IS_CANCELLED_NO = "N";
 }

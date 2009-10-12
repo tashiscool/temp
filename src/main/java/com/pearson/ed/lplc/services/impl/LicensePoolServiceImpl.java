@@ -24,6 +24,7 @@ import com.pearson.ed.lplc.exception.LicensePoolExpiredException;
 import com.pearson.ed.lplc.exception.LicensePoolForFutureException;
 import com.pearson.ed.lplc.exception.LicensePoolUnavailableException;
 import com.pearson.ed.lplc.exception.NewSubscriptionsDeniedException;
+import com.pearson.ed.lplc.exception.ObjectAlreadyExists;
 import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
@@ -162,18 +163,29 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * 			id of the license pool.
 	 * @param createdBy
 	 * 			the created by.
-	 * @param cancelSubscription
+	 * @param cancel
 	 * 			cancels a subscription.
 	 * 
 	 * @return licensepoolId
-	 * @throws RequiredObjectNotFoundException when there is no license pool exists.
+	 * @throws RequiredObjectNotFoundException 
+	 * 								-when there is no license pool exists.
+	 * @throws ObjectAlreadyExists
+	 * 					- When already cancelled license pool tried to cancel again.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public String cancelLicensePool(String licensePoolId, String createdBy, int cancelSubscription) {
+	public String cancel(String licensePoolId, String createdBy, int cancel) {
 		LicensePoolMapping licensepool = licensePoolDAO.findByLicensePoolId(licensePoolId);
 		if (licensepool == null)
-			throw new RequiredObjectNotFound("Licensepool doesn't exists with ID: " + licensePoolId);
-		if (cancelSubscription == 1) {
+			throw new RequiredObjectNotFound("Licensepool with ID: " + licensePoolId +" does not exist.");
+		if (cancel == 1) {
+			if (licensepool.getIsCancelled().equals(LPLCConstants.IS_CANCELLED_YES) && licensepool.getStatus().trim().equals(LPLCConstants.STATUS_CANCELLED))
+				throw new ObjectAlreadyExists("Licensepool with ID: " + licensePoolId +" is already cancelled.");
+		} else {
+			if (licensepool.getIsCancelled().equals(LPLCConstants.IS_CANCELLED_NO) && licensepool.getStatus().trim().equals(LPLCConstants.STATUS_ACTIVE))
+				throw new ObjectAlreadyExists("Licensepool with ID: " + licensePoolId +" is already revoked.");
+		}
+		
+		if (cancel == 1) {
 			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_YES);
 		} else {
 			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_NO);

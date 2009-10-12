@@ -13,7 +13,6 @@ import com.pearson.ed.lplc.exception.LicensePoolExceptionFactory;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.warning.LicensePoolWarningFactory;
-import com.pearson.ed.lplc.ws.schema.CancelLicensePool;
 import com.pearson.ed.lplc.ws.schema.CancelLicensePoolRequest;
 import com.pearson.ed.lplc.ws.schema.CancelLicensePoolResponse;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
@@ -371,14 +370,13 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 			CancelLicensePoolRequest cancelLicensePoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
-		try {
-			CancelLicensePool cancelLicensePool = cancelLicensePoolRequest.getCancelLicensePool();
-			String licensePoolId = cancelLicensePool.getLicensePoolId();
-			String createdBy = cancelLicensePool.getCreatedBy();
-			int cancelSubscription = cancelLicensePoolRequest.getCancelSubscription();
+		try {			
+			String licensePoolId = cancelLicensePoolRequest.getLicensePoolId();
+			String createdBy = cancelLicensePoolRequest.getCreatedBy();
+			int cancel = cancelLicensePoolRequest.getCancel();
 			if (logger.isDebugEnabled()) {
 				logger.debug("Received " + CANCEL_LICENSEPOOL_REQUEST_ELEMENT
-						+ ":" + cancelLicensePool.toString());
+						+ ":" + cancelLicensePoolRequest.toString());
 			}
 
 			String transactionId = licensePoolServiceEndPoint
@@ -386,7 +384,7 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
 			
 			logger.info("Invoking Licensepool Service cancelLicensePool method");
-			String licensepoolId = licensePoolServiceEndPoint.cancelLicensePool(licensePoolId,createdBy,cancelSubscription);
+			String licensepoolId = licensePoolServiceEndPoint.cancel(licensePoolId,createdBy,cancel);
 			serviceResponseType.setReturnValue(licensepoolId);
 			serviceResponseType.setTransactionId(licensePoolServiceEndPoint
 					.getTransactionId());

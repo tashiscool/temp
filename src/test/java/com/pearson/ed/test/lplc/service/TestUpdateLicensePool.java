@@ -103,10 +103,10 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
 		String updateLicensePool = licensepoolService
-				.cancelLicensePool(updateDTO.getLicensepoolId(),createdBy, cancellationRequest);
+				.cancel(updateDTO.getLicensepoolId(),createdBy, cancellationRequest);
 		LicensePoolMapping findByLicensePoolId = licensepoolDAO
 				.findByLicensePoolId(updateLicensePool);		
-		assertTrue("Created licensepool has not cancelled", findByLicensePoolId.getIsCancelled().equals("Yes"));
+		assertTrue("Created licensepool has not cancelled", findByLicensePoolId.getIsCancelled().equals("Y"));
 	}
 
 }

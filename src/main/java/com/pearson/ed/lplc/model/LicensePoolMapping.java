@@ -64,7 +64,7 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	@Column(nullable = false, name = "product_id", length = 128)
 	private String product_id;
 	
-	@Column(nullable = false, name = "IS_CANCELLED", length = 3)
+	@Column(nullable = false, name = "IS_CANCELLED", length = 1)
 	private String isCancelled;
 
 		

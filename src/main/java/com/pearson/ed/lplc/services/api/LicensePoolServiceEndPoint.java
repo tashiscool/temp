@@ -94,11 +94,11 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 * 			id of the license pool.
 	 * @param createdBy
 	 * 			the created by.
-	 * @param cancelSubscription
+	 * @param cancel
 	 * 			cancels a subscription.
 	 * 
 	 * @return licensepoolId
 	 */
-	String cancelLicensePool(String licensePoolId, String createdBy, int cancelSubscription);
+	String cancel(String licensePoolId, String createdBy, int cancel);
 
 }

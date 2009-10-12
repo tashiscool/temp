@@ -132,13 +132,13 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 * 			id of the license pool.
 	 * @param createdBy
 	 * 			the created by.
-	 * @param cancelSubscription
+	 * @param cancel
 	 * 			cancels a subscription.
 	 * 
 	 * @return licensepoolId
 	 */
-	public String cancelLicensePool(String licensePoolId,String createdBy,int cancelSubscription) {		
-		return licensepoolService.cancelLicensePool(licensePoolId,createdBy,cancelSubscription);
+	public String cancel(String licensePoolId,String createdBy,int cancel) {		
+		return licensepoolService.cancel(licensePoolId,createdBy,cancel);
 	}
 
 	/**
