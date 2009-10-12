@@ -183,8 +183,9 @@
 	</complexType>
 	<complexType name="CancelLicensePool">
 		<sequence>
-			<element name="LicensePoolId" type="licensepool:LicensePoolIdType" nillable="false"/>
-			<element name="CreatedBy" type="xsd:string" minOccurs="0"/>				
+			<element name="LicensePoolId" type="licensepool:LicensePoolIdType"
+				nillable="false" />
+			<element name="CreatedBy" type="xsd:string" minOccurs="0" />
 		</sequence>
 	</complexType>
 
@@ -314,7 +315,8 @@
 	<element name="CancelLicensePoolRequest">
 		<complexType>
 			<sequence>
-				<element name="CancelLicensePool" type="licensepool:CancelLicensePool" nillable="true"/>
+				<element name="CancelLicensePool" type="licensepool:CancelLicensePool"
+					nillable="true" />
 			</sequence>
 			<xsd:attribute name="CancelSubscription" type="licensepool:DenyNewSubscription"
 				use="required" />
@@ -323,7 +325,8 @@
 	<element name="CancelLicensePoolResponse">
 		<complexType>
 			<sequence>
-				<element name="ServiceResponseType" type="serv:ServiceResponseType" nillable="true"/>
+				<element name="ServiceResponseType" type="serv:ServiceResponseType"
+					nillable="true" />
 			</sequence>
 		</complexType>
 	</element>
@@ -331,10 +334,11 @@
 		<complexType>
 			<sequence>
 				<element name="LicensePoolId" type="licensepool:LicensePoolIdType"
-					nillable="false" />
-				<element name="CreatedBy" type="xsd:string" minOccurs="0" />
+					minOccurs="1" maxOccurs="1" />
+				<element name="CreatedBy" type="xsd:string" minOccurs="0"
+					maxOccurs="1" />
 			</sequence>
-			<xsd:attribute name="DenyNewSubscription" type="licensepool:DenyNewSubscription"
+			<xsd:attribute name="deny" type="licensepool:DenyNewSubscription"
 				use="required" />
 		</complexType>
 	</element>
@@ -342,7 +346,7 @@
 		<complexType>
 			<sequence>
 				<element name="ServiceResponseType" type="serv:ServiceResponseType"
-					nillable="true" />
+					minOccurs="1" maxOccurs="1" />
 			</sequence>
 		</complexType>
 	</element>

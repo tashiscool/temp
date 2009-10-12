@@ -370,7 +370,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @param denyNewSubscription
+	 * @param deny
 	 *            denies new Subscription of the license pool.
 	 * @param createdBy
 	 *            the created by.
@@ -380,12 +380,12 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * @return licensePoolId.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public String denyNewSubscriptions(String licensePoolId, int denyNewSubscription, String createdBy) {
+	public String denyNewSubscriptions(String licensePoolId, int deny, String createdBy) {
 		LicensePoolMapping licensePool = licensePoolDAO.findByLicensePoolId(licensePoolId);
 		if (null == licensePool) {
 			throw new RequiredObjectNotFound("Licensepool for license pool id: " + licensePoolId + " not found.");
 		}
-		licensePool.setDenyManualSubscription(denyNewSubscription);
+		licensePool.setDenyManualSubscription(deny);
 		if (null != createdBy) {
 			licensePool.setLastUpdatedBy(createdBy);
 		}

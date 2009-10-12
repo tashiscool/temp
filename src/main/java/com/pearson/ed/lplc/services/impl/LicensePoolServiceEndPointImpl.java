@@ -115,14 +115,14 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @param denyNewSubscription
+	 * @param deny
 	 *            denies new Subscription of the license pool.
 	 * @param createdBy
 	 *            the created by.
 	 * @return licensePoolId.
 	 */
-	public String denyNewSubscriptions(String licensePoolId, int denyNewSubscription, String createdBy) {
-		return licensepoolService.denyNewSubscriptions(licensePoolId, denyNewSubscription, createdBy);
+	public String denyNewSubscriptions(String licensePoolId, int deny, String createdBy) {
+		return licensepoolService.denyNewSubscriptions(licensePoolId, deny, createdBy);
 	}
 
 	/**
