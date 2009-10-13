@@ -169,22 +169,12 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * @return licensepoolId
 	 * @throws RequiredObjectNotFoundException 
 	 * 								-when there is no license pool exists.
-	 * @throws ObjectAlreadyExists
-	 * 					- When already cancelled license pool tried to cancel again.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public String cancel(String licensePoolId, String createdBy, int cancel) {
 		LicensePoolMapping licensepool = licensePoolDAO.findByLicensePoolId(licensePoolId);
 		if (licensepool == null)
 			throw new RequiredObjectNotFound("Licensepool with ID: " + licensePoolId +" does not exist.");
-		if (cancel == 1) {
-			if (licensepool.getIsCancelled().equals(LPLCConstants.IS_CANCELLED_YES) && licensepool.getStatus().trim().equals(LPLCConstants.STATUS_CANCELLED))
-				throw new ObjectAlreadyExists("Licensepool with ID: " + licensePoolId +" is already cancelled.");
-		} else {
-			if (licensepool.getIsCancelled().equals(LPLCConstants.IS_CANCELLED_NO) && licensepool.getStatus().trim().equals(LPLCConstants.STATUS_ACTIVE))
-				throw new ObjectAlreadyExists("Licensepool with ID: " + licensePoolId +" is already revoked.");
-		}
-		
 		if (cancel == 1) {
 			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_YES);
 		} else {
