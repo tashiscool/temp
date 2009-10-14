@@ -115,11 +115,4 @@ public abstract class BaseIntegrationTest extends
 	protected String getCreatedBy() {
 		return "System";
 	}
-	
-	/**
-	 * Loading the test data for cancellation of license pool.
-	 */
-	protected int getCancelationRequest() {
-		return 1;
-	}
 }

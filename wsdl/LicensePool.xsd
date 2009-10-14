@@ -310,7 +310,7 @@
 				<element name="LicensePoolId" type="licensepool:LicensePoolIdType" maxOccurs="1" minOccurs="1" />
 				<element name="CreatedBy" type="xsd:string" maxOccurs="1" minOccurs="0" />
 			</sequence>
-			<xsd:attribute name="cancel" type="licensepool:DenyNewSubscription"
+			<xsd:attribute name="isCancelled" type="xsd:boolean"
 				use="required" />
 		</complexType>
 	</element>
@@ -330,7 +330,7 @@
 				<element name="CreatedBy" type="xsd:string" minOccurs="0"
 					maxOccurs="1" />
 			</sequence>
-			<xsd:attribute name="deny" type="licensepool:DenyNewSubscription"
+			<xsd:attribute name="isDenied" type="xsd:boolean"
 				use="required" />
 		</complexType>
 	</element>

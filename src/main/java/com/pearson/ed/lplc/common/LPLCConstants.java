@@ -50,12 +50,12 @@ public interface LPLCConstants {
 	 * About email.
 	 */
 	public static final String EMAIL_VALIDATED = "Y";
-	
+
 	/**
-	 * Constant to denote denial of new subscriptions 
+	 * Constant to denote denial of new subscriptions
 	 */
 	public static final int DENY_SUBSCRIPTIONS_TRUE = 1;
-	
+
 	/**
 	 * Constant to denote non-denial of new subscriptions
 	 */
@@ -88,29 +88,39 @@ public interface LPLCConstants {
 	public static final String CREATE_MODE = "Create";
 
 	public static final String UPDATE_MODE = "Update";
-	
-	public static final String 	QUALIFYING_ORGS_ROOT = 	"ROOT_ONLY";
+
+	public static final String QUALIFYING_ORGS_ROOT = "ROOT_ONLY";
 
 	public static final String LICENSEPOOLTYPE = "Seat based licensing";
-	
+
 	/**
 	 * Different status codes for license pool.
 	 */
 	public static final String STATUS_ACTIVE = "A";
-	
+
 	public static final String STATUS_PROCESS = "P";
-	
+
 	public static final String STATUS_EXPIRED = "E";
-	
+
 	public static final String STATUS_CANCELLED = "C";
-	
+
 	/**
 	 * Represents a licensepool has cancelled.
 	 */
 	public static final String IS_CANCELLED_YES = "Y";
-	
+
 	/**
 	 * Represents a licensepool has not cancelled.
 	 */
 	public static final String IS_CANCELLED_NO = "N";
+
+	/**
+	 * Represents a licensepool has isDenied or isCanceled.
+	 */
+	public static final boolean IS_DENIED_OR_CANCELED_TRUE = true;
+
+	/**
+	 * Represents a licensepool has not isDenied or isCanceled.
+	 */
+	public static final boolean IS_DENIED_OR_CANCELED_FALSE = false;
 }

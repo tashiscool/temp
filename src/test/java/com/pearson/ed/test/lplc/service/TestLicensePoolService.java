@@ -24,7 +24,7 @@ public class TestLicensePoolService extends BaseIntegrationTest {
 
 		try {
 			String licensepoolId = licensepoolService.createLicensePool(licensepoolForDeny1);
-			licensepoolService.denyNewSubscriptions(licensepoolId, LPLCConstants.DENY_SUBSCRIPTIONS_TRUE,
+			licensepoolService.denyNewSubscriptions(licensepoolId, LPLCConstants.IS_DENIED_OR_CANCELED_TRUE,
 					LPLCConstants.DEFAULT_USER);
 			licensePoolMapping = licensepoolDAO.findByLicensePoolId(licensepoolId);
 			assertEquals("Subscription were not denied for this licensepool.", LPLCConstants.DENY_SUBSCRIPTIONS_TRUE,

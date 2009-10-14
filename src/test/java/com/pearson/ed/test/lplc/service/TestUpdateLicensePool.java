@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
 
+import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
@@ -99,11 +100,10 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 		String licensepoolId = licensepoolService
 				.createLicensePool(licensepool);
 		String createdBy = getCreatedBy();
-		int cancellationRequest = getCancelationRequest();
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
 		String updateLicensePool = licensepoolService
-				.cancel(updateDTO.getLicensepoolId(),createdBy, cancellationRequest);
+				.cancel(updateDTO.getLicensepoolId(),createdBy, LPLCConstants.IS_DENIED_OR_CANCELED_TRUE);
 		LicensePoolMapping findByLicensePoolId = licensepoolDAO
 				.findByLicensePoolId(updateLicensePool);		
 		assertTrue("Created licensepool has not cancelled", findByLicensePoolId.getIsCancelled().equals("Y"));

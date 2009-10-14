@@ -115,30 +115,30 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @param deny
+	 * @param requestIsDenied
 	 *            denies new Subscription of the license pool.
 	 * @param createdBy
 	 *            the created by.
 	 * @return licensePoolId.
 	 */
-	public String denyNewSubscriptions(String licensePoolId, int deny, String createdBy) {
-		return licensepoolService.denyNewSubscriptions(licensePoolId, deny, createdBy);
+	public String denyNewSubscriptions(String licensePoolId, boolean requestIsDenied, String createdBy) {
+		return licensepoolService.denyNewSubscriptions(licensePoolId, requestIsDenied, createdBy);
 	}
 
 	/**
 	 * Cancels or Revokes a License Pool.
 	 * 
 	 * @param licensePoolId
-	 * 			id of the license pool.
+	 *            id of the license pool.
 	 * @param createdBy
-	 * 			the created by.
-	 * @param cancel
-	 * 			cancels a subscription.
+	 *            the created by.
+	 * @param isCancel
+	 *            cancels a subscription.
 	 * 
 	 * @return licensepoolId
 	 */
-	public String cancel(String licensePoolId,String createdBy,int cancel) {		
-		return licensepoolService.cancel(licensePoolId,createdBy,cancel);
+	public String cancel(String licensePoolId, String createdBy, boolean isCancel) {
+		return licensepoolService.cancel(licensePoolId, createdBy, isCancel);
 	}
 
 	/**

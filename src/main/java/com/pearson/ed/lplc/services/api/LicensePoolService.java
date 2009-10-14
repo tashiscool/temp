@@ -87,25 +87,25 @@ public interface LicensePoolService {
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @param deny
+	 * @param requestIsDenied
 	 *            denies new Subscription of the license pool.
 	 * @param createdBy
 	 *            the created by.
 	 * @return licensePoolId.
 	 */
-	String denyNewSubscriptions(String licensePoolId, int deny, String createdBy);
+	String denyNewSubscriptions(String licensePoolId, boolean requestIsDenied, String createdBy);
 
 	/**
 	 * Cancels or Revokes a License Pool.
 	 * 
 	 * @param licensePoolId
-	 * 			id of the license pool.
+	 *            id of the license pool.
 	 * @param createdBy
-	 * 			the created by.
-	 * @param cancel
-	 * 			cancels a subscription.
+	 *            the created by.
+	 * @param isCancel
+	 *            cancels a subscription.
 	 * 
 	 * @return licensepoolId
 	 */
-	String cancel(String licensePoolId, String createdBy, int cancel);
+	String cancel(String licensePoolId, String createdBy, boolean isCancel);
 }

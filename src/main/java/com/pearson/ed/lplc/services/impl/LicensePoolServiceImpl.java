@@ -155,27 +155,28 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		return licensepool.getLicensepoolId();
 
 	}
-	
+
 	/**
 	 * Cancels or Revokes a License Pool.
 	 * 
 	 * @param licensePoolId
-	 * 			id of the license pool.
+	 *            id of the license pool.
 	 * @param createdBy
-	 * 			the created by.
-	 * @param cancel
-	 * 			cancels a subscription.
+	 *            the created by.
+	 * @param isCancel
+	 *            cancels a subscription.
 	 * 
 	 * @return licensepoolId
-	 * @throws RequiredObjectNotFoundException 
-	 * 								-when there is no license pool exists.
+	 * @throws RequiredObjectNotFoundException
+	 *             -when there is no license pool exists.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public String cancel(String licensePoolId, String createdBy, int cancel) {
+	public String cancel(String licensePoolId, String createdBy, boolean isCancel) {
 		LicensePoolMapping licensepool = licensePoolDAO.findByLicensePoolId(licensePoolId);
+
 		if (licensepool == null)
-			throw new RequiredObjectNotFound("Licensepool with ID: " + licensePoolId +" does not exist.");
-		if (cancel == 1) {
+			throw new RequiredObjectNotFound("Licensepool with ID: " + licensePoolId + " does not exist.");
+		if (isCancel) {
 			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_YES);
 		} else {
 			licensepool.setIsCancelled(LPLCConstants.IS_CANCELLED_NO);
@@ -372,7 +373,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * 
 	 * @param licensePoolId
 	 *            id of the license pool.
-	 * @param deny
+	 * @param requestIsDenied
 	 *            denies new Subscription of the license pool.
 	 * @param createdBy
 	 *            the created by.
@@ -382,12 +383,16 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * @return licensePoolId.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public String denyNewSubscriptions(String licensePoolId, int deny, String createdBy) {
+	public String denyNewSubscriptions(String licensePoolId, boolean requestIsDenied, String createdBy) {
 		LicensePoolMapping licensePool = licensePoolDAO.findByLicensePoolId(licensePoolId);
 		if (null == licensePool) {
 			throw new RequiredObjectNotFound("Licensepool for license pool id: " + licensePoolId + " not found.");
 		}
-		licensePool.setDenyManualSubscription(deny);
+		int denyNewSubscription = 0;
+		if (requestIsDenied) {
+			denyNewSubscription = LPLCConstants.DENY_SUBSCRIPTIONS_TRUE;
+		}
+		licensePool.setDenyManualSubscription(denyNewSubscription);
 		if (null != createdBy) {
 			licensePool.setLastUpdatedBy(createdBy);
 		}

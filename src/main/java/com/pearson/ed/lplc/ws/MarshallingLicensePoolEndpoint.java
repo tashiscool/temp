@@ -324,10 +324,10 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 		try {
 			String requestLicensePoolId = denyNewSubscriptionsRequest.getLicensePoolId();
 			String requestCreatedBy = denyNewSubscriptionsRequest.getCreatedBy();
-			int requestDeny = denyNewSubscriptionsRequest.getDeny();
+			boolean requestIsDenied = denyNewSubscriptionsRequest.isIsDenied();
 			if (logger.isDebugEnabled()) {
 				logger.debug("Received " + DENY_NEW_SUBSCRIPTIONS_REQUEST + ":" + requestLicensePoolId + " : "
-						+ requestCreatedBy + " : " + requestDeny);
+						+ requestCreatedBy + " : " + requestIsDenied);
 			}
 
 			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
@@ -335,7 +335,7 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 
 			logger.info("Invoking Licensepool Service DenyNewSubscriptions method");
 			String licensepoolId = licensePoolServiceEndPoint.denyNewSubscriptions(requestLicensePoolId,
-					requestDeny, requestCreatedBy);
+					requestIsDenied, requestCreatedBy);
 			serviceResponseType.setReturnValue(licensepoolId);
 			serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
 			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);
@@ -366,49 +366,41 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 * @return CancelLicensePoolResponse
 	 */
 	@PayloadRoot(localPart = CANCEL_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public CancelLicensePoolResponse cancelLicensePool(
-			CancelLicensePoolRequest cancelLicensePoolRequest) {
+	public CancelLicensePoolResponse cancelLicensePool(CancelLicensePoolRequest cancelLicensePoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
-		try {			
+		try {
 			String licensePoolId = cancelLicensePoolRequest.getLicensePoolId();
 			String createdBy = cancelLicensePoolRequest.getCreatedBy();
-			int cancel = cancelLicensePoolRequest.getCancel();
+			boolean isCancel = cancelLicensePoolRequest.isIsCancelled();
 			if (logger.isDebugEnabled()) {
-				logger.debug("Received " + CANCEL_LICENSEPOOL_REQUEST_ELEMENT
-						+ ":" + cancelLicensePoolRequest.toString());
+				logger.debug("Received " + CANCEL_LICENSEPOOL_REQUEST_ELEMENT + ":"
+						+ cancelLicensePoolRequest.toString());
 			}
 
-			String transactionId = licensePoolServiceEndPoint
-					.generateTransactionId();
+			String transactionId = licensePoolServiceEndPoint.generateTransactionId();
 			licensePoolServiceEndPoint.setTransactionId(transactionId);
-			
+
 			logger.info("Invoking Licensepool Service cancelLicensePool method");
-			String licensepoolId = licensePoolServiceEndPoint.cancel(licensePoolId,createdBy,cancel);
+			String licensepoolId = licensePoolServiceEndPoint.cancel(licensePoolId, createdBy, isCancel);
 			serviceResponseType.setReturnValue(licensepoolId);
-			serviceResponseType.setTransactionId(licensePoolServiceEndPoint
-					.getTransactionId());
+			serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
 			serviceResponseType.setStatusCode(StatusCodeType.SUCCESS);
-			serviceResponseType.getStatusMessage().add(
-					"Cancel LicensePool updated successfully");
+			serviceResponseType.getStatusMessage().add("Cancel LicensePool updated successfully");
 
 		} catch (Exception e) {
-			LicensePoolException licensepoolException = exceptionFactory
-					.getLicensePoolException(e);
+			LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(e);
 			if (e instanceof LPLCBaseException) {
-				serviceResponseType.setTransactionId(licensePoolServiceEndPoint
-						.getTransactionId());
-				serviceResponseType
-						.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
+				serviceResponseType.setTransactionId(licensePoolServiceEndPoint.getTransactionId());
+				serviceResponseType.setReturnValue(LPLCConstants.SERVICE_RESPONSE_RETURN_FAILURE);
 				serviceResponseType.setStatusCode(StatusCodeType.FAILURE);
-				serviceResponseType.getStatusMessage().add(
-						licensepoolException.getCause().toString());
+				serviceResponseType.getStatusMessage().add(licensepoolException.getCause().toString());
 			} else {
 				throw licensepoolException;
 			}
 		}
 		CancelLicensePoolResponse cancelLicensePoolResponse = new CancelLicensePoolResponse();
-		cancelLicensePoolResponse.setServiceResponseType(serviceResponseType);		
+		cancelLicensePoolResponse.setServiceResponseType(serviceResponseType);
 		return cancelLicensePoolResponse;
 	}
 }
