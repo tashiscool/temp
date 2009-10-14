@@ -65,7 +65,7 @@ public class LicensepoolJMSUtils {
  	        StringBuffer buf = new StringBuffer();
  	        String strLine;
  	        while ((strLine = br.readLine()) != null) 
- 	        	buf.append(strLine);
+ 	        	buf.append(strLine+"\n");
  	        writer.writeToQueue(buf.toString());
 		} catch (JAXBException e) {
 			logger.log(Level.ERROR,
