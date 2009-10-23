@@ -20,6 +20,7 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
 import com.pearson.ed.lplc.exception.LPLCBaseException;
+import com.pearson.ed.lplc.exception.LicensePoolCanceledException;
 import com.pearson.ed.lplc.exception.LicensePoolExpiredException;
 import com.pearson.ed.lplc.exception.LicensePoolForFutureException;
 import com.pearson.ed.lplc.exception.LicensePoolUnavailableException;
@@ -208,12 +209,27 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 *        currently
 	 * @throw LicensePoolUnavailableException - if no license pools exist for
 	 *        the given product and organization
+	 * @throw LicensePoolCanceledException - throws this exception if no active
+	 *        license pool for the given organization and product is found
 	 */
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId) {
 		Date currentDate = new Date();
+		String status = null;
+		boolean checkStatus = false;
 		List<LicensePoolMapping> qualifyingLicensePools = licensePoolDAO.findOrganizationMappingToSubscribe(
 				organizationId, productId, currentDate, true);
+
+		for (LicensePoolMapping licensePoolMapping : qualifyingLicensePools) {
+			status = licensePoolMapping.getStatus().trim();
+			if (LPLCConstants.STATUS_ACTIVE.equals(status)) {
+				checkStatus = true;
+			}
+			if (!checkStatus) {
+				throw new LicensePoolCanceledException(
+						"Active License pool(s) for the given organization and product not found");
+			}
+		}
 
 		if (qualifyingLicensePools != null && qualifyingLicensePools.size() > 0) {
 			return qualifyingLicensePools.get(0);
@@ -271,7 +287,15 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			if (denySubscriptionsSet) {
 				throw new NewSubscriptionsDeniedException("Existing License pools have new subscriptions denied");
 			}
+			if (LPLCConstants.STATUS_ACTIVE.equals(licensePool.getStatus().trim())) {
+				checkStatus = true;
+			}
+			if (!checkStatus) {
+				throw new LicensePoolCanceledException(
+						"Active License pool(s) for the given organization and product not found.");
+			}
 		}
+
 		return null;
 	}
 

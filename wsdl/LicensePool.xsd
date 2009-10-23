@@ -80,6 +80,7 @@
 		<restriction base="xsd:string">
 			<enumeration value="RootOnly" />
 			<enumeration value="RootAndParents" />
+			<enumeration value="AllInHierarchy" />
 		</restriction>
 	</simpleType>
 	<complexType name="UpdateUsedLicenses">
