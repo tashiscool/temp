@@ -3,6 +3,7 @@
  */
 package com.pearson.ed.lplc.services.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +26,6 @@ import com.pearson.ed.lplc.exception.LicensePoolExpiredException;
 import com.pearson.ed.lplc.exception.LicensePoolForFutureException;
 import com.pearson.ed.lplc.exception.LicensePoolUnavailableException;
 import com.pearson.ed.lplc.exception.NewSubscriptionsDeniedException;
-import com.pearson.ed.lplc.exception.ObjectAlreadyExists;
 import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
@@ -124,19 +124,31 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	}
 
 	/**
+	 * Get license pool by organizationId.
 	 * 
 	 * @param organizationId
 	 *            organizationId.
 	 * @param qualifyingOrgs
 	 *            qualifyingOrgs.
-	 * @return List.
+	 * @return list of organization license pool mappings
 	 */
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<OrganizationLPMapping> getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs) {
 		int level = 999;
+		List<OrganizationLPMapping> organizationLPMappings = new ArrayList<OrganizationLPMapping>();
+
 		if (LPLCConstants.QUALIFYING_ORGS_ROOT.equalsIgnoreCase(qualifyingOrgs))
 			level = 0;
-		return organizationLPDAO.listOrganizationMappingByOrganizationId(organizationId, level);
+		if (LPLCConstants.QUALIFYING_ORGS_ALL_IN_HIERARCHY.equals(qualifyingOrgs)) {
+			organizationLPMappings.addAll(organizationLPDAO.listOrganizationMappingByOrganizationId(organizationId,
+					level));
+
+			organizationLPMappings.addAll(getChildTreeByOrganizationIds(organizationId));
+		} else {
+			organizationLPMappings = organizationLPDAO.listOrganizationMappingByOrganizationId(organizationId, level);
+		}
+
+		return organizationLPMappings;
 	}
 
 	/**
@@ -227,7 +239,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			}
 			if (!checkStatus) {
 				throw new LicensePoolCanceledException(
-						"Active License pool(s) for the given organization and product not found");
+						"Active License pool(s) for the given organization and product not found.");
 			}
 		}
 
@@ -434,5 +446,27 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 
 		licensePoolDAO.update(licensePool);
 		return licensePool.getLicensepoolId();
+	}
+
+	/**
+	 * Get organization child tree by Id.
+	 * 
+	 * @param organizationId
+	 * @return list of organization license pool mappings
+	 */
+	private List<OrganizationLPMapping> getChildTreeByOrganizationIds(String organizationId) {
+
+		List<OrganizationLPMapping> orgLPMappings = new ArrayList<OrganizationLPMapping>();
+		List<String> childOrgIds = new ArrayList<String>();
+
+		List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(organizationId);
+		for (OrganizationDTO organizationDTO : childOrganizaitons) {
+			childOrgIds.add(organizationDTO.getOrgId());
+		}
+		if (null != childOrgIds && childOrgIds.size() > 0) {
+			orgLPMappings = organizationLPDAO.listOrganizationMappingByOrganizationId(childOrgIds,
+					LPLCConstants.INITIAL_LEVEL);
+		}
+		return orgLPMappings;
 	}
 }

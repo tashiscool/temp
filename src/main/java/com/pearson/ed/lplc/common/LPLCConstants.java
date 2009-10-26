@@ -89,7 +89,15 @@ public interface LPLCConstants {
 
 	public static final String UPDATE_MODE = "Update";
 
+	/**
+	 * Represents the qualifying organization root.
+	 */
 	public static final String QUALIFYING_ORGS_ROOT = "ROOT_ONLY";
+
+	/**
+	 * Represents qualifying organizations present in hierarchy.
+	 */
+	public static final String QUALIFYING_ORGS_ALL_IN_HIERARCHY = "ALL_IN_HIERARCHY";
 
 	public static final String LICENSEPOOLTYPE = "Seat based licensing";
 
@@ -123,4 +131,9 @@ public interface LPLCConstants {
 	 * Represents a licensepool has not isDenied or isCanceled.
 	 */
 	public static final boolean IS_DENIED_OR_CANCELED_FALSE = false;
+
+	/**
+	 * Represents a initial level of an organization.
+	 */
+	public static final int INITIAL_LEVEL = 0;
 }

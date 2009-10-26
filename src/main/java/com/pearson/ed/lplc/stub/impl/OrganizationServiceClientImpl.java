@@ -44,8 +44,9 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 
 	/**
 	 * Method to get the child organizations for supplied orgId.
+	 * 
 	 * @param organizationId
-	 * @return List of OrganizationDTOs. 
+	 * @return List of OrganizationDTOs.
 	 */
 	public List<OrganizationDTO> getChildOrganizations(String organizationId) {
 
@@ -55,29 +56,28 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 			OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
 					.marshalSendAndReceive(request);
 			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
-			OrganizationDTO organizationDTO = null;
-			for (OrganizationTreeType orgTreeType : organizationTreeType.getOrganization()) {
-				organizationDTO = new OrganizationDTO();
-				organizationDTO.setOrgId(orgTreeType.getOrganizationId());
-				organizationDTO.setOrgLevel(orgTreeType.getLevel());
-				organizationDTOList.add(organizationDTO);
-			}
-		} catch (Exception exception) {	
-			//FIXME: These needs to be removed once error codes are defined.			
-			if (exception.getMessage().contains("Invalid Organization Id")){		
+			OrganizationDTO organizationDTO = new OrganizationDTO();
+
+			organizationDTO.setOrgId(organizationTreeType.getOrganizationId());
+			organizationDTO.setOrgLevel(organizationTreeType.getLevel());
+			organizationDTOList.addAll(getOrganizationChildTree(organizationTreeType.getOrganization(),
+					organizationDTOList));
+			organizationDTOList.add(organizationDTO);
+
+		} catch (Exception exception) {
+			// FIXME: These needs to be removed once error codes are defined.
+			if (exception.getMessage().contains("Invalid Organization Id")) {
 				throw new OrganizationNotValidException("No Organization found for Organization ID: " + organizationId);
 			}
-			if (exception.getMessage().contains("No child organizations found for organization Id "))
-			{
-				logger.debug("No child organizations found for organization Id");				
+			if (exception.getMessage().contains("No child organizations found for organization Id ")) {
+				logger.debug("No child organizations found for organization Id");
 				return organizationDTOList;
 			}
-			logger
-					.error("Call to Organization Service failed when fetching ChildOrganizaitons for Organization Id: "
-							+ organizationId);
-				throw new ExternalServiceCallException(exception.getMessage());
-	  }
-		
+			logger.error("Call to Organization Service failed when fetching ChildOrganizaitons for Organization Id: "
+					+ organizationId);
+			throw new ExternalServiceCallException(exception.getMessage());
+		}
+
 		return organizationDTOList;
 	}
 
@@ -85,11 +85,35 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 	 * Private method to create a GetOrganizationByIdRequest object.
 	 * 
 	 * @param organizationId
-	 * @return
+	 * @return request
 	 */
 	private Object getChildTreeByOrganizationIdRequest(String organizationId) {
 		GetChildTreeByOrganizationIdRequest request = new GetChildTreeByOrganizationIdRequest();
 		request.setOrganizationId(organizationId);
 		return request;
+	}
+
+	/**
+	 * Method to get list of all child organizations. 
+	 * 
+	 * @param organizationTreeTypes
+	 * @param organizationDTOList
+	 * 
+	 * @return organization DTO list
+	 */
+	private List<OrganizationDTO> getOrganizationChildTree(List<OrganizationTreeType> organizationTreeTypes,
+			List<OrganizationDTO> organizationDTOList) {
+		OrganizationDTO organizationDTO = null;
+
+		for (int i = 0; i < organizationTreeTypes.size(); i++) {
+			OrganizationTreeType organizationTreeType = (OrganizationTreeType) organizationTreeTypes.get(i);
+			organizationDTO = new OrganizationDTO();
+			organizationDTO.setOrgId(organizationTreeType.getOrganizationId());
+			organizationDTO.setOrgLevel(organizationTreeType.getLevel());
+			organizationDTOList.add(organizationDTO);
+			if (organizationTreeType.getOrganization().size() > 0)
+				getOrganizationChildTree(organizationTreeType.getOrganization(), organizationDTOList);
+		}
+		return organizationDTOList;
 	}
 }

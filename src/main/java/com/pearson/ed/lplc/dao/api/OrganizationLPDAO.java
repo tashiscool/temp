@@ -7,17 +7,29 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
 /**
  * 
  * @author UTRIVDI
- *
+ * 
  */
 public interface OrganizationLPDAO {
 	/**
 	 * List License Pool based on organization ID provided.
 	 * 
 	 * @param organizationId
-	 *            organizationId.
-	 * @return List of LicensePoolMapping.
+	 *            organizationId
+	 * @param level
+	 *            organization level
+	 * @return List of LicensePoolMapping
 	 */
-	public List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(String organizationId, int level);
-    
+	List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(String organizationId, int level);
+
+	/**
+	 * List License Pool based on organization IDs provided.
+	 * 
+	 * @param organizationIds
+	 *            list of organizationIds
+	 * @param level
+	 *            organization level
+	 * @return List of organization license pool mapping
+	 */
+	List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(List<String> organizationIds, int level);
 
 }
