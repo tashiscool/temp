@@ -143,7 +143,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			organizationLPMappings.addAll(organizationLPDAO.listOrganizationMappingByOrganizationId(organizationId,
 					level));
 
-			organizationLPMappings.addAll(getChildTreeByOrganizationIds(organizationId));
+			organizationLPMappings.addAll(getLicensePoolsForOrgChildTree(organizationId));
 		} else {
 			organizationLPMappings = organizationLPDAO.listOrganizationMappingByOrganizationId(organizationId, level);
 		}
@@ -228,24 +228,19 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	public LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId) {
 		Date currentDate = new Date();
 		String status = null;
-		boolean checkStatus = false;
 		List<LicensePoolMapping> qualifyingLicensePools = licensePoolDAO.findOrganizationMappingToSubscribe(
 				organizationId, productId, currentDate, true);
 
 		for (LicensePoolMapping licensePoolMapping : qualifyingLicensePools) {
 			status = licensePoolMapping.getStatus().trim();
 			if (LPLCConstants.STATUS_ACTIVE.equals(status)) {
-				checkStatus = true;
-			}
-			if (!checkStatus) {
-				throw new LicensePoolCanceledException(
-						"Active License pool(s) for the given organization and product not found.");
+				return licensePoolMapping;
 			}
 		}
 
-		if (qualifyingLicensePools != null && qualifyingLicensePools.size() > 0) {
+		/*if (qualifyingLicensePools != null && qualifyingLicensePools.size() > 0 && count > 0) {
 			return qualifyingLicensePools.get(0);
-		}
+		}*/
 
 		// No license pools found, check other conditions
 		// Remove date and deny subscription restrictions and check for
@@ -259,7 +254,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		boolean lpExpired = false;
 		boolean denySubscriptionsSet = false;
 		boolean lpForFuture = false;
-
+		
 		for (LicensePoolMapping licensePool : qualifyingLicensePools) {
 			if (currentDate.after(licensePool.getStart_date()) && !currentDate.before(licensePool.getEnd_date())) {
 				lpExpired = true;
@@ -299,15 +294,18 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			if (denySubscriptionsSet) {
 				throw new NewSubscriptionsDeniedException("Existing License pools have new subscriptions denied");
 			}
-			if (LPLCConstants.STATUS_ACTIVE.equals(licensePool.getStatus().trim())) {
-				checkStatus = true;
-			}
-			if (!checkStatus) {
-				throw new LicensePoolCanceledException(
-						"Active License pool(s) for the given organization and product not found.");
+		}
+		boolean isCancelled = false;
+		for (LicensePoolMapping licensePool : qualifyingLicensePools) {
+			if (LPLCConstants.STATUS_CANCELLED.equals(licensePool.getStatus().trim())) {
+				isCancelled = true;
 			}
 		}
-
+		if (isCancelled) {
+			throw new LicensePoolCanceledException(
+					"Active License pool(s) for the given organization and product not found.");
+		}
+		
 		return null;
 	}
 
@@ -454,7 +452,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * @param organizationId
 	 * @return list of organization license pool mappings
 	 */
-	private List<OrganizationLPMapping> getChildTreeByOrganizationIds(String organizationId) {
+	private List<OrganizationLPMapping> getLicensePoolsForOrgChildTree(String organizationId) {
 
 		List<OrganizationLPMapping> orgLPMappings = new ArrayList<OrganizationLPMapping>();
 		List<String> childOrgIds = new ArrayList<String>();

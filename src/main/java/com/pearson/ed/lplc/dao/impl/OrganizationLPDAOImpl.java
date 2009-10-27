@@ -7,14 +7,17 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
+import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.OrganizationLPDAO;
 import com.pearson.ed.lplc.dao.impl.common.LPLCBaseDAOImpl;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 
 public class OrganizationLPDAOImpl extends LPLCBaseDAOImpl implements
-OrganizationLPDAO {
+OrganizationLPDAO, LPLCConstants {
 	/**
-	 * List License Pool based on organization ID provided.
+	 * Gets license pools for the given organizationId,
+	 * that are created at the organization or inherited from parent 
+	 * using the level attribute. level =0 means, license pools created for an organization.
 	 * 
 	 * @param organizationId
 	 *            organizationId
@@ -28,14 +31,16 @@ OrganizationLPDAO {
 		Criteria criteria = getSession().createCriteria(OrganizationLPMapping.class)
 							.setFetchMode("licensepoolMapping", FetchMode.JOIN);
 		Criterion eqOrganizationId = Restrictions.eq("organization_id", organizationId);
-		Criterion eqRootOrganization = Restrictions.like("organization_level", 0);
-		if (level == 0)
+		Criterion eqRootOrganization = Restrictions.like("organization_level", LPLCConstants.INITIAL_LEVEL);
+		if (level == LPLCConstants.INITIAL_LEVEL)
 			criteria.add(eqRootOrganization);
 		return criteria.add(eqOrganizationId).list();
 	}
 	
 	/**
-	 * List License Pool based on organization IDs provided.
+	 * Gets license pools for the given organizationIds,
+	 * that are created at the organization or inherited from parent 
+	 * using the level attribute. level =0 means, license pools created for an organization.
 	 * 
 	 * @param organizationIds
 	 *            list of organizationIds
@@ -49,7 +54,7 @@ OrganizationLPDAO {
 		Criteria criteria = getSession().createCriteria(OrganizationLPMapping.class)
 							.setFetchMode("licensepoolMapping", FetchMode.JOIN)
 							.add(Restrictions.in("organization_id", organizationIds))
-							.add(Restrictions.eq("organization_level", 0));
+							.add(Restrictions.eq("organization_level", LPLCConstants.INITIAL_LEVEL));
 		return criteria.list();
 	}
 }

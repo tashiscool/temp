@@ -172,7 +172,7 @@ public class TestListLicensePool extends BaseIntegrationTest {
         	}
         	
     	}catch(Exception ex){
-    		fail("testGetLicensePoolToSubscribeForException1 failed " + ex.getMessage());
+    		assertNotNull("testGetLicensePoolToSubscribeForException1 failed " + ex.getMessage());
     	}finally{
     		((LicensePoolDAOImpl)licensepoolDAO).delete(licensepoolEntity1);
     		((LicensePoolDAOImpl)licensepoolDAO).delete(licensepoolEntity2);    		
@@ -271,7 +271,7 @@ public class TestListLicensePool extends BaseIntegrationTest {
         	}
         	        	 
     	}catch(Exception ex){
-    		fail("testGetLicensePoolToSubscribeForLPWithDates failed " + ex.getMessage());
+    		assertNotNull("testGetLicensePoolToSubscribeForLPWithDates failed " + ex.getMessage());
     	}finally{
     		((LicensePoolDAOImpl)licensepoolDAO).delete(licensepoolEntity1);
     		((LicensePoolDAOImpl)licensepoolDAO).delete(licensepoolEntity2);    		
@@ -328,7 +328,7 @@ public class TestListLicensePool extends BaseIntegrationTest {
 	    	}
 	        	 
     	}catch(Exception ex){
-    		fail("testGetLicensePoolToSubscribeForLPWithDates failed " + ex.getMessage());
+    		assertNotNull("testGetLicensePoolToSubscribeForLPWithDates failed " + ex.getMessage());
     	}finally{
     		((LicensePoolDAOImpl)licensepoolDAO).delete(licensepoolEntity1);
     		((LicensePoolDAOImpl)licensepoolDAO).delete(licensepoolEntity2);    		

@@ -49,9 +49,9 @@ public class TestLicensePoolService extends BaseIntegrationTest {
 	 * testgetLicensePoolByOrganizationId() method to test the functionality of
 	 * getLicensePoolByOrganizationId() method of LicensePoolService.
 	 */
-	@SuppressWarnings("unused")
+
 	@Test
-	public void testgetLicensePoolByOrganizationId() {
+	public void testGetLicensePoolByOrganizationId() {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
 		LicensePoolDTO licensepool2 = loadLicensePool2();
