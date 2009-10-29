@@ -54,7 +54,7 @@ OrganizationLPDAO, LPLCConstants {
 		Criteria criteria = getSession().createCriteria(OrganizationLPMapping.class)
 							.setFetchMode("licensepoolMapping", FetchMode.JOIN)
 							.add(Restrictions.in("organization_id", organizationIds))
-							.add(Restrictions.eq("organization_level", LPLCConstants.INITIAL_LEVEL));
+							.add(Restrictions.eq("organization_level",level));
 		return criteria.list();
 	}
 }

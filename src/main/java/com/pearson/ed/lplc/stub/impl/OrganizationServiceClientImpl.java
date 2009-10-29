@@ -51,10 +51,8 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 	public List<OrganizationDTO> getChildOrganizations(String organizationId) {
 
 		List<OrganizationDTO> organizationDTOList = new ArrayList<OrganizationDTO>();
-		Object request = getChildTreeByOrganizationIdRequest(organizationId);
 		try {
-			OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
-					.marshalSendAndReceive(request);
+			OrganizationTreeResponse organizationTreeResponse = getOrgHierarchy(organizationId);
 			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
 			OrganizationDTO organizationDTO = new OrganizationDTO();
 
@@ -80,6 +78,14 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 
 		return organizationDTOList;
 	}
+	
+	protected OrganizationTreeResponse getOrgHierarchy(String organizationId) throws Exception{
+		Object request = getChildTreeByOrganizationIdRequest(organizationId);
+		OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
+					.marshalSendAndReceive(request);
+		return organizationTreeResponse;
+	}
+	
 
 	/**
 	 * Private method to create a GetOrganizationByIdRequest object.

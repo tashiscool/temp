@@ -459,6 +459,8 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 
 		List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(organizationId);
 		for (OrganizationDTO organizationDTO : childOrganizaitons) {
+			// Do not add parent organization into the list.
+			if (organizationDTO.getOrgId().equals(organizationId)) continue;			
 			childOrgIds.add(organizationDTO.getOrgId());
 		}
 		if (null != childOrgIds && childOrgIds.size() > 0) {
