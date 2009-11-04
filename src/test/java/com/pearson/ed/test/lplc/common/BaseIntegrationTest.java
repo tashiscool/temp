@@ -79,6 +79,7 @@ public abstract class BaseIntegrationTest extends
 				"classpath:applicationContext-lplc-dao.xml",
 				"classpath:applicationContext-lplc-hibernate.xml",
 				"classpath:applicationContext-lplc-service.xml",
+				"classpath:applicationContext-lplc-jms.xml",
 				"classpath:applicationContext-test-lplc-services.xml"};
 	}
 	

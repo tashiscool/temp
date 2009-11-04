@@ -3,13 +3,19 @@ package com.pearson.ed.lplc.services.impl;
 import java.util.List;
 import java.util.UUID;
 
+import javax.jms.JMSException;
+
 import org.apache.log4j.Logger;
 
+import com.pearson.ed.lplc.dto.LicensePoolDTO;
+import com.pearson.ed.lplc.exception.LicensePoolJMSException;
+import com.pearson.ed.lplc.jms.util.LicensepoolJMSUtils;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
+import com.pearson.ed.lplc.ws.schema.EventTypeType;
 import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
 import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
 import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
@@ -22,6 +28,7 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	private LicensePoolService licensepoolService;
 	private String transactionId;
 	private LicensePoolConverter licensePoolConverter;
+	private LicensepoolJMSUtils licensepoolJMSUtils;
 
 	/**
 	 * @return the licensePoolConverter
@@ -46,6 +53,14 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 */
 	public void setLicensepoolService(LicensePoolService licensepoolService) {
 		this.licensepoolService = licensepoolService;
+	}
+
+	/**
+	 * @param licensepoolJMSUtils
+	 *            the licensepoolJMSUtils to set
+	 */
+	public void setLicensepoolJMSUtils(LicensepoolJMSUtils licensepoolJMSUtils) {
+		this.licensepoolJMSUtils = licensepoolJMSUtils;
 	}
 
 	/**
@@ -136,9 +151,21 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 *            cancels a subscription.
 	 * 
 	 * @return licensepoolId
+	 * @throws Exception
 	 */
 	public String cancel(String licensePoolId, String createdBy, boolean isCancel) {
-		return licensepoolService.cancel(licensePoolId, createdBy, isCancel);
+		LicensePoolDTO licensePoolDTO = new LicensePoolDTO();
+		String canceledLicensePoolId = null;
+		try {
+			canceledLicensePoolId = licensepoolService.cancel(licensePoolId, createdBy, isCancel);
+			if (null != canceledLicensePoolId) {
+				licensePoolDTO.setLicensepoolId(licensePoolId);
+				licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CANCEL);
+			}
+		} catch (Exception e) {
+			throw new LicensePoolJMSException("Failed to publish JMS message.");
+		}
+		return canceledLicensePoolId;
 	}
 
 	/**
