@@ -7,7 +7,7 @@
 	<bean id="licensepoolExceptionFactory"
 		class="com.pearson.ed.lplc.exception.LicensePoolExceptionFactory">
 		<property name="defaultKey" value="LPLC0001" />
-		
+
 		<property name="codeDescProperties">
 			<props>
 				<prop key="LPLC0001">${LPLC0001}</prop>
@@ -20,10 +20,11 @@
 				<prop key="LPLC0008">${LPLC0008}</prop>
 				<prop key="LPLC0009">${LPLC0009}</prop>
 				<prop key="LPLC0010">${LPLC0010}</prop>
-				<prop key="LPLC0011">${LPLC0011}</prop>				
-				<prop key="LPLC0012">${LPLC0012}</prop>				
+				<prop key="LPLC0011">${LPLC0011}</prop>
+				<prop key="LPLC0012">${LPLC0012}</prop>
 				<prop key="LPLC0013">${LPLC0013}</prop>
-				<prop key="LPLC0014">${LPLC0014}</prop>						
+				<prop key="LPLC0014">${LPLC0014}</prop>
+				<prop key="LPLC0015">${LPLC0015}</prop>
 			</props>
 		</property>
 	</bean>

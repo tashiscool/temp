@@ -69,10 +69,18 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 * 
 	 * @param licensepool
 	 *            the licensepool to be created.
+	 * @throws LicensePoolJMSException            
 	 */
 	public String createLicensePool(CreateLicensePool licensepool) {
-		return licensepoolService.createLicensePool(licensePoolConverter
-				.covertCreateRequestToLicensePoolDTO(licensepool));
+		LicensePoolDTO licensePoolDTO = licensePoolConverter.covertCreateRequestToLicensePoolDTO(licensepool);
+		String licensePoolId = licensepoolService.createLicensePool(licensePoolDTO);
+		try {
+			licensePoolDTO.setLicensepoolId(licensePoolId);
+			licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CREATE);
+		} catch (Exception e) {
+			throw new LicensePoolJMSException("Failed to publish JMS message.");
+		}
+		return licensePoolId;
 	}
 
 	/**

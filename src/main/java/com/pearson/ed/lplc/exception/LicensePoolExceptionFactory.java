@@ -68,6 +68,9 @@ public class LicensePoolExceptionFactory {
 		else if (cause instanceof LicensePoolCanceledException) {
 			code = "LPLC0014";
 		}
+		else if (cause instanceof LicensePoolCanceledException) {
+			code = "LPLC0015";
+		}
 		else if (cause instanceof LPLCBaseException) {
 			code = "LPLC0002";
 		}

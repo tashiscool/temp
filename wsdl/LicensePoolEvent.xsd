@@ -6,6 +6,7 @@ elementFormDefault="qualified" attributeFormDefault="unqualified">
 		<restriction base="string">
 			<enumeration value="LP_EXPIRE" />
 			<enumeration value="LP_CANCEL" />
+			<enumeration value="LP_CREATE" />
 		</restriction>
 	</simpleType>
 	<complexType name="LicensePoolEvent">
