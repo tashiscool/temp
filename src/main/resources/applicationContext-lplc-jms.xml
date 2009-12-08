@@ -11,7 +11,7 @@
 
 	<bean id="jmsFactory" class="progress.message.jclient.QueueConnectionFactory">
     	<property name="brokerURL">
-      		<value>tcp://sonicdc05:2506</value>
+      		<value>tcp://sonicdc05:2507</value>
     	</property>
   	</bean>
   	
