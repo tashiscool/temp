@@ -11,26 +11,26 @@
 
 	<bean id="jmsFactory" class="progress.message.jclient.QueueConnectionFactory">
     	<property name="brokerURL">
-      		<value>tcp://sonicdc05:2507</value>
+      		<value>${brokerURL}</value>
     	</property>
   	</bean>
-  	
+
 	<bean id="jmsWriter" class="com.pearson.ed.lplc.jms.impl.JMSWriterImpl" >
 		<property name="jmsTemplate" ref="jmsTemplate" />
 	</bean>
-	
+
 	<bean id="licensepoolQueue" class="progress.message.jclient.Queue">
-		<constructor-arg value="LicensePool"/>
+		<constructor-arg value="${licensepool.queue}"/>
 	</bean>
 
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
     	<property name="connectionFactory" ref="jmsFactory"/>
     	<property name="defaultDestination" ref="licensepoolQueue"/>
-    	<property name="receiveTimeout"> 
-			<value>5000</value> 
+    	<property name="receiveTimeout">
+			<value>5000</value>
 		</property>
   	</bean>
-  	
+
   	<bean id="jmsUtils" class="com.pearson.ed.lplc.jms.util.LicensepoolJMSUtils" >
 		<property name="writer" ref="jmsWriter" />
 	</bean>
