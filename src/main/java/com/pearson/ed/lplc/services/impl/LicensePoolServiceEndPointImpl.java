@@ -3,12 +3,11 @@ package com.pearson.ed.lplc.services.impl;
 import java.util.List;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-
 import org.apache.log4j.Logger;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.exception.LicensePoolJMSException;
+import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.jms.util.LicensepoolJMSUtils;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
@@ -170,6 +169,8 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 				licensePoolDTO.setLicensepoolId(licensePoolId);
 				licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CANCEL);
 			}
+		} catch (RequiredObjectNotFound e) {
+			throw new RequiredObjectNotFound("Licensepool with ID: " + licensePoolId + " does not exist.");
 		} catch (Exception e) {
 			throw new LicensePoolJMSException("Failed to publish JMS message.");
 		}
