@@ -11,7 +11,7 @@
 
 	<bean id="jmsFactory" class="progress.message.jclient.QueueConnectionFactory">
     	<property name="brokerURL">
-      		<value>${brokerURL}</value>
+      		<value>${jms.server.endpoint.url}</value>
     	</property>
   	</bean>
 
@@ -35,5 +35,3 @@
 		<property name="writer" ref="jmsWriter" />
 	</bean>
 </beans>
-
-
