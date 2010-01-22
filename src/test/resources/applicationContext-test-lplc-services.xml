@@ -18,7 +18,7 @@
 	<!-- LicensePool Service testing -->
 	<bean id="serviceTestLicensePool" name="serviceTestLicensePool"
 		class="com.pearson.ed.lplc.dto.LicensePoolDTO" scope="prototype">
-		<property name="type" value="Seat based licensing" />
+		<property name="type" value="Student seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
 		<property name="endDate" value="03/30/2050" />
 		<property name="startDate" value="01/30/1900" />
@@ -31,7 +31,7 @@
 	</bean>
 	<bean id="serviceTestLicensePool2" name="serviceTestLicensePool2"
 		class="com.pearson.ed.lplc.dto.LicensePoolDTO" scope="prototype">
-		<property name="type" value="Seat based licensing" />
+		<property name="type" value="Student seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
 		<property name="endDate" value="03/30/9999" />
 		<property name="startDate" value="01/30/1900" />
@@ -45,7 +45,7 @@
 	<!-- Test data for Denies New Subscription-->
 	<bean id="serviceTestDenyNewSubscription" name="serviceTestDenyNewSubscription"
 		class="com.pearson.ed.lplc.dto.LicensePoolDTO" scope="prototype">
-		<property name="type" value="Seat based licensing" />
+		<property name="type" value="Student seat based licensing" />
 		<property name="denyManualSubscription" value="0" />
 		<property name="endDate" value="01/30/2010" />
 		<property name="startDate" value="01/30/2009" />

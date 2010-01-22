@@ -29,6 +29,7 @@ import com.pearson.ed.lplc.exception.NewSubscriptionsDeniedException;
 import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
+import com.pearson.ed.lplc.model.validation.LicenseTypeEnum;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
@@ -113,6 +114,9 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public String createLicensePool(LicensePoolDTO licensepoolDTO) {
 		licensepoolDTO.setMode(LPLCConstants.CREATE_MODE);
+		if (null == LicenseTypeEnum.valueOf(licensepoolDTO.getType())) {
+			throw new ComponentValidationException("License Type is invalid.");
+		}
 		if (licensepoolDTO.getStartDate().after(licensepoolDTO.getEndDate()))
 			throw new ComponentValidationException("Start Date can not be greater than End Date");
 		LicensePoolMapping licensepoolMapping = licensePoolConverter.convertLicensePoolToLicensePoolMapping(
