@@ -104,5 +104,18 @@ public interface LicensePoolConverter {
 	 * @return LicensePoolDetails.
 	 */
 	LicensePoolDetails convertLicensePoolMappingToLicensePoolDetails(LicensePoolMapping licensePool);
+	
+	/**
+	 * Assigns parent licensepools to newly added organization.
+	 * 
+	 * @param parentOrgLicenses
+	 *            LicensePoolMapping object.
+	 * @param organizationId
+	 *            .
+	 * 
+	 * @return List<OrganizationLPMapping> the newly applied licenses.
+	 */
+	List<OrganizationLPMapping> setParentLicensePoolstoNewOrganization(List<OrganizationLPMapping> parentOrgLicenses,
+			String organizationId);
 
 }

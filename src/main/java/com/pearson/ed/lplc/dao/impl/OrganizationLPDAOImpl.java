@@ -57,4 +57,15 @@ OrganizationLPDAO, LPLCConstants {
 							.add(Restrictions.eq("organization_level",level));
 		return criteria.list();
 	}
+	
+	/**
+	 * Saves newly updated licensepools to an organization.
+	 * 
+	 * @param licenses
+	 * 			the newly applied licenses
+	 *	 
+	 */
+	public void saveAllLicenses(List<OrganizationLPMapping> licenses) {
+		getHibernateTemplate().saveOrUpdateAll(licenses);
+	}
 }

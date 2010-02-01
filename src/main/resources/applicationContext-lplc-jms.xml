@@ -23,6 +23,10 @@
 		<constructor-arg value="${licensepool.queue}"/>
 	</bean>
 
+	<bean id="LicensePoolTopic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="${organization.topic}" />
+	</bean>
+
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
     	<property name="connectionFactory" ref="jmsFactory"/>
     	<property name="defaultDestination" ref="licensepoolQueue"/>
@@ -34,4 +38,26 @@
   	<bean id="jmsUtils" class="com.pearson.ed.lplc.jms.util.LicensepoolJMSUtils" >
 		<property name="writer" ref="jmsWriter" />
 	</bean>
+
+	<bean id="jmsContainer"
+			class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+			<property name="connectionFactory" ref="jmsFactory" />
+			<property name="destination" ref="LicensePoolTopic" />
+			<property name="messageListener" ref="jmsListener" />
+			<property name="sessionTransacted" value="true" />
+	</bean>
+
+	<bean id="jmsListener" class="com.pearson.ed.lplc.jms.impl.JMSListenerImpl">
+			<property name="licensepoolService" ref="licensepoolService" />
+	</bean>
+
+	<bean id="jmsTemplateForTopic" class="org.springframework.jms.core.JmsTemplate">
+	    	<property name="connectionFactory" ref="jmsFactory"/>
+	    	<property name="defaultDestination" ref="LicensePoolTopic"/>
+	    	<property name="receiveTimeout">
+				<value>5000</value>
+			</property>
+  	</bean>
+
+
 </beans>

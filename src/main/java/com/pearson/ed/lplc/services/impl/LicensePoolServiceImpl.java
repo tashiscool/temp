@@ -449,6 +449,24 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		licensePoolDAO.update(licensePool);
 		return licensePool.getLicensepoolId();
 	}
+	
+	/**
+	 * Applies licensepools in the hierarchy to a newly added organization.
+	 * 
+	 * @param organizationId
+	 * @param parentOrganizationId
+	 *	 
+	 */
+	public void applyLicensesToNewOrganization(String organizationId, String parentOrganizationId) {
+		List<OrganizationLPMapping> parentLicenses = getLicensePoolByOrganizationId(parentOrganizationId,
+				LPLCConstants.QUALIFYING_ORGS_ALL_IN_HIERARCHY);
+		if (null != parentLicenses && parentLicenses.size() >= 1) {
+			List<OrganizationLPMapping> newlyAppliedLicenses = licensePoolConverter
+					.setParentLicensePoolstoNewOrganization(parentLicenses, organizationId);
+			organizationLPDAO.saveAllLicenses(newlyAppliedLicenses);
+		}
+
+	}
 
 	/**
 	 * Get organization child tree by Id.

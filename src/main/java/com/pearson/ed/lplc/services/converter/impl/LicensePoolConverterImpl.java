@@ -410,7 +410,36 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 		return licensePoolDetails;
 	}
+	
+	/**
+	 * Assigns parent licensepools to newly added organization.
+	 * 
+	 * @param parentOrgLicenses
+	 *            LicensePoolMapping object
+	 * @param organizationId	 
+	 * 
+	 * @return List<OrganizationLPMapping> the newly applied licenses.
+	 */
+	public List<OrganizationLPMapping> setParentLicensePoolstoNewOrganization(
+			List<OrganizationLPMapping> parentLicenses, String organizationId) {
+		List<OrganizationLPMapping> appliedParentLicenses = new ArrayList<OrganizationLPMapping>();
 
+		for (OrganizationLPMapping receivedLicenses : parentLicenses) {
+			OrganizationLPMapping inheritedLicense = new OrganizationLPMapping();
+			inheritedLicense.setOrganization_id(organizationId);
+			inheritedLicense.setDenyManualSubscription(receivedLicenses.getDenyManualSubscription());
+			inheritedLicense.setUsed_quantity(LPLCConstants.USED_QUANTITY);
+			inheritedLicense.setLicensepoolMapping(receivedLicenses.getLicensepoolMapping());
+			inheritedLicense.setOrganization_level(receivedLicenses.getOrganization_level() + 1);
+			inheritedLicense.setCreatedDate(receivedLicenses.getCreatedDate());
+			inheritedLicense.setLastUpdatedDate(receivedLicenses.getLastUpdatedDate());
+			inheritedLicense.setCreatedBy(receivedLicenses.getCreatedBy());
+			inheritedLicense.setLastUpdatedBy(receivedLicenses.getLastUpdatedBy());
+			appliedParentLicenses.add(inheritedLicense);
+		}
+		return appliedParentLicenses;
+	}
+	
 	private XMLGregorianCalendar convertToXMLGregorianCalendar(Date date) throws DatatypeConfigurationException {
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(date);

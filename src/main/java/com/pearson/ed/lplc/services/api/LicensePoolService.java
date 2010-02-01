@@ -108,4 +108,13 @@ public interface LicensePoolService {
 	 * @return licensepoolId
 	 */
 	String cancel(String licensePoolId, String createdBy, boolean isCancel);
+	
+	/**
+	 * Applies licensepools in the hierarchy to a newly added organization.
+	 * 
+	 * @param organizationId
+	 * @param parentOrganizationId
+	 *	 
+	 */
+	void applyLicensesToNewOrganization(String organizationId, String parentOrganizationId);
 }

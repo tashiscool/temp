@@ -136,4 +136,29 @@ public interface LPLCConstants {
 	 * Represents a initial level of an organization.
 	 */
 	public static final int INITIAL_LEVEL = 0;
+
+	/**
+	 * Represents the creation of a new organization relationship.
+	 */
+	public static final String ORG_REL_CREATE = "ORG_REL_CREATE";
+
+	/**
+	 * Represents the organization id.
+	 */
+	public static final String ORG_ID = "OrganizationId";
+
+	/**
+	 * Represents the parent organization id.
+	 */
+	public static final String PARENT_ORG_ID = "ParentOrganizationId";
+	
+	/**
+	 * Represents the event type.
+	 */
+	public static final String ORG_EVENT_TYPE = "EventType";
+	
+	/**
+	 * Represents a default used quantity of 0.
+	 */
+	public static final int USED_QUANTITY = 0;
 }
