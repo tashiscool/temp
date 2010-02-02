@@ -23,7 +23,7 @@
 		<constructor-arg value="${licensepool.queue}"/>
 	</bean>
 
-	<bean id="LicensePoolTopic" class="org.apache.activemq.command.ActiveMQTopic">
+	<bean id="LicensePoolTopic" class="progress.message.jclient.Topic">
 		<constructor-arg value="${organization.topic}" />
 	</bean>
 
