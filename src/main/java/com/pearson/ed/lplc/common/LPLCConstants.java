@@ -161,4 +161,9 @@ public interface LPLCConstants {
 	 * Represents a default used quantity of 0.
 	 */
 	public static final int USED_QUANTITY = 0;
+	
+	/**
+	 * Represents Root and Parents for Qualifying organizations.
+	 */
+	public static final String ROOT_AND_PARENTS = "RootAndParents";
 }

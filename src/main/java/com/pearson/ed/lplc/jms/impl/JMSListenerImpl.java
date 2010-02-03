@@ -68,6 +68,7 @@ public class JMSListenerImpl implements JMSListener {
 	 * 
 	 * @param textMessage
 	 *            message received from destination.
+	 * @throws LicensePoolJMSException
 	 */
 	private void assignLicensePoolsToNewOrganization(TextMessage textMessage) {
 		try {
