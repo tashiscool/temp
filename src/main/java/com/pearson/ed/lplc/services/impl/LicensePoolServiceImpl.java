@@ -459,6 +459,11 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void applyLicensesToNewOrganization(String organizationId, String parentOrganizationId) {
+		List<OrganizationLPMapping> rootLicenses = getLicensePoolByOrganizationId(organizationId,
+				LPLCConstants.ROOT_AND_PARENTS);
+		if (rootLicenses != null && rootLicenses.size() >= 1) {
+		  return;
+		}
 		List<OrganizationLPMapping> parentLicenses = getLicensePoolByOrganizationId(parentOrganizationId,
 				LPLCConstants.ROOT_AND_PARENTS);
 		if (parentLicenses != null && parentLicenses.size() >= 1) {
