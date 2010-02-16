@@ -1,0 +1,12 @@
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Body>
+      <CreateLicensePoolResponse xmlns="http://licensepool.rws.pearson.com/doc/2009/04/01/" xmlns:ns2="http://organization.rws.pearson.com/doc/2009/07/01/" xmlns:ns3="http://common.rws.pearson.com/doc/2008/06/01/">
+         <ServiceResponseType>
+            <ns3:transactionId>4c723ee7-39e6-48f2-a2a5-358260f21c69</ns3:transactionId>
+            <ns3:statusCode>SUCCESS</ns3:statusCode>
+            <ns3:statusMessage>LicensePool created successfully</ns3:statusMessage>
+            <ns3:returnValue>ff80808126960753012698561ce00001</ns3:returnValue>
+         </ServiceResponseType>
+      </CreateLicensePoolResponse>
+   </soapenv:Body>
+</soapenv:Envelope>

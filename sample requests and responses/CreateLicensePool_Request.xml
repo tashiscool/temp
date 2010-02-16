@@ -1,0 +1,20 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://licensepool.rws.pearson.com/doc/2009/04/01/">
+   <soap:Header/>
+   <soap:Body>
+      <ns:CreateLicensePoolRequest>
+         <ns:CreateLicensePool>
+            <ns:Type>Student seat based licensing</ns:Type>
+            <ns:StartDate>2010-01-01T22:30:00.000+05:30</ns:StartDate>
+            <ns:EndDate>2020-01-01T22:30:00.000+05:30</ns:EndDate>
+            <ns:Quantity>99</ns:Quantity>
+            <ns:OrganizationId>ff80808125c1f6250125d91ddefd0900</ns:OrganizationId>
+            <!--1 or more repetitions:-->
+            <ns:ProductId>17129</ns:ProductId>
+            <!--Optional:-->
+            <ns:DenyNewSubscription>0</ns:DenyNewSubscription>
+            <ns:CreatedBy>Shankar</ns:CreatedBy>
+            <ns:SourceSystem>https://idpdev.pearsoncmg.com/synapse</ns:SourceSystem>
+         </ns:CreateLicensePool>
+      </ns:CreateLicensePoolRequest>
+   </soap:Body>
+</soap:Envelope>
