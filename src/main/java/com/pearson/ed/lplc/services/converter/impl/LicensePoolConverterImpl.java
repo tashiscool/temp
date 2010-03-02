@@ -163,7 +163,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 		Date lastUpdatedDate = licensepool.getLastUpdatedDate();
 		if (lastUpdatedDate == null) {
-			lastUpdatedDate = LPLCConstants.DEFAULT_DATE;
+			lastUpdatedDate = new Date();
 		}
 		lplcBaseEntity.setLastUpdatedBy(lastUpdatedBy);
 		lplcBaseEntity.setLastUpdatedDate(lastUpdatedDate);
@@ -178,7 +178,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 		Date createdDate = lplcBaseEntity.getCreatedDate();
 		if (createdDate == null) {
-			createdDate = LPLCConstants.DEFAULT_DATE;
+			createdDate = new Date();
 		}
 		lplcBaseEntity.setCreatedBy(createdBy);
 		lplcBaseEntity.setCreatedDate(createdDate);
@@ -261,18 +261,22 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	    	licensepool.setQuantity(updateLicensepool.getQuantity());
 	    if ((updateLicensepool.getUsedLicenses()!=0) && ("ALL".equalsIgnoreCase(updateLicensepool.getOrganizationId())))
 	    	 throw new LPLCBaseException(LPLCErrorMessages.CAN_NOT_UPDATE_ALL_ORGANIZAITON_WITH_NONZERO_VALUE);
+	  
 	    if (updateLicensepool.getUsedLicenses()!=0){
 	    	boolean update= false;
 	       Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
 	        for (OrganizationLPMapping organizationLPMapping : organizations) {
-	        	if (organizationLPMapping.getOrganization_id().trim().equalsIgnoreCase(updateLicensepool.getOrganizationId().trim())){
-	        		int usedlicenses = organizationLPMapping.getUsed_quantity()+updateLicensepool.getUsedLicenses();
-	        		if (usedlicenses<0 )
-	        			throw new ComponentValidationException(LPLCErrorMessages.LICENSEPOOL_CONSUMPTION_NEGATIVE);
-	        		organizationLPMapping.setUsed_quantity(usedlicenses);
-	        		update=true;
-	        	}
-	        }
+				if (organizationLPMapping.getOrganization_id().trim().equalsIgnoreCase(
+						updateLicensepool.getOrganizationId().trim())) {
+					int usedlicenses = organizationLPMapping.getUsed_quantity() + updateLicensepool.getUsedLicenses();
+					if (usedlicenses < 0)
+						throw new ComponentValidationException(LPLCErrorMessages.LICENSEPOOL_CONSUMPTION_NEGATIVE);
+					organizationLPMapping.setUsed_quantity(usedlicenses);
+					organizationLPMapping.setLastUpdatedBy(licensepool.getLastUpdatedBy());
+					organizationLPMapping.setLastUpdatedDate(new Date());
+					update = true;
+				}
+			}
 	        if (update==false)
 	        	 throw new LPLCBaseException(LPLCErrorMessages.NO_ORGNAIZATION_FOUND_UPDATE_LICENSEPOOL);
 	       licensepool.setOrganizations(organizations);
@@ -281,9 +285,12 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	    {
 	    	 Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
 	    	 for (OrganizationLPMapping organizationLPMapping : organizations) {
-	    		 organizationLPMapping.setUsed_quantity(0);	    		
-	    	}
+				organizationLPMapping.setUsed_quantity(0);
+				organizationLPMapping.setLastUpdatedBy(licensepool.getLastUpdatedBy());
+				organizationLPMapping.setLastUpdatedDate(new Date());
+			}
 	    }
+	    
 	    if (licensepool.getStart_date().after(licensepool.getEnd_date()))
 			throw new ComponentValidationException(LPLCErrorMessages.DATE_ERROR);
 	    if (updateLicensepool.getOrderLineItem()!= null){
@@ -291,9 +298,9 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	    	orderLineItem.setLicensepoolMapping(licensepool);
 	    	orderLineItem.setOrderLineItemId(updateLicensepool.getOrderLineItem());
 	    	orderLineItem.setCreatedBy(licensepool.getCreatedBy());
-	    	orderLineItem.setCreatedDate(LPLCConstants.DEFAULT_DATE);
+	    	orderLineItem.setCreatedDate(new Date());
 	    	orderLineItem.setLastUpdatedBy(licensepool.getCreatedBy());
-	    	orderLineItem.setLastUpdatedDate(LPLCConstants.DEFAULT_DATE);
+	    	orderLineItem.setLastUpdatedDate(new Date());
 	        licensepool.getOrderLineItems().add(orderLineItem);
 	    }
 	}
