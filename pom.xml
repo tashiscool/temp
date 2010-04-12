@@ -89,37 +89,37 @@
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-xml</artifactId>
-			<version>1.5.2</version>
+			<version>2.0.0-M1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-core</artifactId>
-			<version>1.5.2</version>
+			<version>2.0.0-M1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-core-tiger</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-oxm</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-oxm-tiger</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-support</artifactId>
-			<version>1.5.2</version>
+			<version>2.0.0-M1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-security</artifactId>
-			<version>1.5.2</version>
+			<version>2.0.0-M1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.ws.security</groupId>
@@ -135,64 +135,70 @@
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-core</artifactId>
-			<version>1.0.0.M4</version>
+			<version>1.0.3.RELEASE</version>
 		</dependency>
-
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+		   <groupId>org.springframework</groupId>
+		   <artifactId>spring-context-support</artifactId>
+		   <version>2.5.5</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jms</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>2.5.5</version>
+			<version>3.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -236,12 +242,12 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>ejb3-persistence</artifactId>
-			<version>1.0.1.GA</version>
+			<version>1.0.2.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
-			<version>3.3.1.GA</version>
+			<version>3.4.0.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.transaction</groupId>
@@ -309,29 +315,47 @@
 			<artifactId>jms</artifactId>
 			<version>1.1</version>
 		</dependency>
-		
-		
-		<dependency>
+				
+		<!--<dependency>
       		<groupId>opensymphony</groupId>
       		<artifactId>quartz</artifactId>
       		<version>1.6.0</version>
       		<scope>compile</scope>
     	</dependency>
-   			 <!-- Quartz 1.6.0 depends on commons collections -->
+   			 --><!-- Quartz 1.6.0 depends on commons collections -->
+   		<dependency>
+		   <groupId>quartz</groupId>
+		   <artifactId>quartz</artifactId>
+		   <version>1.5.2</version>
+		</dependency><!--	 
 	    <dependency>
 	      <groupId>commons-collections</groupId>
 	      <artifactId>commons-collections</artifactId>
 	      <version>3.1</version>
 	      <scope>runtime</scope>
 	    </dependency>
-	    <!-- Quartz 1.6.0 requires JTA in non J2EE environments -->
+	    --><!-- Quartz 1.6.0 requires JTA in non J2EE environments -->
+	    <dependency>
+		   <groupId>commons-collections</groupId>
+		   <artifactId>commons-collections</artifactId>
+		   <version>3.2.1</version>
+		</dependency>
 	    <dependency>
 	      <groupId>javax.transaction</groupId>
 	      <artifactId>jta</artifactId>
 	      <version>1.0.1B</version>
 	      <scope>runtime</scope>
 	    </dependency>
-		   
+	    <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.0</version>
+		</dependency> 
+		<dependency>
+		   <groupId>org.apache.ws.commons.schema</groupId>
+		   <artifactId>XmlSchema</artifactId>
+		   <version>1.4.5</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
