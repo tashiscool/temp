@@ -32,6 +32,10 @@
 		<url>http://download.java.net/maven/1</url>
 		<layout>legacy</layout>
 	</pluginRepository>
+	<pluginRepository>
+		<id>eviwarePluginRepository</id>
+		<url>http://www.eviware.com/repository/maven2</url>
+	</pluginRepository>
 </pluginRepositories>
 
 	<dependencies>
@@ -506,7 +510,17 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>eviware</groupId>
+				<artifactId>maven-soapui-pro-plugin</artifactId>
+				<version>3.5</version>
+				<configuration>
+					<projectFile>../../commons/testsuite/US based Test Suites/LicensePoolLifeCycle.xml</projectFile>
+					<printReport>true</printReport>
+					<junitReport>true</junitReport>
+					<outputFolder>../../lplc-dev-regression/soapui_testreports</outputFolder>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
