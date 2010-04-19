@@ -32,3 +32,23 @@ END IF;
 END;
 
 /
+
+
+-- added on 04/19/2010
+-- Index on ORGANIZATION_ID
+
+DECLARE x NUMBER;
+BEGIN
+SELECT COUNT(*) INTO x FROM user_indexes WHERE index_name='IDX_LICENSEPOOL_2' AND table_name='LICENSEPOOL' AND index_type='NORMAL';
+
+IF x = 0 THEN
+   EXECUTE IMMEDIATE 
+   '
+      CREATE INDEX "IDX_LICENSEPOOL_2" ON "LICENSEPOOL" ("ORGANIZATION_ID")
+   ';
+END IF;
+
+END;
+
+/
+
