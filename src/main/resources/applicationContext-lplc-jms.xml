@@ -54,6 +54,12 @@
 	<bean id="jmsTemplateForTopic" class="org.springframework.jms.core.JmsTemplate">
 	    	<property name="connectionFactory" ref="jmsFactory"/>
 	    	<property name="defaultDestination" ref="LicensePoolTopic"/>
+	    	<property name="timeToLive">
+	    		<value>432000000</value>
+	    	</property>
+	    	<property name="explicitQosEnabled">
+	    		<value>true</value>
+	    	</property>
 	    	<property name="receiveTimeout">
 				<value>5000</value>
 			</property>
