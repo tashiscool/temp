@@ -55,7 +55,7 @@
 	    	<property name="connectionFactory" ref="jmsFactory"/>
 	    	<property name="defaultDestination" ref="LicensePoolTopic"/>
 	    	<property name="timeToLive">
-	    		<value>432000000</value>
+	    		<value>86400000</value>
 	    	</property>
 	    	<property name="explicitQosEnabled">
 	    		<value>true</value>
