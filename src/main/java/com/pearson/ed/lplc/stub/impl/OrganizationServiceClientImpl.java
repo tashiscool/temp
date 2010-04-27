@@ -3,8 +3,13 @@ package com.pearson.ed.lplc.stub.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.log4j.Logger;
+import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.soap.axiom.AxiomSoapMessage;
+import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.lplc.exception.ExternalServiceCallException;
 import com.pearson.ed.lplc.exception.OrganizationNotValidException;
@@ -51,6 +56,7 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 	public List<OrganizationDTO> getChildOrganizations(String organizationId) {
 
 		List<OrganizationDTO> organizationDTOList = new ArrayList<OrganizationDTO>();
+		String faultMessage = null;
 		try {
 			OrganizationTreeResponse organizationTreeResponse = getOrgHierarchy(organizationId);
 			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
@@ -62,24 +68,24 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 					organizationDTOList));
 			organizationDTOList.add(organizationDTO);
 
-		} catch (Exception exception) {
+		} catch (SoapFaultClientException soapFaultClientException) {
 			// FIXME: These needs to be removed once error codes are defined.
-			if (exception.getMessage().contains("Invalid Organization Id")) {
+			faultMessage = getFaultMessage(soapFaultClientException.getWebServiceMessage());
+			if (faultMessage.contains("Invalid Organization Id")) {
 				throw new OrganizationNotValidException("No Organization found for Organization ID: " + organizationId);
 			}
-			if (exception.getMessage().contains("No child organizations found for organization Id ")) {
-				logger.debug("No child organizations found for organization Id");
+			if (faultMessage.contains("No child organizations found for organization Id ")) {
 				return organizationDTOList;
 			}
-			logger.error("Call to Organization Service failed when fetching ChildOrganizaitons for Organization Id: "
-					+ organizationId);
+			throw new ExternalServiceCallException(soapFaultClientException.getMessage());
+		} catch (Exception exception) {
 			throw new ExternalServiceCallException(exception.getMessage());
 		}
 
 		return organizationDTOList;
 	}
 	
-	protected OrganizationTreeResponse getOrgHierarchy(String organizationId) throws Exception{
+	protected OrganizationTreeResponse getOrgHierarchy(String organizationId) throws SoapFaultClientException{
 		Object request = getChildTreeByOrganizationIdRequest(organizationId);
 		OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
 					.marshalSendAndReceive(request);
@@ -121,5 +127,19 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 				getOrganizationChildTree(organizationTreeType.getOrganization(), organizationDTOList);
 		}
 		return organizationDTOList;
+	}
+	
+	/**
+	 * Method to get fault message. 
+	 * 
+	 * @param message
+	 * 
+	 * @return fault message
+	 */
+	private String getFaultMessage(WebServiceMessage message){
+		AxiomSoapMessage soapMessage = (AxiomSoapMessage) message;
+		SOAPFaultText sOAPFaultText = soapMessage.getAxiomMessage().getSOAPEnvelope().getBody().getFault().getReason()
+				.getSOAPFaultText("en");
+		return sOAPFaultText.getText().toString();
 	}
 }

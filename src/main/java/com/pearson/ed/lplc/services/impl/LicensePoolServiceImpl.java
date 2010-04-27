@@ -317,7 +317,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 
 		Set<OrganizationLPMapping> orgList = new HashSet<OrganizationLPMapping>();
 		addRootOrg(orgId, licensepool, orgList);
-		try {
+		
 			List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(orgId);
 
 			OrganizationLPMapping organization;
@@ -334,10 +334,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 				organization.setLastUpdatedDate(licensepool.getLastUpdatedDate());
 				orgList.add(organization);
 			}
-		} catch (Exception e) {
-			logger.log(Level.ERROR, "Exception while tracking child organizations :" + e.getStackTrace());
-			throw new LPLCBaseException("Business rule failure: Could not track child organizations.");
-		}
+		
 		licensepool.setOrganizations(orgList);
 
 	}
