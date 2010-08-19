@@ -3,7 +3,7 @@
  | Create Date: Jun 5, 2008
  | @author: Yudha Herwono (UHERWYU)                                                             
  |                                                                              
- | COPYRIGHT © 2008 Pearson Inc.   
+ | COPYRIGHT Â© 2008 Pearson Inc.
  | -----------------------------------------------------------------------------
  |                                                                              
  | History:                                                                     

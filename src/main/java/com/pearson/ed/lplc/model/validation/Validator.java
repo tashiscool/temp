@@ -3,7 +3,7 @@
  | Create Date: Jun 4, 2008
  | @author: UHERWYU                                                             
  |                                                                              
- | COPYRIGHT © 2008 Pearson Inc.   
+ | COPYRIGHT Â© 2008 Pearson Inc.
  | -----------------------------------------------------------------------------
  |                                                                              
  | History:                                                                     
