@@ -7,14 +7,14 @@
 	<parent>
 		<groupId>com.pearson.ed</groupId>
 		<artifactId>rumba-ws-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>3.0.4</version>
 		<relativePath>../ws-parent-pom</relativePath>
 	</parent>
 
 	<groupId>com.pearson.ed.lplc</groupId>
 	<artifactId>LicensePoolLifeCycle</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>3.0.4</version>
 	<name>LicensePoolLifeCycle</name>
 
 	<properties>
