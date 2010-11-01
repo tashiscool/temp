@@ -1,5 +1,7 @@
 package com.pearson.ed.lplc.dao.impl;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -29,12 +31,14 @@ OrganizationLPDAO, LPLCConstants {
 	public List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(
 			String organizationId, int level) {
 		Criteria criteria = getSession().createCriteria(OrganizationLPMapping.class)
-							.setFetchMode("licensepoolMapping", FetchMode.JOIN);
+							.setFetchMode("licensepoolMapping", FetchMode.JOIN)
+							.setFetchMode("licensepoolMapping.orderLineItems", FetchMode.JOIN);
 		Criterion eqOrganizationId = Restrictions.eq("organization_id", organizationId);
 		Criterion eqRootOrganization = Restrictions.like("organization_level", LPLCConstants.INITIAL_LEVEL);
 		if (level == LPLCConstants.INITIAL_LEVEL)
 			criteria.add(eqRootOrganization);
-		return criteria.add(eqOrganizationId).list();
+				
+		return (new ArrayList(new LinkedHashSet(criteria.add(eqOrganizationId).list())));
 	}
 	
 	/**
@@ -53,9 +57,11 @@ OrganizationLPDAO, LPLCConstants {
 			List<String> organizationIds, int level) {
 		Criteria criteria = getSession().createCriteria(OrganizationLPMapping.class)
 							.setFetchMode("licensepoolMapping", FetchMode.JOIN)
+							.setFetchMode("licensepoolMapping.orderLineItems", FetchMode.JOIN)
 							.add(Restrictions.in("organization_id", organizationIds))
 							.add(Restrictions.eq("organization_level",level));
-		return criteria.list();
+		
+		return  (new ArrayList(new LinkedHashSet(criteria.list())));
 	}
 	
 	/**

@@ -39,6 +39,7 @@ import com.pearson.ed.lplc.ws.schema.QualifyingOrganizationListType;
 import com.pearson.ed.lplc.ws.schema.StatusType;
 import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
 
+
 public class LicensePoolConverterImpl implements LicensePoolConverter {
 	private static final Logger logger = Logger
 			.getLogger(LicensePoolConverterImpl.class);
@@ -341,6 +342,9 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			 */
 			licensepoolSchemaObj.setDenyNewSubscription(orgLPMapping.getLicensepoolMapping().getDenyManualSubscription());
 			licensepoolSchemaObj.setStatus(getStatusType(orgLPMapping.getLicensepoolMapping().getStatus()));
+			Set<OrderLineItemLPMapping> orderLineItems = orgLPMapping.getLicensepoolMapping().getOrderLineItems();
+			// first element is the order line that created the license pool
+			licensepoolSchemaObj.setInitialOrderLineItemId(((OrderLineItemLPMapping) orderLineItems.iterator().next()).getOrderLineItemId());
 			schemaList.getLicensePoolByOrganizationId().add(licensepoolSchemaObj);
 		}
 		return schemaList;
