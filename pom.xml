@@ -43,8 +43,8 @@
 				<jdbc.default.schema>LICENSEPOOL_DEV</jdbc.default.schema>
 				<user>${jdbc.connection.app.username}</user>
 				<organization.service.endpoint>http://localhost:8080/OrganizationLifeCycle/services/2009/07/01</organization.service.endpoint>
-				<jms.server.url>tcp://sonicdc01:2506</jms.server.url>
-				<jms.queue>LicensePool</jms.queue>
+				<jms.server.url>tcp://sonicdc05:2507</jms.server.url>
+				<jms.queue>queue.pearson.ed.rumba.request.licensepool.xml</jms.queue>
 				<jms.topic>topic.pearson.ed.rumba.request.organization.xml</jms.topic>
 			</properties>
 		</profile>
@@ -66,8 +66,8 @@
 				<jdbc.default.schema>LICENSEPOOL_DEV</jdbc.default.schema>
 				<user>${jdbc.connection.app.username}</user>
 				<organization.service.endpoint>http://localhost:8080/OrganizationLifeCycle/services/2009/07/01</organization.service.endpoint>
-				<jms.server.url>tcp://sonicdc01:2506</jms.server.url>
-				<jms.queue>LicensePool</jms.queue>
+				<jms.server.url>tcp://sonicdc05:2507</jms.server.url>
+				<jms.queue>queue.pearson.ed.rumba.request.licensepool.xml</jms.queue>
 				<jms.topic>topic.pearson.ed.rumba.request.organization.xml</jms.topic>
 			</properties>
 		</profile>
@@ -90,7 +90,7 @@
 				<user>${jdbc.connection.app.username}</user>
 				<organization.service.endpoint>http://rumba.test.pearsoncmg.com/OrganizationLifeCycle/services/2009/07/01</organization.service.endpoint>
 				<jms.server.url>tcp://sonicdc05:2517</jms.server.url>
-				<jms.queue>LicensePool</jms.queue>
+				<jms.queue>queue.pearson.ed.rumba.request.licensepool.xml</jms.queue>
 				<jms.topic>topic.pearson.ed.rumba.request.organization.xml</jms.topic>
 			</properties>
 		</profile>
