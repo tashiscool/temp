@@ -73,7 +73,7 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	@OrderBy("createdDate ASC")
 	private Set<OrderLineItemLPMapping> orderLineItems = new HashSet<OrderLineItemLPMapping>();
 	
-	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<OrganizationLPMapping> organizations = new HashSet<OrganizationLPMapping>();
 
