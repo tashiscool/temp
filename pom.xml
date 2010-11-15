@@ -149,7 +149,7 @@
 						<id>copy-spring-application-context</id>
 						<phase>process-resources</phase>
 						<configuration>
-							<tasks>
+							<target>
 								<copy todir="${project.build.directory}/classes"
 									failonerror="false" overwrite="true">
 									<fileset dir="${project.build.directory}/contract/licensepool"/>
@@ -170,7 +170,7 @@
 										<include name="Organization_2009_07_01.xsd"/>
 									</fileset>
 								</copy>
-							</tasks>
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
