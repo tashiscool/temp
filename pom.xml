@@ -18,6 +18,7 @@
 	<name>LicensePoolLifeCycle</name>
 
 	<properties>
+		<skip.tomcat.deploy>false</skip.tomcat.deploy>
 		<short.name>lplc</short.name>
 	</properties>
 	
