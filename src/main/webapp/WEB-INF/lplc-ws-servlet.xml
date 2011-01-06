@@ -10,7 +10,7 @@
 	
 	<bean id="LicensePoolLifeCycle"
 		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
-		<property name="wsdl" value="classpath:/LicensePoolLifeCycle.wsdl" />
+		<property name="wsdl" value="classpath:/licensepool/LicensePoolLifeCycle.wsdl" />
 	</bean>
 	
 		
