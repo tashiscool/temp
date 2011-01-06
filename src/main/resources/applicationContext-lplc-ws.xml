@@ -34,7 +34,7 @@
 			This bean wrap the LicensePool.xsd (which imports Service.xsd), and
 			inlines them as a one.
 		</description>
-		<property name="xsds" value="classpath:/LicensePool.xsd" />
+		<property name="xsds" value="classpath:/licensepool/LicensePool.xsd" />
 		<property name="inline" value="true" />
 	</bean>
 
