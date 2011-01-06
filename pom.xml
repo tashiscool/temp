@@ -118,64 +118,6 @@
 				<artifactId>properties-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-spring-application-context</id>
-						<phase>process-resources</phase>
-						<configuration>
-							<tasks>
-								<copy todir="${project.build.directory}/classes"
-									failonerror="false" overwrite="true">
-									<fileset dir="${project.build.directory}/contract/licensepool"/>
-									<fileset dir="${project.build.directory}/contract/common">
-										<include name="Service.xsd"/>
-									</fileset>
-									<fileset dir="${project.build.directory}/contract/organization">
-										<include name="Organization_2009_07_01.xsd"/>
-									</fileset>
-								</copy>
-								<copy todir="${project.build.directory}/LicensePoolLifeCycle"
-									failonerror="false" overwrite="true">
-									<fileset dir="${project.build.directory}/contract/licensepool"/>
-									<fileset dir="${project.build.directory}/contract/common">
-										<include name="Service.xsd"/>
-									</fileset>
-									<fileset dir="${project.build.directory}/contract/organization">
-										<include name="Organization_2009_07_01.xsd"/>
-									</fileset>
-								</copy>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<generatePackage>com.pearson.ed.lplc.ws.schema</generatePackage>
-					<schemaDirectory>${project.build.directory}/contract</schemaDirectory>
-					<catalog>${project.build.directory}/contract/jaxbcatalog.cat</catalog>
-					<schemaIncludes>
-						<include>licensepool/*.xsd</include>
-						<include>organization/Organization_2009_07_01.xsd</include>
-					</schemaIncludes>
-					<strict>true</strict>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>eviware</groupId>
 				<artifactId>maven-soapui-pro-plugin</artifactId>
 				<version>3.5</version>

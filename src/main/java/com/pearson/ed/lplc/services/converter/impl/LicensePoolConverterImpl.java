@@ -26,18 +26,18 @@ import com.pearson.ed.lplc.model.OrderLineItemLPMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.model.common.LPLCBaseEntity;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
-import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
-import com.pearson.ed.lplc.ws.schema.LicensePoolByOrganizationId;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
-import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
-import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribeType;
-import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
-import com.pearson.ed.lplc.ws.schema.OrderLineItemDetails;
-import com.pearson.ed.lplc.ws.schema.OrderListType;
-import com.pearson.ed.lplc.ws.schema.OrganizationDetails;
-import com.pearson.ed.lplc.ws.schema.QualifyingOrganizationListType;
-import com.pearson.ed.lplc.ws.schema.StatusType;
-import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolByOrganizationId;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolToSubscribe;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolToSubscribeType;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensepoolsByOrganizationId;
+import com.pearson.rws.licensepool.doc._2009._04._01.OrderLineItemDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.OrderListType;
+import com.pearson.rws.licensepool.doc._2009._04._01.OrganizationDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.QualifyingOrganizationListType;
+import com.pearson.rws.licensepool.doc._2009._04._01.StatusType;
+import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 
 
 public class LicensePoolConverterImpl implements LicensePoolConverter {

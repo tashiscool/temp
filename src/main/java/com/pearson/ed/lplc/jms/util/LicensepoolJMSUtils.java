@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.jms.api.JMSWriter;
-import com.pearson.ed.lplc.ws.schema.EventTypeType;
-import com.pearson.ed.lplc.ws.schema.LicensePoolEvent;
-import com.pearson.ed.lplc.ws.schema.ObjectFactory;
+import com.pearson.rws.licensepool.doc._2009._04._01.EventTypeType;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolEvent;
+import com.pearson.rws.licensepool.doc._2009._04._01.ObjectFactory;
 
 public class LicensepoolJMSUtils {
 	

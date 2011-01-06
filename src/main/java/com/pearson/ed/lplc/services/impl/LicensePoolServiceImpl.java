@@ -34,7 +34,7 @@ import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
 import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
 
 /**
  * The LPLC's primary implementation of the licensepool service.

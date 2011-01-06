@@ -15,9 +15,9 @@ import com.pearson.ed.lplc.exception.ExternalServiceCallException;
 import com.pearson.ed.lplc.exception.OrganizationNotValidException;
 import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
 import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
-import com.pearson.ed.lplc.ws.schema.GetChildTreeByOrganizationIdRequest;
-import com.pearson.ed.lplc.ws.schema.OrganizationTreeResponse;
-import com.pearson.ed.lplc.ws.schema.OrganizationTreeType;
+import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
+import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeResponse;
+import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeType;
 
 /**
  * This class is a Client stub class and implements methods to be invoked on

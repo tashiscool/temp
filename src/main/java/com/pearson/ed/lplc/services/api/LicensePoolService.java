@@ -6,7 +6,7 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
 
 /**
  * Serves as the interface for user services in the LPLC.

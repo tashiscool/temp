@@ -8,11 +8,11 @@ import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
-import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
-import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
-import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
-import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolToSubscribe;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensepoolsByOrganizationId;
+import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 
 /**
  * A converter class which handles the interchange between LicensePools and

@@ -12,7 +12,7 @@ import org.quartz.JobExecutionException;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.jms.util.LicensepoolJMSUtils;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
-import com.pearson.ed.lplc.ws.schema.EventTypeType;
+import com.pearson.rws.licensepool.doc._2009._04._01.EventTypeType;
 
 public class LicensepoolExpirationEvent {
 	

@@ -20,7 +20,7 @@ import com.pearson.ed.lplc.exception.RequiredObjectNotFound;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
 

@@ -1,10 +1,10 @@
 package com.pearson.ed.lplc.services.api;
 
-import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
-import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
-import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
-import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolToSubscribe;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensepoolsByOrganizationId;
+import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 
 /**
  * Serves as the interface for license pool service endpoints in the LPLC.

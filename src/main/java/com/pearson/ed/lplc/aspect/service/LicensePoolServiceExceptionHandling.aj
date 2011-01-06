@@ -9,7 +9,7 @@ import org.apache.log4j.Level;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
 import com.pearson.ed.lplc.exception.LPLCBaseException;
 import com.pearson.ed.lplc.exception.LPLCFieldsNotValidException;
-//import com.pearson.ed.lplc.ws.schema.LicensePool;
+//import com.pearson.rws.organization.doc._2009._07._01.LicensePool;
 import com.pearson.ed.lplc.services.api.LicensePoolService;;
 
 public aspect LicensePoolServiceExceptionHandling {

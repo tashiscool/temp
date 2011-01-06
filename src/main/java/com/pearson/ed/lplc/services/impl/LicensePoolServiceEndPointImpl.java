@@ -13,12 +13,12 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.lplc.services.api.LicensePoolServiceEndPoint;
 import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
-import com.pearson.ed.lplc.ws.schema.CreateLicensePool;
-import com.pearson.ed.lplc.ws.schema.EventTypeType;
-import com.pearson.ed.lplc.ws.schema.LicensePoolDetails;
-import com.pearson.ed.lplc.ws.schema.LicensePoolToSubscribe;
-import com.pearson.ed.lplc.ws.schema.LicensepoolsByOrganizationId;
-import com.pearson.ed.lplc.ws.schema.UpdateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePool;
+import com.pearson.rws.licensepool.doc._2009._04._01.EventTypeType;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolToSubscribe;
+import com.pearson.rws.licensepool.doc._2009._04._01.LicensepoolsByOrganizationId;
+import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 
 public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoint {
 
