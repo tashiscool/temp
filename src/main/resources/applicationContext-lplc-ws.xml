@@ -91,7 +91,12 @@
 
 	
 	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="contextPath" value="com.pearson.rws.organization.doc._2009._07._01"/>
+		<property name="contextPaths">
+        	<list>
+        		<value>com.pearson.rws.organization.doc._2009._07._01</value>
+				<value>com.pearson.rws.licensepool.doc._2009._04._01</value>
+        	</list>
+        </property>	   
         <property name="mtomEnabled" value="true"/>
     </bean>
     

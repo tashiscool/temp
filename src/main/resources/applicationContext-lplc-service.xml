@@ -52,8 +52,8 @@
 		<property name="messageSender">
 			<bean class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender"/>
 		</property>
-		<property name="marshaller" ref="marshallerBean"/>
-		<property name="unmarshaller" ref="marshallerBean"/>
+		<property name="marshaller" ref="marshaller"/>
+		<property name="unmarshaller" ref="marshaller"/>
 	</bean>
 	
 	<bean id="messageFactoryBean"
@@ -62,14 +62,6 @@
 			<util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12" />
 		</property>
 		<property name="payloadCaching" value="true" />
-	</bean>
+	</bean>	
 	
-	<bean id="marshallerBean" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="contextPaths">
-        	<list>
-        		<value>com.pearson.rws.organization.doc._2009._07._01</value>
-        	</list>
-        </property>
-        <property name="mtomEnabled" value="true"/>
-    </bean>
 </beans>
