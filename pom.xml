@@ -129,24 +129,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>move-contracts-to-war</id>
-						<phase>process-resources</phase>
-						<configuration>
-							<tasks>
-								<move todir="${project.build.directory}/${project.build.finalName}"
-									failonerror="false" overwrite="true">
-									<fileset dir="${project.build.directory}/contract/licensepool" />
-									<fileset dir="${project.build.directory}/contract/common" />
-								</move>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
