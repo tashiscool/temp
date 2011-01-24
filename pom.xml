@@ -6,13 +6,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.pearson.ed</groupId>
-		<artifactId>rumba-ws-parent</artifactId>
-		<version>3.0.9-SNAPSHOT</version>
+		<groupId>com.pearson.ed.ltg.rumba</groupId>
+		<artifactId>webservices</artifactId>
+        <version>3.0.9-SNAPSHOT</version>
 	</parent>
-
-	<groupId>com.pearson.ed.lplc</groupId>
+	
+	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
 	<artifactId>LicensePoolLifeCycle</artifactId>
+	<version>3.0.9-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>LicensePoolLifeCycle</name>
