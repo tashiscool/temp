@@ -17,7 +17,6 @@
 	<name>LicensePoolLifeCycle</name>
 
 	<properties>
-		<skip.tomcat.deploy>false</skip.tomcat.deploy>
 		<short.name>lplc</short.name>
 	</properties>
 	
@@ -33,9 +32,9 @@
 			<properties>
 				<env>local</env>
 				<hibernate.connection.url>${local.hibernate.connection.url}</hibernate.connection.url>
-				<tomcat.host.url>${local.tomcat.host.url}</tomcat.host.url>
-				<tomcat.manager.username>${local.tomcat.manager.username}</tomcat.manager.username>
-				<tomcat.manager.password>${local.tomcat.manager.password}</tomcat.manager.password>
+				<tomcat.host>${local.tomcat.host}</tomcat.host>
+				<tomcat.username>${local.tomcat.username}</tomcat.username>
+				<tomcat.password>${local.tomcat.password}</tomcat.password>
 			</properties>
 		</profile>
 		<profile>
@@ -46,9 +45,9 @@
 			<properties>
 				<env>dev</env>
 				<hibernate.connection.url>${dev.hibernate.connection.url}</hibernate.connection.url>
-				<tomcat.host.url>${dev.tomcat.host.url}</tomcat.host.url>
-				<tomcat.manager.username>${dev.tomcat.manager.username}</tomcat.manager.username>
-				<tomcat.manager.password>${dev.tomcat.manager.password}</tomcat.manager.password>
+				<tomcat.host>${dev.tomcat.host}</tomcat.host>
+				<tomcat.username>${dev.tomcat.username}</tomcat.username>
+				<tomcat.password>${dev.tomcat.password}</tomcat.password>
 			</properties>
 		</profile>
 		<profile>
@@ -59,9 +58,19 @@
 			<properties>
 				<env>test</env>
 				<hibernate.connection.url>${test.hibernate.connection.url}</hibernate.connection.url>
-				<tomcat.host.url>${test.tomcat.host.url}</tomcat.host.url>
-				<tomcat.manager.username>${test.tomcat.manager.username}</tomcat.manager.username>
-				<tomcat.manager.password>${test.tomcat.manager.password}</tomcat.manager.password>
+				<tomcat.host>${test.tomcat.host}</tomcat.host>
+				<tomcat.username>${test.tomcat.username}</tomcat.username>
+				<tomcat.password>${test.tomcat.password}</tomcat.password>
+			</properties>
+		</profile>
+		<profile>
+			<!--
+			To enable (without local): mvn -Pint ...
+			-->
+			<id>int</id>
+			<properties>
+				<env>int</env>
+				<hibernate.connection.url>${int.hibernate.connection.url}</hibernate.connection.url>
 			</properties>
 		</profile>
 	</profiles>
