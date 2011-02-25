@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+	<!-- Standard appender for error loggin, please do no modify -->
+	<appender name="errorlog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Append" value="true"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<param name="File" value="rumbalogs/lplc-server.log"/>
+		<param name="Threshold" value="error"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %5p [%t] (%c{1}:%L) %x - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Add all additional appenders to the async appender, not the root logger -->
+	<appender name="async" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="1000"/>
+		<param name="Blocking" value="true"/>
+		<appender-ref ref="errorlog"/>
+	</appender>
+
+	<root>
+		<priority value="error"></priority>
+		<appender-ref ref="async"/>
+	</root>
+
+</log4j:configuration>
