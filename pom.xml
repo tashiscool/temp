@@ -89,10 +89,6 @@
 			<artifactId>castor</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>quartz</groupId>
 			<artifactId>quartz</artifactId>
 		</dependency>
@@ -103,13 +99,13 @@
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-api</artifactId>
-			<version>1.2.8</version>
+			<version>${axiom.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-impl</artifactId>
-			<version>1.2.8</version>
+			<version>${axiom.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -120,6 +116,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${dependency.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>extract-contracts</id>
@@ -141,17 +138,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>eviware</groupId>
-				<artifactId>maven-soapui-pro-plugin</artifactId>
-				<version>3.5</version>
-				<configuration>
-					<projectFile>../../commons/testsuite/US based Test Suites/LicensePoolLifeCycle.xml</projectFile>
-					<printReport>true</printReport>
-					<junitReport>true</junitReport>
-					<outputFolder>../../lplc-dev-regression/soapui_testreports</outputFolder>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

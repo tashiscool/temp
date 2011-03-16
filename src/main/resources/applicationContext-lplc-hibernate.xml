@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-	Application context definition for hibernate.
--->
+<!-- Application context definition for hibernate. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
@@ -19,28 +15,23 @@
 	<!-- Using anotation drive transactions -->
 	<tx:annotation-driven />
 	<!-- Data source bean -->
-	  	<bean id="lplcDataSource"
-		class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="lplcDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
-		<property name="driverClassName"
-		value="${hibernate.connection.driver_class}" />
+		<property name="driverClassName" value="${hibernate.connection.driver_class}" />
 		<property name="url" value="${hibernate.connection.url}" />
-		<property name="username"
-		value="${hibernate.connection.username}" />
-		<property name="password"
-		value="${hibernate.connection.password}" />
-		<property name="initialSize"
-		value="${db.dbcp.connection.pool.initial_size}" />
-		<property name="maxActive"
-		value="${db.dbcp.connection.pool.max_active}" />
-		<property name="maxIdle"
-		value="${db.dbcp.connection.pool.max_idle}" />
-		<property name="minIdle"
-		value="${db.dbcp.connection.pool.min_idle}" />
-		<property name="maxWait"
-		value="${db.dbcp.connection.pool.max_wait}" />
-		</bean>
-
+		<property name="username" value="${hibernate.connection.username}" />
+		<property name="password" value="${hibernate.connection.password}" />
+		<property name="initialSize" value="${db.dbcp.connection.pool.initial_size}" />
+		<property name="maxActive" value="${db.dbcp.connection.pool.max_active}" />
+		<property name="maxIdle" value="${db.dbcp.connection.pool.max_idle}" />
+		<property name="minIdle" value="${db.dbcp.connection.pool.min_idle}" />
+		<property name="maxWait" value="${db.dbcp.connection.pool.max_wait}" />
+		<property name="validationQuery" value="${db.dbcp.connection.pool.validation_query}" />
+		<property name="timeBetweenEvictionRunsMillis" 
+			value="${db.dbcp.connection.pool.time_btwn_eviction_runs_millis}" />
+		<property name="testWhileIdle" value="${db.dbcp.connection.pool.test_while_idle}" />
+		<property name="removeAbandoned" value="true" />
+	</bean>
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -50,8 +41,8 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.pearson.ed.lplc.model.LicensePoolMapping</value>
-			    <value>com.pearson.ed.lplc.model.OrganizationLPMapping</value>
-			    <value>com.pearson.ed.lplc.model.OrderLineItemLPMapping</value>
+				<value>com.pearson.ed.lplc.model.OrganizationLPMapping</value>
+				<value>com.pearson.ed.lplc.model.OrderLineItemLPMapping</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -78,23 +69,23 @@
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
 		p:sessionFactory-ref="sessionFactory" />
-		
-	<bean id="jmxExporter" class="org.springframework.jmx.export.MBeanExporter">	
+
+	<bean id="jmxExporter" class="org.springframework.jmx.export.MBeanExporter">
 		<property name="beans">
 			<map>
-    			<entry key="Hibernate:name=LicensePoolStatistics">
-    		    	<ref local="statisticsBean"/>
+				<entry key="Hibernate:name=LicensePoolStatistics">
+					<ref local="statisticsBean" />
 				</entry>
 			</map>
-		</property>	
+		</property>
 	</bean>
-		
+
 	<bean id="statisticsBean" class="org.hibernate.jmx.StatisticsService">
 		<property name="statisticsEnabled">
 			<value>true</value>
-		</property>	
+		</property>
 		<property name="sessionFactory">
 			<ref local="sessionFactory"></ref>
-		</property>	
+		</property>
 	</bean>
 </beans>
