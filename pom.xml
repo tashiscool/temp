@@ -73,6 +73,16 @@
 				<hibernate.connection.url>${int.hibernate.connection.url}</hibernate.connection.url>
 			</properties>
 		</profile>
+		<profile>
+			<!--
+			To enable (without local): mvn -Pppe ...
+			-->
+			<id>ppe</id>
+			<properties>
+				<env>ppe</env>
+				<hibernate.connection.url>${ppe.hibernate.connection.url}</hibernate.connection.url>
+			</properties>
+		</profile>
 	</profiles>
 
 	<dependencies>
