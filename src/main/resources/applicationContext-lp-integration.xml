@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
+
+	<annotation-config />
+
+	<gateway id="marshallingLicensedProductWebServiceGateway"
+		default-request-channel="wsGetLicensedProductsRequestsChannel"
+		service-interface="com.pearson.ed.lp.ws.MarshallingLicensedProductServiceEndpoint"
+	/>
+	
+	<transformer 
+		ref="getLicensedProductRequestTransformer"
+		input-channel="wsGetLicensedProductsRequestsChannel"
+		output-channel="licensePoolRequestChannel"
+	/>
+	
+	<transformer 
+		ref="organizationIdExtractingTransformer"
+		input-channel="organizationRequestChannel"
+		output-channel="getOrganizationRequestChannel"
+	/>
+	
+	<chain input-channel="licensePoolRequestChannel">
+		<header-enricher>
+			<header name="qualifyingLicensePool" expression="payload.qualifyingLicensePool"/>
+			<!-- use the source message UUID as a transaction id for later reference by the final aggregator -->
+			<header name="TRANSACTION_ID" expression="headers.id" />
+		</header-enricher>
+		<recipient-list-router apply-sequence="true">
+			<recipient channel ="organizationRequestChannel" />
+			<recipient channel="licensePoolClientRequestChannel" />
+		</recipient-list-router>
+	</chain>
+	
+	<chain input-channel="getOrganizationRequestChannel">
+		<recipient-list-router apply-sequence="true">
+			<recipient selector-expression="headers.qualifyingLicensePool.equals('RootAndParents') or headers.qualifyingLicensePool.equals('AllInHierarchy')"
+				channel="getParentOrganizationTreeChannel"
+			/>
+			<recipient selector-expression="headers.qualifyingLicensePool.equals('AllInHierarchy')"
+				channel="getChildOrganizationTreeChannel"
+			/>
+<!-- 			<recipient selector-expression="headers.qualifyingLicensePool.equals('RootOnly')" -->
+<!-- 				channel="getOrganizationChannel" -->
+<!-- 			/> -->
+			<recipient channel="getOrganizationChannel" />
+		</recipient-list-router>
+	</chain>
+	
+	<aggregator input-channel="getOrganizationResponseChannel" 
+		ref="organizationDisplayNamesResponseAggregator"
+	output-channel="getLicensedProductsResponseChannel"/>
+	
+	<chain input-channel="licensePoolResponseRouterChannel">
+		<recipient-list-router apply-sequence="false">
+			<recipient channel="licensePoolResponseChannel" />
+			<recipient channel="getLicensedProductsResponseChannel" />
+		</recipient-list-router>
+	</chain>
+	
+	<splitter ref="licensePoolResponseSplitter" 
+		input-channel="licensePoolResponseChannel" 
+		output-channel="licensePoolResponseFragmentChannel"
+		apply-sequence="false"
+	/>
+	
+	<chain input-channel="licensePoolResponseFragmentChannel">
+		<recipient-list-router apply-sequence="true">
+			<recipient selector-expression="payload instanceof T(com.pearson.ed.lp.message.ProductEntityIdsRequest)" 
+				channel="productRequestChannel"
+			/>
+			<recipient selector-expression="payload instanceof T(com.pearson.ed.lp.message.OrderLineItemsRequest)" 
+				channel="orderRequestChannel"
+			/>
+		</recipient-list-router>
+	</chain>
+	
+	<aggregator input-channel="getLicensedProductsResponseChannel"
+		ref="licensedProductsResponseAggregator"
+	/>
+	
+	<!-- Service Activators - note that the referenced client stubs are provided by another configuration file -->
+	<service-activator input-channel="productRequestChannel" 
+		output-channel="getLicensedProductsResponseChannel" 
+		ref="productLifeCycleClient"
+	/>
+	<service-activator input-channel="orderRequestChannel" 
+		output-channel="getLicensedProductsResponseChannel" 
+		ref="orderLifeCycleClient"
+	/>
+	<service-activator input-channel="licensePoolClientRequestChannel" 
+		output-channel="licensePoolResponseRouterChannel" 
+		ref="licensePoolLifeCycleClient"
+	/>
+	<service-activator input-channel="getParentOrganizationTreeChannel" 
+		output-channel="getOrganizationResponseChannel" 
+		ref="orgLifeCycleClient" 
+		method="getChildTreeDisplayNamesByOrganizationId"
+	/>
+	<service-activator input-channel="getChildOrganizationTreeChannel" 
+		output-channel="getOrganizationResponseChannel" 
+		ref="orgLifeCycleClient" 
+		method="getParentTreeDisplayNamesByOrganizationId"
+	/>
+	<service-activator input-channel="getOrganizationChannel" 
+		output-channel="getOrganizationResponseChannel" 
+		ref="orgLifeCycleClient" 
+		method="getOrganizationDisplayName"
+	/>
+	
+	<!-- channels -->
+	<channel id="wsGetLicensedProductsRequestsChannel" />
+	<channel id="licensePoolRequestChannel" />
+	<channel id="organizationRequestChannel" />
+	<channel id="getOrganizationRequestChannel" />
+	<channel id="getOrganizationResponseChannel" />
+	<channel id="getParentOrganizationTreeChannel" />
+	<channel id="getChildOrganizationTreeChannel" />
+	<channel id="getOrganizationChannel" />
+	<channel id="licensePoolClientRequestChannel" />
+	<channel id="licensePoolResponseRouterChannel" />
+	<publish-subscribe-channel id="licensePoolResponseChannel" />
+	<channel id="licensePoolResponseFragmentChannel" />
+	<channel id="productRequestChannel" />
+	<channel id="orderRequestChannel" />
+	<publish-subscribe-channel id="getLicensedProductsResponseChannel" />
+	
+	<!-- common beans -->
+	<beans:bean id="getLicensedProductRequestTransformer" 
+		class="com.pearson.ed.lp.transformer.GetLicensedProductsRequestTransformer" 
+	/>
+	
+	<beans:bean id="organizationIdExtractingTransformer"
+		class="com.pearson.ed.lp.transformer.OrganizationIdExtractingTransformer"
+	/>
+	
+	<beans:bean id="licensedProductsResponseAggregator" 
+		class="com.pearson.ed.lp.aggregator.LicensedProductsResponseAggregator" 
+	/>
+	
+	<beans:bean id="organizationDisplayNamesResponseAggregator" 
+		class="com.pearson.ed.lp.aggregator.OrganizationDisplayNamesResponseAggregator" 
+	/>
+	
+	<beans:bean id="licensePoolResponseSplitter" 
+		class="com.pearson.ed.lp.splitter.LicensePoolResponseSplitter"
+	/>
+	
+</beans:beans>
