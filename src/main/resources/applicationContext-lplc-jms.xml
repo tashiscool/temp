@@ -13,6 +13,12 @@
     	<property name="brokerURL">
       		<value>${jms.server.endpoint.url}</value>
     	</property>
+    	<property name="defaultUser">
+			<value>${jms.server.username}</value>
+		</property>
+		<property name="defaultPassword">
+			<value>${jms.server.password}</value>
+		</property>
   	</bean>
 
 	<bean id="jmsWriter" class="com.pearson.ed.lplc.jms.impl.JMSWriterImpl" >
