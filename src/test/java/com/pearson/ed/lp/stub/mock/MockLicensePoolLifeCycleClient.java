@@ -1,17 +1,15 @@
 package com.pearson.ed.lp.stub.mock;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
+import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.stub.api.LicensePoolLifeCycleClient;
-import com.pearson.ed.lplc.model.OrganizationLPMapping;
 
 /**
  * Simple mock implementation of LicensePoolLifeCycleClient interface that provides
@@ -35,13 +33,13 @@ public class MockLicensePoolLifeCycleClient implements LicensePoolLifeCycleClien
 	}
 
 	@Override
-	public List<OrganizationLPMapping> getLicensePoolsByOrganizationId(
+	public LicensePoolResponse getLicensePoolsByOrganizationId(
 			LicensePoolByOrganizationIdRequest request) {
 		if(LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Received LicensePoolByOrganizationIdRequest message");
 		}
 		hitClasses.add(this.getClass());
-		return new ArrayList<OrganizationLPMapping>();
+		return new LicensePoolResponse();
 	}
 
 }

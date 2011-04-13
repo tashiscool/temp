@@ -18,9 +18,4 @@ public class LicensedProductWebServiceConstants {
 	 */
 	public static final String LICENSEDPRODUCT_NAMESPACE = "http://licensedproduct.rws.pearson.com/doc/2009/06/01/";
 	
-	/**
-	 * Header key string for aggregating response messages by a common transaction UUID.
-	 */
-	public static final String TRANSACTION_ID = "TRANSACTION_ID";
-
 }

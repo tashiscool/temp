@@ -40,7 +40,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 		hitClasses.clear();
 	}
 
-	@Ignore
 	@Test
 	public void testEndToEndMessagingWithQualifyingLicensePoolRootOnly() {
 		GetLicensedProductRequestElement request = new GetLicensedProductRequestElement();

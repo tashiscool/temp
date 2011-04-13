@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
+import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.stub.api.LicensePoolLifeCycleClient;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
@@ -24,9 +25,11 @@ public class LicensePoolServiceWrapper implements LicensePoolLifeCycleClient {
 	@Autowired(required = true)
 	private LicensePoolService licensePoolService;
 
-	public List<OrganizationLPMapping> getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request) {
-		return licensePoolService.getLicensePoolByOrganizationId(request.getOrganizationId(), 
+	public LicensePoolResponse getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request) {
+		List<OrganizationLPMapping> licensePools = licensePoolService.getLicensePoolByOrganizationId(
+				request.getOrganizationId(), 
 				request.getQualifyingLicensePool());
+		return new LicensePoolResponse(licensePools);
 	}
 
 	public LicensePoolService getLicensePoolService() {

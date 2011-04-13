@@ -33,65 +33,63 @@
 		output-channel="licensePoolRequestChannel"
 	/>
 	
-	<transformer 
-		ref="organizationIdExtractingTransformer"
-		input-channel="organizationRequestChannel"
-		output-channel="getOrganizationRequestChannel"
-	/>
-	
 	<chain input-channel="licensePoolRequestChannel">
 		<header-enricher>
 			<header name="qualifyingLicensePool" expression="payload.qualifyingLicensePool"/>
-			<!-- use the source message UUID as a transaction id for later reference by the final aggregator -->
-			<header name="TRANSACTION_ID" expression="headers.id" />
 		</header-enricher>
 		<recipient-list-router apply-sequence="true">
-			<recipient channel ="organizationRequestChannel" />
+			<recipient selector-expression="headers.qualifyingLicensePool.equals('RootAndParents') or headers.qualifyingLicensePool.equals('AllInHierarchy')"
+				channel="preGetParentOrganizationTreeChannel"
+			/>
+			<recipient selector-expression="headers.qualifyingLicensePool.equals('AllInHierarchy')"
+				channel="preGetChildOrganizationTreeChannel"
+			/>
+			<recipient channel="preGetOrganizationChannel" />
 			<recipient channel="licensePoolClientRequestChannel" />
 		</recipient-list-router>
 	</chain>
 	
-	<chain input-channel="getOrganizationRequestChannel">
-		<recipient-list-router apply-sequence="true">
-			<recipient selector-expression="headers.qualifyingLicensePool.equals('RootAndParents') or headers.qualifyingLicensePool.equals('AllInHierarchy')"
-				channel="getParentOrganizationTreeChannel"
-			/>
-			<recipient selector-expression="headers.qualifyingLicensePool.equals('AllInHierarchy')"
-				channel="getChildOrganizationTreeChannel"
-			/>
-<!-- 			<recipient selector-expression="headers.qualifyingLicensePool.equals('RootOnly')" -->
-<!-- 				channel="getOrganizationChannel" -->
-<!-- 			/> -->
-			<recipient channel="getOrganizationChannel" />
-		</recipient-list-router>
-	</chain>
-	
-	<aggregator input-channel="getOrganizationResponseChannel" 
-		ref="organizationDisplayNamesResponseAggregator"
-	output-channel="getLicensedProductsResponseChannel"/>
-	
-	<chain input-channel="licensePoolResponseRouterChannel">
-		<recipient-list-router apply-sequence="false">
-			<recipient channel="licensePoolResponseChannel" />
-			<recipient channel="getLicensedProductsResponseChannel" />
-		</recipient-list-router>
-	</chain>
-	
-	<splitter ref="licensePoolResponseSplitter" 
-		input-channel="licensePoolResponseChannel" 
-		output-channel="licensePoolResponseFragmentChannel"
-		apply-sequence="false"
+	<transformer 
+		input-channel="preGetParentOrganizationTreeChannel"
+		output-channel="getParentOrganizationTreeChannel"
+		expression="payload.organizationId"
 	/>
 	
-	<chain input-channel="licensePoolResponseFragmentChannel">
-		<recipient-list-router apply-sequence="true">
-			<recipient selector-expression="payload instanceof T(com.pearson.ed.lp.message.ProductEntityIdsRequest)" 
+	<transformer 
+		input-channel="preGetChildOrganizationTreeChannel"
+		output-channel="getChildOrganizationTreeChannel"
+		expression="payload.organizationId"
+	/>
+	
+	<transformer 
+		input-channel="preGetOrganizationChannel"
+		output-channel="getOrganizationChannel"
+		expression="payload.organizationId"
+	/>
+	
+	<aggregator input-channel="licensePoolResponseChannel" 
+		ref="licensedProductsDataAggregator"
+		output-channel="productOrderDetailsRequestSplitterChannel"
+	/>
+	
+	<splitter ref="productOrderDetailsRequestSplitter" 
+		input-channel="productOrderDetailsRequestSplitterChannel" 
+		output-channel="productOrderDetailsRequestChannel"
+		apply-sequence="true"
+	/>
+	
+	<chain input-channel="productOrderDetailsRequestChannel">
+		<payload-type-router>
+			<mapping type="com.pearson.ed.lp.message.ProductEntityIdsRequest"
 				channel="productRequestChannel"
 			/>
-			<recipient selector-expression="payload instanceof T(com.pearson.ed.lp.message.OrderLineItemsRequest)" 
+			<mapping type="com.pearson.ed.lp.message.OrderLineItemsRequest"
 				channel="orderRequestChannel"
 			/>
-		</recipient-list-router>
+			<mapping type="com.pearson.ed.lp.message.LicensedProductDataCollection"
+				channel="getLicensedProductsResponseChannel"
+			/>
+		</payload-type-router>
 	</chain>
 	
 	<aggregator input-channel="getLicensedProductsResponseChannel"
@@ -99,6 +97,25 @@
 	/>
 	
 	<!-- Service Activators - note that the referenced client stubs are provided by another configuration file -->
+	<service-activator input-channel="licensePoolClientRequestChannel" 
+		output-channel="licensePoolResponseChannel" 
+		ref="licensePoolLifeCycleClient"
+	/>
+	<service-activator input-channel="getParentOrganizationTreeChannel" 
+		output-channel="licensePoolResponseChannel" 
+		ref="orgLifeCycleClient" 
+		method="getChildTreeDisplayNamesByOrganizationId"
+	/>
+	<service-activator input-channel="getChildOrganizationTreeChannel" 
+		output-channel="licensePoolResponseChannel" 
+		ref="orgLifeCycleClient" 
+		method="getParentTreeDisplayNamesByOrganizationId"
+	/>
+	<service-activator input-channel="getOrganizationChannel" 
+		output-channel="licensePoolResponseChannel" 
+		ref="orgLifeCycleClient" 
+		method="getOrganizationDisplayName"
+	/>
 	<service-activator input-channel="productRequestChannel" 
 		output-channel="getLicensedProductsResponseChannel" 
 		ref="productLifeCycleClient"
@@ -107,39 +124,20 @@
 		output-channel="getLicensedProductsResponseChannel" 
 		ref="orderLifeCycleClient"
 	/>
-	<service-activator input-channel="licensePoolClientRequestChannel" 
-		output-channel="licensePoolResponseRouterChannel" 
-		ref="licensePoolLifeCycleClient"
-	/>
-	<service-activator input-channel="getParentOrganizationTreeChannel" 
-		output-channel="getOrganizationResponseChannel" 
-		ref="orgLifeCycleClient" 
-		method="getChildTreeDisplayNamesByOrganizationId"
-	/>
-	<service-activator input-channel="getChildOrganizationTreeChannel" 
-		output-channel="getOrganizationResponseChannel" 
-		ref="orgLifeCycleClient" 
-		method="getParentTreeDisplayNamesByOrganizationId"
-	/>
-	<service-activator input-channel="getOrganizationChannel" 
-		output-channel="getOrganizationResponseChannel" 
-		ref="orgLifeCycleClient" 
-		method="getOrganizationDisplayName"
-	/>
 	
 	<!-- channels -->
 	<channel id="wsGetLicensedProductsRequestsChannel" />
 	<channel id="licensePoolRequestChannel" />
-	<channel id="organizationRequestChannel" />
-	<channel id="getOrganizationRequestChannel" />
-	<channel id="getOrganizationResponseChannel" />
+	<channel id="preGetParentOrganizationTreeChannel" />
+	<channel id="preGetChildOrganizationTreeChannel" />
+	<channel id="preGetOrganizationChannel" />
 	<channel id="getParentOrganizationTreeChannel" />
 	<channel id="getChildOrganizationTreeChannel" />
 	<channel id="getOrganizationChannel" />
 	<channel id="licensePoolClientRequestChannel" />
-	<channel id="licensePoolResponseRouterChannel" />
 	<publish-subscribe-channel id="licensePoolResponseChannel" />
-	<channel id="licensePoolResponseFragmentChannel" />
+	<channel id="productOrderDetailsRequestSplitterChannel" />
+	<channel id="productOrderDetailsRequestChannel" />
 	<channel id="productRequestChannel" />
 	<channel id="orderRequestChannel" />
 	<publish-subscribe-channel id="getLicensedProductsResponseChannel" />
@@ -149,8 +147,8 @@
 		class="com.pearson.ed.lp.transformer.GetLicensedProductsRequestTransformer" 
 	/>
 	
-	<beans:bean id="organizationIdExtractingTransformer"
-		class="com.pearson.ed.lp.transformer.OrganizationIdExtractingTransformer"
+	<beans:bean id="licensedProductsDataAggregator"
+		class="com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator"
 	/>
 	
 	<beans:bean id="licensedProductsResponseAggregator" 
@@ -158,11 +156,11 @@
 	/>
 	
 	<beans:bean id="organizationDisplayNamesResponseAggregator" 
-		class="com.pearson.ed.lp.aggregator.OrganizationDisplayNamesResponseAggregator" 
+		class="com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator" 
 	/>
 	
-	<beans:bean id="licensePoolResponseSplitter" 
-		class="com.pearson.ed.lp.splitter.LicensePoolResponseSplitter"
+	<beans:bean id="productOrderDetailsRequestSplitter" 
+		class="com.pearson.ed.lp.splitter.ProductOrderDetailsRequestSplitter"
 	/>
 	
 </beans:beans>
