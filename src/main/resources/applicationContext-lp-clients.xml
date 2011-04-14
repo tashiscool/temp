@@ -25,12 +25,12 @@
 		<property name="serviceClient" ref="orderServiceClient" />
 	</bean>
 
-<!-- 	<bean id="orgLifeCycleClient"  -->
+<!-- 	<bean id="organizationLifeCycleClient"  -->
 <!-- 		class="com.pearson.ed.lp.stub.mock.MockOrganizationLifeCycleClient" -->
 <!-- 	/> -->
 
 	<!-- Spring WS Clients -->
-	<bean id="productServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
+	<bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
 		<property name="messageFactory" ref="messageFactory" />
 		<property name="defaultUri" value="${product.service.endpoint}" />
 		<property name="messageSender">
@@ -41,7 +41,7 @@
 		<property name="unmarshaller" ref="marshaller" />
 	</bean>
 	
-	<bean id="orderServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
+	<bean id="orderWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
 		<property name="messageFactory" ref="messageFactory" />
 		<property name="defaultUri" value="${order.service.endpoint}" />
 		<property name="messageSender">
@@ -52,15 +52,15 @@
 		<property name="unmarshaller" ref="marshaller" />
 	</bean>
 	
-	<bean id="organizationServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
-		<property name="messageFactory" ref="messageFactory" />
-		<property name="defaultUri" value="${organization.service.endpoint}" />
-		<property name="messageSender">
-			<bean
-				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
-		</property>
-		<property name="marshaller" ref="marshaller" />
-		<property name="unmarshaller" ref="marshaller" />
-	</bean>
+<!-- 	<bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"> -->
+<!-- 		<property name="messageFactory" ref="messageFactory" /> -->
+<!-- 		<property name="defaultUri" value="${organization.service.endpoint}" /> -->
+<!-- 		<property name="messageSender"> -->
+<!-- 			<bean -->
+<!-- 				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" /> -->
+<!-- 		</property> -->
+<!-- 		<property name="marshaller" ref="marshaller" /> -->
+<!-- 		<property name="unmarshaller" ref="marshaller" /> -->
+<!-- 	</bean> -->
 
 </beans>

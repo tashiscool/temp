@@ -11,11 +11,11 @@ public class LicensedProductWebServiceConstants {
 	/**
 	 * Get licensed product request element.
 	 */
-	public static final String GET_LICENSEDPRODUCT_REQUEST_ELEMENT = "GetLicensedProductRequest";
+	public static final String GET_LICENSEDPRODUCT_REQUEST_ELEMENT = "GetLicensedProductRequestElement";
 	
 	/**
 	 * The licensedproduct namespace.
 	 */
-	public static final String LICENSEDPRODUCT_NAMESPACE = "http://licensedproduct.rws.pearson.com/doc/2009/06/01/";
+	public static final String LICENSEDPRODUCT_V2_NAMESPACE = "http://licensedproduct.rws.pearson.com/doc/V2/";
 	
 }

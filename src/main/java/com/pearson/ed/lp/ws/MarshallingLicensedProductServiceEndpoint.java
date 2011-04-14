@@ -1,7 +1,7 @@
 package com.pearson.ed.lp.ws;
 
 import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.GET_LICENSEDPRODUCT_REQUEST_ELEMENT;
-import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.LICENSEDPRODUCT_NAMESPACE;
+import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.LICENSEDPRODUCT_V2_NAMESPACE;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -19,7 +19,7 @@ import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
 @Endpoint
 public interface MarshallingLicensedProductServiceEndpoint {
 	
-	@PayloadRoot(localPart = GET_LICENSEDPRODUCT_REQUEST_ELEMENT, namespace = LICENSEDPRODUCT_NAMESPACE)
+	@PayloadRoot(localPart = GET_LICENSEDPRODUCT_REQUEST_ELEMENT, namespace = LICENSEDPRODUCT_V2_NAMESPACE)
 	@Gateway
 	public GetLicensedProductResponseElement getLicensedProducts(GetLicensedProductRequestElement request);
 	

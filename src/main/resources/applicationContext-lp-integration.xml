@@ -38,7 +38,7 @@
 			<header name="qualifyingLicensePool" expression="payload.qualifyingLicensePool"/>
 		</header-enricher>
 		<recipient-list-router apply-sequence="true">
-			<recipient selector-expression="headers.qualifyingLicensePool.equals('RootAndParents') or headers.qualifyingLicensePool.equals('AllInHierarchy')"
+			<recipient selector-expression="headers.qualifyingLicensePool matches '^RootAndParents|AllInHierarchy$'"
 				channel="preGetParentOrganizationTreeChannel"
 			/>
 			<recipient selector-expression="headers.qualifyingLicensePool.equals('AllInHierarchy')"
@@ -103,17 +103,17 @@
 	/>
 	<service-activator input-channel="getParentOrganizationTreeChannel" 
 		output-channel="licensePoolResponseChannel" 
-		ref="orgLifeCycleClient" 
-		method="getChildTreeDisplayNamesByOrganizationId"
+		ref="organizationLifeCycleClient" 
+		method="getParentTreeDisplayNamesByOrganizationId"
 	/>
 	<service-activator input-channel="getChildOrganizationTreeChannel" 
 		output-channel="licensePoolResponseChannel" 
-		ref="orgLifeCycleClient" 
-		method="getParentTreeDisplayNamesByOrganizationId"
+		ref="organizationLifeCycleClient" 
+		method="getChildTreeDisplayNamesByOrganizationId"
 	/>
 	<service-activator input-channel="getOrganizationChannel" 
 		output-channel="licensePoolResponseChannel" 
-		ref="orgLifeCycleClient" 
+		ref="organizationLifeCycleClient" 
 		method="getOrganizationDisplayName"
 	/>
 	<service-activator input-channel="productRequestChannel" 
