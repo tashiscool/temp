@@ -135,12 +135,13 @@
 	<channel id="getChildOrganizationTreeChannel" />
 	<channel id="getOrganizationChannel" />
 	<channel id="licensePoolClientRequestChannel" />
-	<publish-subscribe-channel id="licensePoolResponseChannel" />
+	<channel id="licensePoolResponseChannel" />
 	<channel id="productOrderDetailsRequestSplitterChannel" />
 	<channel id="productOrderDetailsRequestChannel" />
 	<channel id="productRequestChannel" />
 	<channel id="orderRequestChannel" />
-	<publish-subscribe-channel id="getLicensedProductsResponseChannel" />
+	<channel id="getLicensedProductsResponseChannel" />
+	<channel id="errorChannel" />
 	
 	<!-- common beans -->
 	<beans:bean id="getLicensedProductRequestTransformer" 
@@ -162,5 +163,5 @@
 	<beans:bean id="productOrderDetailsRequestSplitter" 
 		class="com.pearson.ed.lp.splitter.ProductOrderDetailsRequestSplitter"
 	/>
-	
+
 </beans:beans>

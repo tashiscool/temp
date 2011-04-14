@@ -27,14 +27,19 @@
 	<bean id="messageReceiver"
 		class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
 
-
 	<bean id="schemaCollection"
 		class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
 		<description>
-			This bean wrap the LicensePool.xsd (which imports Service.xsd), and
+			This bean wraps the LicensePool.xsd and LicensedProduct.xsd
+			(which import Service.xsd), and
 			inlines them as a one.
 		</description>
-		<property name="xsds" value="classpath:/licensepool/LicensePool.xsd" />
+		<property name="xsds">
+			<list>
+				<value>classpath:/licensepool/LicensePool.xsd</value>
+				<value>classpath:/licensedproduct/LicensedProduct.xsd</value>
+			</list>
+		</property>
 		<property name="inline" value="true" />
 	</bean>
 
@@ -54,9 +59,7 @@
 	<!-- ===================== ENDPOINT MAPPINGS  ============================== -->
 
 	<!--
-		The endpoint mappings map from a request to an endpoint. Because we only want the security interception to
-		occur for the GetFrequentFlyerMileageEndpoint, we define two mappings: one with the securityInterceptor, and
-		a general one without it.
+		The endpoint mappings map from a request to an endpoint.
 	-->
 
 	<bean id="annotationMapping"
@@ -95,6 +98,7 @@
         	<list>
         		<value>com.pearson.rws.organization.doc._2009._07._01</value>
 				<value>com.pearson.rws.licensepool.doc._2009._04._01</value>
+				<value>com.pearson.rws.licensedproduct.doc.v2</value>
         	</list>
         </property>	   
         <property name="mtomEnabled" value="true"/>
@@ -111,6 +115,26 @@
 			will have these.
 		</description>
 		<property name="order" value="1" />
+		<property name="mappedEndpoints">
+			<set>
+				<value>marshallingLicensePoolEndpoint</value>
+			</set>
+		</property>
+	</bean>
+	
+	<bean
+		class="com.pearson.ed.lp.LicensedProductV2SoapFaultExceptionResolver">
+		<description>
+			This exception resolver maps exceptions with the @SoapFault
+			annotation to SOAP Faults. The business logic exceptions
+			will have these.
+		</description>
+		<property name="order" value="1" />
+		<property name="mappedEndpoints">
+			<set>
+				<value>marshallingLicensedProductWebServiceGateway</value>
+			</set>
+		</property>
 	</bean>
 
 	<bean

@@ -1,17 +1,15 @@
 package com.pearson.ed.lp;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,6 +26,10 @@ import com.pearson.rws.licensedproduct.doc.v2.QualifyingLicensePool;
 })
 public class MockEndToEndGetLicensedProductsServiceTest {
 	
+	@Autowired
+	private ApplicationContext applicationContext;
+	
+	
 	@Autowired(required = true)
 	private MarshallingLicensedProductServiceEndpoint serviceEndpoint;
 	
@@ -42,12 +44,17 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 
 	@Test
 	public void testEndToEndMessagingWithQualifyingLicensePoolRootOnly() {
+		
 		GetLicensedProductRequestElement request = new GetLicensedProductRequestElement();
 		request.setGetLicensedProduct(new GetLicensedProduct());
 		request.getGetLicensedProduct().setOrganizationId("dummyId");
 		request.getGetLicensedProduct().setQualifyingLicensePool(QualifyingLicensePool.ALL_IN_HIERARCHY);
 		
+		try {
 		GetLicensedProductResponseElement response = serviceEndpoint.getLicensedProducts(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println(hitClasses);
 		for(Class clazz : hitClasses)

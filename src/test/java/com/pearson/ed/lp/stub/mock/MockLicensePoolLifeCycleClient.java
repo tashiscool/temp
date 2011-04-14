@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pearson.ed.common.exception.RUMBABaseException;
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.stub.api.LicensePoolLifeCycleClient;
@@ -39,6 +40,8 @@ public class MockLicensePoolLifeCycleClient implements LicensePoolLifeCycleClien
 			LOGGER.debug("Received LicensePoolByOrganizationIdRequest message");
 		}
 		hitClasses.add(this.getClass());
+		if(true)
+			throw new RUMBABaseException("just a test");
 		return new LicensePoolResponse();
 	}
 
