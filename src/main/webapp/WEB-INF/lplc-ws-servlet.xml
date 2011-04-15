@@ -13,5 +13,9 @@
 		<property name="wsdl" value="classpath:/licensepool/LicensePoolLifeCycle.wsdl" />
 	</bean>
 	
-		
+	<bean id="LicensedProduct"
+		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/licensedproduct/LicensedProduct.wsdl" />
+	</bean>
+	
 </beans>

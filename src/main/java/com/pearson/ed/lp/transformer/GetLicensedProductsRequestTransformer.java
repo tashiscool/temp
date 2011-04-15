@@ -21,7 +21,7 @@ public class GetLicensedProductsRequestTransformer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GetLicensedProductsRequestTransformer.class);
 
 	@Transformer
-	public LicensePoolByOrganizationIdRequest transformGetLicensedProductIntoLicencePoolRequest(
+	public LicensePoolByOrganizationIdRequest transform(
 			GetLicensedProductRequestElement request) {
 		if(LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Received request to transform");
