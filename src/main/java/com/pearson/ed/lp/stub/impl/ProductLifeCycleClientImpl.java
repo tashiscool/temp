@@ -2,15 +2,14 @@ package com.pearson.ed.lp.stub.impl;
 
 import java.util.Map;
 
-
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.commons.service.exception.AbstractRumbaException;
+import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
 import com.pearson.ed.lp.stub.api.ProductLifeCycleClient;
-import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponse;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
 
@@ -37,7 +36,7 @@ private WebServiceTemplate serviceClient;
 		throws AbstractRumbaException {
 		
 		ProductEntityIdsResponse response = new ProductEntityIdsResponse();
-		Map<Long,String> responsePayload = response.getProductDisplayNamesByEntityIds();
+		Map<Long,ProductData> responsePayload = response.getProductDataByEntityIds();
 		
 		for(Long productEntityId : request.getProductEntityIds()) {
 			
@@ -59,7 +58,9 @@ private WebServiceTemplate serviceClient;
 				
 			    for(GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
 					if(responseType.getProductEntityId().equals(productEntityId)) {
-						responsePayload.put(productEntityId, responseType.getDisplayInformation().getDisplayInfo().get(0).toString());
+						ProductData productData = new ProductData();
+						productData.setDisplayName(responseType.getDisplayInformation().getDisplayInfo().get(0).toString());
+						responsePayload.put(productEntityId, productData);
 						break;
 					}
 				}

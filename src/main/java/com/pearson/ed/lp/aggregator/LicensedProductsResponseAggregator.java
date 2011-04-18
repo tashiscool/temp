@@ -15,8 +15,8 @@ import org.springframework.integration.annotation.Aggregator;
 import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrderLineItemsResponse;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
+import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
-import com.pearson.ed.lp.message.ProductEntityIdsResponse.ProductData;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
 import com.pearson.rws.licensedproduct.doc.v2.LicensedProduct;
@@ -103,7 +103,7 @@ public class LicensedProductsResponseAggregator {
 			licensedProduct.setProductId(productEntityId.toString());
 			licensedProduct.setProductDisplayName(productData.getDisplayName());
 			licensedProduct.setCGProgram(productData.getCgAttribute());
-//			licensedProduct.getGradeLevel().add( TODO
+			licensedProduct.getGradeLevel().addAll(productData.getGradeLevels());
 			licensedProduct.setOrderedISBN(orderData.getOrderedISBNsByOrderLineItemIds().get(firstOrderLineItemId));
 		}
 		

@@ -31,39 +31,5 @@ public class ProductEntityIdsResponse {
 	public void setProductDataByEntityIds(Map<Long, ProductData> productDataByEntityIds) {
 		this.productDataByEntityIds = productDataByEntityIds;
 	}
-	
-	/**
-	 * Simple pojo for holding product data.
-	 * 
-	 * @author ULLOYNI
-	 *
-	 */
-	public class ProductData {
-		
-		private String displayName;
-		
-		private String cgAttribute;
-		
-		private String gradeLevel;
-		
-		public String getDisplayName() {
-			return displayName;
-		}
-		public void setDisplayName(String displayName) {
-			this.displayName = displayName;
-		}
-		public String getCgAttribute() {
-			return cgAttribute;
-		}
-		public void setCgAttribute(String cgAttribute) {
-			this.cgAttribute = cgAttribute;
-		}
-		public String getGradeLevel() {
-			return gradeLevel;
-		}
-		public void setGradeLevel(String gradeLevel) {
-			this.gradeLevel = gradeLevel;
-		}
-	}
 
 }

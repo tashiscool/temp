@@ -40,7 +40,7 @@ public class LicensedProductV2SoapFaultExceptionResolver extends SoapFaultAnnota
         }
 
 //        Result result = fault.addFaultDetail().getResult();
-
+//
 //        JAXBElement element = null;
 //        if (ex instanceof ProductV2Exception) {
 //            ProductV2Exception prodException = (ProductV2Exception) ex;
