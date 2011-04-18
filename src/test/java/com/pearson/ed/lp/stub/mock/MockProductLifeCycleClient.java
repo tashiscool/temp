@@ -17,8 +17,8 @@ public class MockProductLifeCycleClient implements ProductLifeCycleClient {
 	private ProductLifeCycleClient mockClient;
 
 	@Override
-	public ProductEntityIdsResponse getDisplayNamesByProductEntityIds(ProductEntityIdsRequest request) {
-		return mockClient.getDisplayNamesByProductEntityIds(request);
+	public ProductEntityIdsResponse getProductDataByProductEntityIds(ProductEntityIdsRequest request) {
+		return mockClient.getProductDataByProductEntityIds(request);
 	}
 
 	public ProductLifeCycleClient getMockClient() {

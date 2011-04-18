@@ -106,7 +106,7 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 		expect(innerMockLicensePoolClient.getLicensePoolsByOrganizationId(
 				isA(LicensePoolByOrganizationIdRequest.class)))
 				.andReturn(dummyLicensePoolResponse);
-		expect(innerMockProductClient.getDisplayNamesByProductEntityIds(isA(ProductEntityIdsRequest.class)))
+		expect(innerMockProductClient.getProductDataByProductEntityIds(isA(ProductEntityIdsRequest.class)))
 			.andReturn(dummyProducEntityIdsResponse);
 		expect(innerMockOrderClient.getOrderedISBNsByOrderLineItemIds(isA(OrderLineItemsRequest.class)))
 			.andReturn(dummyOrderLineItemsResponse);

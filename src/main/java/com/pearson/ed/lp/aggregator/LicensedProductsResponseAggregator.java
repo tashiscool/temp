@@ -102,9 +102,23 @@ public class LicensedProductsResponseAggregator {
 			licensedProduct.setUsedLicenses(licensePool.getUsed_quantity());
 			licensedProduct.setProductId(productEntityId.toString());
 			licensedProduct.setProductDisplayName(productData.getDisplayName());
-			licensedProduct.setCGProgram(productData.getCgAttribute());
-			licensedProduct.getGradeLevel().addAll(productData.getGradeLevels());
-			licensedProduct.setOrderedISBN(orderData.getOrderedISBNsByOrderLineItemIds().get(firstOrderLineItemId));
+			
+			// optional data
+			if(productData.getShortDescription() != null) {
+				licensedProduct.setProductShortDescription(productData.getShortDescription());
+			}
+			if(productData.getLongDescription() != null) {
+				licensedProduct.setProductLongDescription(productData.getLongDescription());
+			}
+			if(productData.getCgProgram() != null) {
+				licensedProduct.setCGProgram(productData.getCgProgram());
+			}
+			if(!productData.getGradeLevels().isEmpty()) {
+				licensedProduct.getGradeLevel().addAll(productData.getGradeLevels());
+			}
+			if(orderData.getOrderedISBNsByOrderLineItemIds().containsKey(firstOrderLineItemId)) {
+				licensedProduct.setOrderedISBN(orderData.getOrderedISBNsByOrderLineItemIds().get(firstOrderLineItemId));
+			}
 		}
 		
 		return getLicensedProductResponse;

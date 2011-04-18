@@ -4,6 +4,7 @@
 package com.pearson.ed.lp.message;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -17,9 +18,25 @@ public class ProductData {
 	
 	private String displayName;
 	
-	private String cgAttribute;
+	private String shortDescription;
+	
+	private String longDescription;
+	
+	private String cgProgram;
 	
 	private List<String> gradeLevels = new ArrayList<String>();
+	
+	public ProductData(){}
+	
+	public ProductData(String displayName, String shortDescription, String longDescription, String cgProgram, String[] gradeLevels) {
+		this.displayName = displayName;
+		this.shortDescription = shortDescription;
+		this.longDescription = longDescription;
+		this.cgProgram = cgProgram;
+		if(gradeLevels != null) {
+			this.gradeLevels = Arrays.asList(gradeLevels);
+		}
+	}
 	
 	public String getDisplayName() {
 		return displayName;
@@ -29,12 +46,12 @@ public class ProductData {
 		this.displayName = displayName;
 	}
 	
-	public String getCgAttribute() {
-		return cgAttribute;
+	public String getCgProgram() {
+		return cgProgram;
 	}
 	
-	public void setCgAttribute(String cgAttribute) {
-		this.cgAttribute = cgAttribute;
+	public void setCgAttribute(String cgProgram) {
+		this.cgProgram = cgProgram;
 	}
 	
 	public List<String> getGradeLevels() {
@@ -47,5 +64,21 @@ public class ProductData {
 	
 	public void addGradeLevel(String gradeLevel) {
 		this.gradeLevels.add(gradeLevel);
+	}
+
+	public String getShortDescription() {
+		return shortDescription;
+	}
+
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	public String getLongDescription() {
+		return longDescription;
+	}
+
+	public void setLongDescription(String longDescription) {
+		this.longDescription = longDescription;
 	}
 }

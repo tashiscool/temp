@@ -12,18 +12,17 @@
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
 		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
 
-<!-- 	<bean id="licensePoolLifeCycleClient"  -->
-<!-- 		class="com.pearson.ed.lp.stub.mock.MockLicensePoolLifeCycleClient" -->
-<!-- 	/> -->
+	<!-- licensePoolLifeCycleClient can be found in applicationContext-lplc-service.xml -->
 
-<!-- 	<bean id="productLifeCycleClient"  -->
-<!-- 		class="com.pearson.ed.lp.stub.mock.MockProductLifeCycleClient" -->
-<!-- 	/> -->
+	<bean id="productLifeCycleClient" 
+		class="com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl"
+		p:serviceClient-ref="productWebServiceClient"
+	/>
 
 	<bean id="orderLifeCycleClient" 
-		class="com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl">
-		<property name="serviceClient" ref="orderWebServiceClient" />
-	</bean>
+		class="com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl"
+		p:serviceClient-ref="orderWebServiceClient"
+	/>
 
 <!-- 	<bean id="organizationLifeCycleClient"  -->
 <!-- 		class="com.pearson.ed.lp.stub.mock.MockOrganizationLifeCycleClient" -->
@@ -52,15 +51,15 @@
 		<property name="unmarshaller" ref="marshaller" />
 	</bean>
 	
-<!-- 	<bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"> -->
-<!-- 		<property name="messageFactory" ref="messageFactory" /> -->
-<!-- 		<property name="defaultUri" value="${organization.service.endpoint}" /> -->
-<!-- 		<property name="messageSender"> -->
-<!-- 			<bean -->
-<!-- 				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" /> -->
-<!-- 		</property> -->
-<!-- 		<property name="marshaller" ref="marshaller" /> -->
-<!-- 		<property name="unmarshaller" ref="marshaller" /> -->
-<!-- 	</bean> -->
+	<bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="defaultUri" value="${organization.service.endpoint}" />
+		<property name="messageSender">
+			<bean
+				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
+		</property>
+		<property name="marshaller" ref="marshaller" />
+		<property name="unmarshaller" ref="marshaller" />
+	</bean>
 
 </beans>

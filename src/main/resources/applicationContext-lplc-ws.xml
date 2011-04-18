@@ -99,6 +99,9 @@
         		<value>com.pearson.rws.organization.doc._2009._07._01</value>
 				<value>com.pearson.rws.licensepool.doc._2009._04._01</value>
 				<value>com.pearson.rws.licensedproduct.doc.v2</value>
+				<!-- additional client service contracts -->
+				<value>com.pearson.rws.order.doc._2009._02._09</value>
+				<value>com.pearson.rws.product.doc.v2</value>
         	</list>
         </property>	   
         <property name="mtomEnabled" value="true"/>

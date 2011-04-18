@@ -10,57 +10,88 @@ import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
 import com.pearson.ed.lp.stub.api.ProductLifeCycleClient;
+import com.pearson.rws.product.doc.v2.AttributeType;
+import com.pearson.rws.product.doc.v2.DisplayInfoType;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponse;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
 
 /**
- * Web Service Client stub implementation of the {@link ProductLifeCycleClient} interface.
- * Wraps an instance of the {@link WebServiceTemplate} class pointing to the ProductLifeCycle service.
+ * Web Service Client stub implementation of the {@link ProductLifeCycleClient} interface. Wraps an instance of the
+ * {@link WebServiceTemplate} class pointing to the ProductLifeCycle service.
  * 
  * @author VALAGNA
- *
+ * 
  */
-public class ProductLifeCycleClientImpl implements ProductLifeCycleClient{
-
-private WebServiceTemplate serviceClient;
+public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 	
-//	private LicensedProductExceptionFactory exceptionFactory;
+	public static final String CG_PROGRAM_ATTR_KEY = "CG PROGRAM";
+	public static final String GRADE_LEVEL_ATTR_KEY = "LEVEL";
+
+	private WebServiceTemplate serviceClient;
+
+	// private LicensedProductExceptionFactory exceptionFactory;
 
 	/**
-	 * Get all DisplayNames associated with the given product entity ids by calling the
-	 * ProductLifeCycle service.
-	 * @param request ProductEntityIdsRequest wrapping a list of product entity ids
+	 * Populate ProductData pojos associated with the given product entity ids by calling the ProductLifeCycle service.
+	 * 
+	 * @param request
+	 *            ProductEntityIdsRequest wrapping a list of product entity ids
 	 * @return ProductEntityIdsResponse mapping Display Name strings to associated product entity ids
 	 */
-	public ProductEntityIdsResponse getDisplayNamesByProductEntityIds(ProductEntityIdsRequest request) 
-		throws AbstractRumbaException {
-		
+	public ProductEntityIdsResponse getProductDataByProductEntityIds(ProductEntityIdsRequest request)
+			throws AbstractRumbaException {
+
 		ProductEntityIdsResponse response = new ProductEntityIdsResponse();
-		Map<Long,ProductData> responsePayload = response.getProductDataByEntityIds();
+		Map<Long, ProductData> responsePayload = response.getProductDataByEntityIds();
+
+		GetProductsByProductEntityIdsRequest productEntityIdRequest = new GetProductsByProductEntityIdsRequest();
+		GetProductsByProductEntityIdsResponse productEntityIdResponse = null;
 		
-			GetProductsByProductEntityIdsRequest productEntityIdRequest = new GetProductsByProductEntityIdsRequest();
-			GetProductsByProductEntityIdsResponse productEntityIdResponse = null;
-		
-			try {
-				productEntityIdResponse = (GetProductsByProductEntityIdsResponse)serviceClient
-						.marshalSendAndReceive(productEntityIdRequest.getProductEntityId());
-			} catch (SoapFaultClientException exception) {
-				// TODO
-			} catch (Exception exception) {
-				// TODO
-//				throw new ExternalServiceCallException(exception.getMessage());
-			}
-			
-			if(productEntityIdResponse != null) {
+		productEntityIdRequest.getProductEntityId().addAll(request.getProductEntityIds());
+
+		try {
+			productEntityIdResponse = (GetProductsByProductEntityIdsResponse) serviceClient
+					.marshalSendAndReceive(productEntityIdRequest);
+		} catch (SoapFaultClientException exception) {
+			// TODO
+		} catch (Exception exception) {
+			// TODO
+			// throw new ExternalServiceCallException(exception.getMessage());
+		}
+
+		if (productEntityIdResponse != null) {
+
+			for (GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
+				ProductData productData = new ProductData();
+				responsePayload.put(responseType.getProductEntityId(), productData);
 				
-			    for(GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
-						ProductData productData = new ProductData();
-						productData.setDisplayName(responseType.getDisplayInformation().getDisplayInfo().get(0).toString());
-						responsePayload.put(responseType.getProductEntityId(), productData);
+				// quirk of the contract allows each possibility for empty display information
+				if((responseType.getDisplayInformation() == null) 
+						|| (responseType.getDisplayInformation().getDisplayInfo().isEmpty())) {
+					// TODO throw exception, we need this data! Display Name is required!!!
 				}
-			} 
-		
+				
+				DisplayInfoType firstDisplayInfo = responseType.getDisplayInformation().getDisplayInfo().iterator().next();
+				
+				// get the first display info name, just like the legacy service
+				productData.setDisplayName(firstDisplayInfo.getName());
+				productData.setShortDescription(firstDisplayInfo.getShortDescription());
+				productData.setLongDescription(firstDisplayInfo.getLongDescription());
+
+				// iterate through the attributes for the ones we want
+				if(responseType.getAttributes() != null) {
+					for(AttributeType attribute : responseType.getAttributes().getAttribute()) {
+						if(attribute.getAttributeKey().equals(CG_PROGRAM_ATTR_KEY)) {
+							productData.setCgAttribute(attribute.getAttributeValue());
+						} else if(attribute.getAttributeKey().equals(GRADE_LEVEL_ATTR_KEY)) {
+							productData.addGradeLevel(attribute.getAttributeValue());
+						}
+					}
+				}
+			}
+		}
+
 		return response;
 	}
 
