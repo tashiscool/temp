@@ -12,6 +12,7 @@ import com.pearson.ed.lp.message.ProductEntityIdsResponse;
 import com.pearson.ed.lp.stub.api.ProductLifeCycleClient;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponse;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
+import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
 
 /**
  * Web Service Client stub implementation of the {@link ProductLifeCycleClient} interface.
@@ -38,15 +39,12 @@ private WebServiceTemplate serviceClient;
 		ProductEntityIdsResponse response = new ProductEntityIdsResponse();
 		Map<Long,ProductData> responsePayload = response.getProductDataByEntityIds();
 		
-		for(Long productEntityId : request.getProductEntityIds()) {
-			
-			Long requestPayLoad = productEntityId;
-			
+			GetProductsByProductEntityIdsRequest productEntityIdRequest = new GetProductsByProductEntityIdsRequest();
 			GetProductsByProductEntityIdsResponse productEntityIdResponse = null;
-			
+		
 			try {
 				productEntityIdResponse = (GetProductsByProductEntityIdsResponse)serviceClient
-						.marshalSendAndReceive(requestPayLoad);
+						.marshalSendAndReceive(productEntityIdRequest.getProductEntityId());
 			} catch (SoapFaultClientException exception) {
 				// TODO
 			} catch (Exception exception) {
@@ -57,15 +55,11 @@ private WebServiceTemplate serviceClient;
 			if(productEntityIdResponse != null) {
 				
 			    for(GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
-					if(responseType.getProductEntityId().equals(productEntityId)) {
 						ProductData productData = new ProductData();
 						productData.setDisplayName(responseType.getDisplayInformation().getDisplayInfo().get(0).toString());
-						responsePayload.put(productEntityId, productData);
-						break;
-					}
+						responsePayload.put(responseType.getProductEntityId(), productData);
 				}
 			} 
-		} 
 		
 		return response;
 	}
