@@ -22,7 +22,7 @@
 
 	<bean id="orderLifeCycleClient" 
 		class="com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl">
-		<property name="serviceClient" ref="orderServiceClient" />
+		<property name="serviceClient" ref="orderWebServiceClient" />
 	</bean>
 
 <!-- 	<bean id="organizationLifeCycleClient"  -->

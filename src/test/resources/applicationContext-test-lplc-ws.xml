@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
+
+	<!-- Spring Web Services configuration for testing (no RUMBA-specific classes referenced) -->
+
+	<bean id="messageDispatcher"
+		class="org.springframework.ws.soap.server.SoapMessageDispatcher">
+		<property name="endpointMappings" ref="annotationMapping" />
+	</bean>
+
+	<bean id="messageFactory"
+		class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory">
+		<property name="soapVersion">
+			<util:constant
+				static-field="org.springframework.ws.soap.SoapVersion.SOAP_12" />
+		</property>
+		<property name="payloadCaching" value="true" />
+	</bean>
+
+	<bean id="messageReceiver"
+		class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
+
+	<bean id="schemaCollection"
+		class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
+		<description>
+			This bean wraps the LicensePool.xsd and LicensedProduct.xsd
+			(which import Service.xsd), and
+			inlines them as a one.
+		</description>
+		<property name="xsds">
+			<list>
+				<value>classpath:/licensepool/LicensePool.xsd</value>
+				<value>classpath:/licensedproduct/LicensedProduct.xsd</value>
+			</list>
+		</property>
+		<property name="inline" value="true" />
+	</bean>
+
+	<bean id="annotationMapping"
+		class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+		<description>
+			Detects @PayloadRoot annotations on @Endpoint bean methods.
+			The MarshallingLicensePoolEndpoint has such annotations. It uses
+			two interceptors: one that logs the message payload, and the
+			other validates it according to the schema file.
+		</description>
+		<property name="interceptors">
+			<list>
+				<bean
+					class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor">
+					<description>
+						This interceptor logs the message payload.
+					</description>
+				</bean>
+
+				<bean
+					class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor">
+					<property name="xsdSchemaCollection"
+						ref="schemaCollection" />
+					<property name="validateRequest" value="true" />
+					<property name="validateResponse" value="true" />
+				</bean>
+
+			</list>
+		</property>
+		<property name="order" value="1" />
+	</bean>
+	
+	<!-- Test marshaller with contextPaths for this service and referenced client services -->
+	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPaths">
+        	<list>
+        		<value>com.pearson.rws.organization.doc._2009._07._01</value>
+				<value>com.pearson.rws.licensepool.doc._2009._04._01</value>
+				<value>com.pearson.rws.licensedproduct.doc.v2</value>
+				<!-- additional client service contracts -->
+				<value>com.pearson.rws.order.doc._2009._02._09</value>
+				<value>com.pearson.rws.product.doc.v2</value>
+        	</list>
+        </property>	   
+        <property name="mtomEnabled" value="true"/>
+    </bean>
+    
+    <ws:annotation-driven />
+	
+	<bean
+		class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
+		<description>
+			This exception resolver maps other exceptions to SOAP
+			Faults. Both UnmarshallingException and
+			ValidationFailureException are mapped to a SOAP Fault with a
+			"Client" fault code. All other exceptions are mapped to a
+			"Server" error code, the default.
+		</description>
+		<property name="defaultFault" value="SERVER" />
+		<property name="exceptionMappings">
+			<props>
+				<prop
+					key="org.springframework.oxm.UnmarshallingFailureException">
+					CLIENT,Invalid request
+				</prop>
+				<prop
+					key="org.springframework.oxm.ValidationFailureException">
+					CLIENT,Invalid request
+				</prop>
+			</props>
+		</property>
+		<property name="order" value="2" />
+	</bean>
+
+</beans>
