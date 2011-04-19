@@ -30,37 +30,37 @@
 	/>
 
 	<!-- Spring WS Clients -->
-	<bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
-		<property name="messageFactory" ref="messageFactory" />
-		<property name="defaultUri" value="${product.service.endpoint}" />
+	<bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
+		p:messageFactory-ref="messageFactory"
+		p:defaultUri="${product.service.endpoint}"
+		p:marshaller-ref="marshaller"
+		p:unmarshaller-ref="marshaller">
 		<property name="messageSender">
 			<bean
 				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
 		</property>
-		<property name="marshaller" ref="marshaller" />
-		<property name="unmarshaller" ref="marshaller" />
 	</bean>
 	
-	<bean id="orderWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
-		<property name="messageFactory" ref="messageFactory" />
-		<property name="defaultUri" value="${order.service.endpoint}" />
+	<bean id="orderWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
+		p:messageFactory-ref="messageFactory"
+		p:defaultUri="${order.service.endpoint}"
+		p:marshaller-ref="marshaller"
+		p:unmarshaller-ref="marshaller">
 		<property name="messageSender">
 			<bean
 				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
 		</property>
-		<property name="marshaller" ref="marshaller" />
-		<property name="unmarshaller" ref="marshaller" />
 	</bean>
 	
-	<bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
-		<property name="messageFactory" ref="messageFactory" />
-		<property name="defaultUri" value="${organization.service.endpoint}" />
+	<bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
+		p:messageFactory-ref="messageFactory"
+		p:defaultUri="${organization.service.endpoint}"
+		p:marshaller-ref="marshaller"
+		p:unmarshaller-ref="marshaller">
 		<property name="messageSender">
 			<bean
 				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
 		</property>
-		<property name="marshaller" ref="marshaller" />
-		<property name="unmarshaller" ref="marshaller" />
 	</bean>
 
 </beans>
