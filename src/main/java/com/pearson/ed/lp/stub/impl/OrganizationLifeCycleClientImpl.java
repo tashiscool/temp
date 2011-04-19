@@ -13,8 +13,6 @@ import com.pearson.rws.organization.doc._2009._07._01.GetChildrenByIdRequest;
 import com.pearson.rws.organization.doc._2009._07._01.GetParentsByIdRequest;
 import com.pearson.rws.organization.doc._2009._07._01.OrganizationIdRequestType;
 
-
-
 /**
  * Web Service Client stub implementation of the {@link OrganizationLifeCycleClient} interface.
  * Wraps an instance of the {@link WebServiceTemplate} class pointing to the OrganizationLifeCycle service.
@@ -23,6 +21,8 @@ import com.pearson.rws.organization.doc._2009._07._01.OrganizationIdRequestType;
  *
  */
 public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleClient{
+	
+	public static final String ORG_DISPLAY_NAME_ATTR_KEY = "ORG_DISPLAY_NAME";
 
 	private WebServiceTemplate serviceClient;
 	
@@ -55,7 +55,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 //				throw new ExternalServiceCallException(exception.getMessage());
 			}
 						
-			if(organizationResponse != null) {
+			if((organizationResponse != null) && (organizationResponse.getOrganization().getAttributes() != null)) {
 				for(ReadAttributeType organizationDisplayName : organizationResponse.getOrganization().getAttributes().getAttribute()) {
 					responsePayload.put(organizationResponse.getOrganization().getOrganizationId(), organizationDisplayName.getAttributeValue());
 				}			 
@@ -93,7 +93,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 //				throw new ExternalServiceCallException(exception.getMessage());
 			}
 						
-			if(organizationResponse != null) {
+			if((organizationResponse != null) && (organizationResponse.getOrganization().getAttributes() != null)) {
 				 for(ReadAttributeType organizationDisplayName : organizationResponse.getOrganization().getAttributes().getAttribute()) {
 					responsePayload.put(organizationResponse.getOrganization().getOrganizationId(), organizationDisplayName.getAttributeValue());
 				}
@@ -132,7 +132,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 //				throw new ExternalServiceCallException(exception.getMessage());
 			}
 						
-			if(organizationResponse != null) {
+			if((organizationResponse != null) && (organizationResponse.getOrganization().getAttributes() != null)) {
 				 for(ReadAttributeType organizationDisplayName : organizationResponse.getOrganization().getAttributes().getAttribute()) {
 					 responsePayload.put(organizationResponse.getOrganization().getOrganizationId(), organizationDisplayName.getAttributeValue());
 				}

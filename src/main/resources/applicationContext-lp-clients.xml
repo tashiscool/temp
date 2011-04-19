@@ -24,9 +24,10 @@
 		p:serviceClient-ref="orderWebServiceClient"
 	/>
 
-<!-- 	<bean id="organizationLifeCycleClient"  -->
-<!-- 		class="com.pearson.ed.lp.stub.mock.MockOrganizationLifeCycleClient" -->
-<!-- 	/> -->
+	<bean id="organizationLifeCycleClient" 
+		class="com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl"
+		p:serviceClient-ref="organizationWebServiceClient"
+	/>
 
 	<!-- Spring WS Clients -->
 	<bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate">
