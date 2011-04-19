@@ -18,7 +18,6 @@ import javax.xml.transform.Source;
 
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,6 @@ public class OrganizationLifeCycleClientImplTest {
 	/**
 	 * Test method for {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}.
 	 */
-	@Ignore
 	@Test
 	public void testGetChildTreeDisplayNamesByOrganizationId() {
 		String dummyOrgId = "dummy-org-id";
@@ -106,7 +104,6 @@ public class OrganizationLifeCycleClientImplTest {
 	/**
 	 * Test method for {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}.
 	 */
-	@Ignore
 	@Test
 	public void testGetParentTreeDisplayNamesByOrganizationId() {
 		String dummyOrgId = "dummy-org-id";
@@ -131,7 +128,6 @@ public class OrganizationLifeCycleClientImplTest {
 	/**
 	 * Test method for {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getOrganizationDisplayName(String)}.
 	 */
-	@Ignore
 	@Test
 	public void testGetOrganizationDisplayName() {
 		String dummyOrgId = "dummy-org-id";
@@ -225,17 +221,24 @@ public class OrganizationLifeCycleClientImplTest {
 		case CHILD_TREE:
 			OrganizationTreeResponse childTreeResponse = new OrganizationTreeResponse();
 			
-			OrganizationTreeType lastChildOrg = new OrganizationTreeType();
-			childTreeResponse.getOrganization().getOrganization().add(lastChildOrg);
+			OrganizationTreeType lastChildOrg = null;
 			levelCounter = 0;
 			for(Entry<String,String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				OrganizationTreeType childOrg = new OrganizationTreeType();
-				lastChildOrg.getOrganization().add(childOrg);
-				lastChildOrg = childOrg;
-				
-				childOrg.setOrganizationId(dummyOrgData.getKey());
-				childOrg.setName(dummyOrgData.getValue());
-				childOrg.setLevel(levelCounter);
+				if(lastChildOrg == null) {
+					lastChildOrg = new OrganizationTreeType();
+					childTreeResponse.setOrganization(lastChildOrg);
+					lastChildOrg.setOrganizationId(dummyOrgData.getKey());
+					lastChildOrg.setName(dummyOrgData.getValue());
+					lastChildOrg.setLevel(levelCounter);
+				} else {
+					OrganizationTreeType childOrg = new OrganizationTreeType();
+					lastChildOrg.getOrganization().add(childOrg);
+					lastChildOrg = childOrg;
+					
+					childOrg.setOrganizationId(dummyOrgData.getKey());
+					childOrg.setName(dummyOrgData.getValue());
+					childOrg.setLevel(levelCounter);
+				}
 				levelCounter++;
 			}
 			
@@ -244,17 +247,24 @@ public class OrganizationLifeCycleClientImplTest {
 		case PARENT_TREE:
 			OrganizationTreeResponse parentTreeResponse = new OrganizationTreeResponse();
 			
-			OrganizationTreeType lastParentOrg = new OrganizationTreeType();
-			parentTreeResponse.getOrganization().getOrganization().add(lastParentOrg);
+			OrganizationTreeType lastParentOrg = null;
 			levelCounter = 0;
 			for(Entry<String,String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				OrganizationTreeType parentOrg = new OrganizationTreeType();
-				lastParentOrg.getOrganization().add(parentOrg);
-				lastParentOrg = parentOrg;
-				
-				parentOrg.setOrganizationId(dummyOrgData.getKey());
-				parentOrg.setName(dummyOrgData.getValue());
-				parentOrg.setLevel(levelCounter);
+				if(lastParentOrg == null) {
+					lastParentOrg = new OrganizationTreeType();
+					parentTreeResponse.setOrganization(lastParentOrg);
+					lastParentOrg.setOrganizationId(dummyOrgData.getKey());
+					lastParentOrg.setName(dummyOrgData.getValue());
+					lastParentOrg.setLevel(levelCounter);
+				} else {
+					OrganizationTreeType parentOrg = new OrganizationTreeType();
+					lastParentOrg.getOrganization().add(parentOrg);
+					lastParentOrg = parentOrg;
+					
+					parentOrg.setOrganizationId(dummyOrgData.getKey());
+					parentOrg.setName(dummyOrgData.getValue());
+					parentOrg.setLevel(levelCounter);
+				}
 				levelCounter++;
 			}
 			response = parentTreeResponse;
