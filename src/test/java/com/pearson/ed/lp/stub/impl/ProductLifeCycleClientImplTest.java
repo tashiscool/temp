@@ -78,15 +78,15 @@ public class ProductLifeCycleClientImplTest {
 		Long[] dummyEntityIds = new Long[]{1l,2l,3l,4l,5l};
 		Map<Long,ProductData> dummyProductData = new Hashtable<Long,ProductData>(5);
 		// required data only (display name)
-		dummyProductData.put(dummyEntityIds[0], new ProductData("dummyDisplayName-1", null, null, null, null));
+		dummyProductData.put(dummyEntityIds[0], new ProductData("id-1", "dummyDisplayName-1", null, null, null, null));
 		// short description and long description
-		dummyProductData.put(dummyEntityIds[1], new ProductData("dummyDisplayName-2", "shortDesc-2", "longDesc-2", null, null));
+		dummyProductData.put(dummyEntityIds[1], new ProductData("id-2", "dummyDisplayName-2", "shortDesc-2", "longDesc-2", null, null));
 		// CG program
-		dummyProductData.put(dummyEntityIds[2], new ProductData("dummyDisplayName-3", null, null, "cgProgram-3", null));
+		dummyProductData.put(dummyEntityIds[2], new ProductData("id-3", "dummyDisplayName-3", null, null, "cgProgram-3", null));
 		// grade level
-		dummyProductData.put(dummyEntityIds[3], new ProductData("dummyDisplayName-4", null, null, null, new String[]{"gradeLevel-4"}));
+		dummyProductData.put(dummyEntityIds[3], new ProductData("id-4", "dummyDisplayName-4", null, null, null, new String[]{"gradeLevel-4"}));
 		// full data, multiple grade levels
-		dummyProductData.put(dummyEntityIds[4], new ProductData("dummyDisplayName-5", "shortDesc-5", "longDesc-5", "cgProgram-5", 
+		dummyProductData.put(dummyEntityIds[4], new ProductData("id-5", "dummyDisplayName-5", "shortDesc-5", "longDesc-5", "cgProgram-5", 
 				new String[]{"gradeLevel-5.1","gradeLevel-5.2","gradeLevel-5.3"}));
 		
 		mockServer.expect(payload(generateDummyGetProductRequest(dummyEntityIds)))
@@ -118,6 +118,8 @@ public class ProductLifeCycleClientImplTest {
 			
 			assertNotNull(String.format("Missing response ProductData for entity id: %d", expected.getKey()), 
 					actualData);
+			assertEquals(String.format("ProductId mismatch for ProductData with entity id: %d", expected.getKey()), 
+					expectedData.getProductId(), actualData.getProductId());
 			assertEquals(String.format("DisplayName mismatch for ProductData with entity id: %d", expected.getKey()), 
 					expectedData.getDisplayName(), actualData.getDisplayName());
 			assertEquals(String.format("ShortDescription mismatch for ProductData with entity id: %d", expected.getKey()), 
@@ -167,6 +169,7 @@ public class ProductLifeCycleClientImplTest {
 			ProductData dummyData = dummyProduct.getValue();
 			
 			product.setProductEntityId(dummyProduct.getKey());
+			product.setProductId(dummyData.getProductId());
 			
 			DisplayInfoType displayInfo = new DisplayInfoType();
 			displayInfo.setName(dummyData.getDisplayName());

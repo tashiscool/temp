@@ -58,24 +58,6 @@ public class LicensedProductsResponseAggregator {
 			LicensedProduct licensedProduct = new LicensedProduct();
 			licensedProducts.add(licensedProduct);
 			
-//			<ns:LicensedProduct>
-//		    <ns:OrganizationId>{data($OrganizationId)}</ns:OrganizationId>
-//		    <ns:LicensePoolId>{data($LicensePoolByOrganizationId[$index]/ns1:LicensePoolId)}</ns:LicensePoolId>
-//		    <ns:LicensedOrganizationId>{data($OrganizationId)}</ns:LicensedOrganizationId>
-//		    <ns:LicensedOrganizationDisplayName>{data($LicensedOrganizationDisplayName)}</ns:LicensedOrganizationDisplayName>
-//		    <ns:LicensePoolType>{data($LicensePoolByOrganizationId[$index]/ns1:Type)}</ns:LicensePoolType>
-//		    <ns:LicensePoolStatus>{data($LicensePoolByOrganizationId[$index]/ns1:Status)}</ns:LicensePoolStatus>
-//		    <ns:DenyNewSubscription>{data($LicensePoolByOrganizationId[$index]/ns1:DenyNewSubscription)}</ns:DenyNewSubscription>
-//		    <ns:StartDate>{data($LicensePoolByOrganizationId[$index]/ns1:StartDate)}</ns:StartDate>
-//		    <ns:EndDate>{data($LicensePoolByOrganizationId[$index]/ns1:EndDate)}</ns:EndDate>
-//		    <ns:Quantity>{data($LicensePoolByOrganizationId[$index]/ns1:Quantity)}</ns:Quantity>
-//		    <ns:UsedLicenses>{data($LicensePoolByOrganizationId[$index]/ns1:UsedLicenses)}</ns:UsedLicenses>
-//		    <ns:ProductId>{data($productDetails//ProductId)}</ns:ProductId>
-//		    <ns:ProductDisplayName>{data($productDetails//ProductDisplayName)}</ns:ProductDisplayName>
-//		    <ns:CGProgram>{data($productDetails//CGAttribute)}</ns:CGProgram>
-//		    <ns:OrderedISBN>{data($GetOrderLineItemByIdResponse/ns6:Order/ns6:OrderLineItems/ns6:OrderLine/ns6:OrderedISBN)}</ns:OrderedISBN>
-		// </ns:LicensedProduct>
-			
 			String organizationId = licensePool.getLicensepoolMapping().getOrg_id();
 			Long productEntityId = Long.valueOf(licensePool.getLicensepoolMapping().getProduct_id());
 			ProductData productData = productsData.getProductDataByEntityIds().get(productEntityId);
@@ -100,7 +82,7 @@ public class LicensedProductsResponseAggregator {
 			
 			licensedProduct.setQuantity(licensePool.getLicensepoolMapping().getQuantity());
 			licensedProduct.setUsedLicenses(licensePool.getUsed_quantity());
-			licensedProduct.setProductId(productEntityId.toString());
+			licensedProduct.setProductId(productData.getProductId());
 			licensedProduct.setProductDisplayName(productData.getDisplayName());
 			
 			// optional data

@@ -64,7 +64,9 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 
 			for (GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
 				ProductData productData = new ProductData();
-				responsePayload.put(Long.parseLong(responseType.getProductId()), productData);
+				responsePayload.put(responseType.getProductEntityId(), productData);
+				
+				productData.setProductId(responseType.getProductId());
 				
 				// quirk of the contract allows each possibility for empty display information
 				if((responseType.getDisplayInformation() == null) 
@@ -83,7 +85,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 				if(responseType.getAttributes() != null) {
 					for(AttributeType attribute : responseType.getAttributes().getAttribute()) {
 						if(attribute.getAttributeKey().equals(CG_PROGRAM_ATTR_KEY)) {
-							productData.setCgAttribute(attribute.getAttributeValue());
+							productData.setCgProgram(attribute.getAttributeValue());
 						} else if(attribute.getAttributeKey().equals(GRADE_LEVEL_ATTR_KEY)) {
 							productData.addGradeLevel(attribute.getAttributeValue());
 						}

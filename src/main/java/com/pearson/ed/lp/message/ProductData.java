@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class ProductData {
 	
+	private String productId;
+	
 	private String displayName;
 	
 	private String shortDescription;
@@ -28,7 +30,10 @@ public class ProductData {
 	
 	public ProductData(){}
 	
-	public ProductData(String displayName, String shortDescription, String longDescription, String cgProgram, String[] gradeLevels) {
+	public ProductData(String productId, String displayName, 
+			String shortDescription, String longDescription, 
+			String cgProgram, String[] gradeLevels) {
+		this.productId = productId;
 		this.displayName = displayName;
 		this.shortDescription = shortDescription;
 		this.longDescription = longDescription;
@@ -50,7 +55,7 @@ public class ProductData {
 		return cgProgram;
 	}
 	
-	public void setCgAttribute(String cgProgram) {
+	public void setCgProgram(String cgProgram) {
 		this.cgProgram = cgProgram;
 	}
 	
@@ -80,5 +85,13 @@ public class ProductData {
 
 	public void setLongDescription(String longDescription) {
 		this.longDescription = longDescription;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 }
