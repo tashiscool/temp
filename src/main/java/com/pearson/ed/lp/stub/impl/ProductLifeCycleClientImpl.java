@@ -64,7 +64,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 
 			for (GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
 				ProductData productData = new ProductData();
-				responsePayload.put(responseType.getProductEntityId(), productData);
+				responsePayload.put(Long.parseLong(responseType.getProductId()), productData);
 				
 				// quirk of the contract allows each possibility for empty display information
 				if((responseType.getDisplayInformation() == null) 
