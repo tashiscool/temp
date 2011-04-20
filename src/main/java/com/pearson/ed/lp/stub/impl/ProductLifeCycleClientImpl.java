@@ -34,10 +34,12 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 
 	/**
 	 * Populate ProductData pojos associated with the given product entity ids by calling the ProductLifeCycle service.
+	 * Implements {@link ProductLifeCycleClient#getProductDataByProductEntityIds(ProductEntityIdsRequest)}.
 	 * 
 	 * @param request
 	 *            ProductEntityIdsRequest wrapping a list of product entity ids
 	 * @return ProductEntityIdsResponse mapping Display Name strings to associated product entity ids
+	 * @throws AbstractRumbaException on service error
 	 */
 	public ProductEntityIdsResponse getProductDataByProductEntityIds(ProductEntityIdsRequest request)
 			throws AbstractRumbaException {
@@ -86,11 +88,11 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 				if (responseType.getAttributes() != null) {
 					for (AttributeType attribute : responseType.getAttributes().getAttribute()) {
 						if (attribute.getAttributeKey().equals(CG_PROGRAM_ATTR_KEY)) {
-							if(productData.getCgProgram() != null) {
+							if(productData.getCgProgram() == null) {
+								productData.setCgProgram(attribute.getAttributeValue());
+							} else {
 								productData.setCgProgram(
 										productData.getCgProgram() + " " + attribute.getAttributeValue());
-							} else {
-								productData.setCgProgram(attribute.getAttributeValue());
 							}
 						} else if (attribute.getAttributeKey().equals(GRADE_LEVEL_ATTR_KEY)) {
 							productData.addGradeLevel(attribute.getAttributeValue());

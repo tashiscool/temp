@@ -32,12 +32,12 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 
 	/**
 	 * Get all DisplayNames associated with the given organization id by calling the OrganizationLifeCycle service.
+	 * Implements {@link OrganizationLifeCycleClient#getOrganizationDisplayName(String)}.
 	 * 
-	 * @param request
-	 *            OrganizationId
-	 * @return OrganizationDisplayNamesResponse mapping Display Name strings to associated organization id
+	 * @param organizationId organization id string
+	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @throws AbstractRumbaException on service error
 	 */
-
 	public OrganizationDisplayNamesResponse getOrganizationDisplayName(String organizationId)
 			throws AbstractRumbaException {
 
@@ -75,10 +75,11 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 	/**
 	 * Get all ChildTreeDisplayNames associated with the given organization id by calling the OrganizationLifeCycle
 	 * service.
+	 * Implements {@link OrganizationLifeCycleClient#getChildTreeDisplayNamesByOrganizationId(String)}.
 	 * 
-	 * @param request
-	 *            OrganizationId
-	 * @return OrganizationDisplayNamesResponse mapping Child Tree Display Name strings to associated organization id
+	 * @param organizationId organization id string
+	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @throws AbstractRumbaException on service error
 	 */
 
 	public OrganizationDisplayNamesResponse getChildTreeDisplayNamesByOrganizationId(String organizationId)
@@ -111,12 +112,12 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 	/**
 	 * Get all ParentTreeDisplayNames associated with the given organization id by calling the OrganizationLifeCycle
 	 * service.
+	 * Implements {@link OrganizationLifeCycleClient#getParentTreeDisplayNamesByOrganizationId(String)}.
 	 * 
-	 * @param request
-	 *            OrganizationId
-	 * @return OrganizationDisplayNamesResponse mapping Parent Tree Display Name strings to associated organization id
+	 * @param organizationId organization id string
+	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @throws AbstractRumbaException on service error
 	 */
-
 	public OrganizationDisplayNamesResponse getParentTreeDisplayNamesByOrganizationId(String organizationId)
 			throws AbstractRumbaException {
 

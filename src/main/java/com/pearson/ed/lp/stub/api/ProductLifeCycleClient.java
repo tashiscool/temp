@@ -1,5 +1,6 @@
 package com.pearson.ed.lp.stub.api;
 
+import com.pearson.ed.commons.service.exception.AbstractRumbaException;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
 
@@ -11,5 +12,14 @@ import com.pearson.ed.lp.message.ProductEntityIdsResponse;
  */
 public interface ProductLifeCycleClient {
 
-	ProductEntityIdsResponse getProductDataByProductEntityIds(ProductEntityIdsRequest request);
+	/**
+	 * Get request service activator to call the GetProductsByProductEntityIds service function
+	 * of the ProductLifeCycleV2 service.
+	 * 
+	 * @param request {@link ProductEntityIdsRequest}
+	 * @return {@link ProductEntityIdsResponse}
+	 * @throws AbstractRumbaException on service error
+	 */
+	ProductEntityIdsResponse getProductDataByProductEntityIds(ProductEntityIdsRequest request)
+		throws AbstractRumbaException;
 }

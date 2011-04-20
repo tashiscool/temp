@@ -12,6 +12,9 @@ public class LicensePoolByOrganizationIdRequest {
 	private String organizationId;
 	private String qualifyingLicensePool;
 
+	/**
+	 * Default constructor.
+	 */
 	public LicensePoolByOrganizationIdRequest() {
 	}
 

@@ -19,8 +19,14 @@ import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
 @Endpoint
 public interface MarshallingLicensedProductServiceEndpoint {
 
+	/**
+	 * Service endpoint for GetLicensedProductV2 service.
+	 * 
+	 * @param request {@link GetLicensedProductRequestElement}
+	 * @return {@link GetLicensedProductResponseElement}
+	 */
 	@PayloadRoot(localPart = GET_LICENSEDPRODUCT_REQUEST_ELEMENT, namespace = LICENSEDPRODUCT_V2_NAMESPACE)
 	@Gateway
-	public GetLicensedProductResponseElement getLicensedProducts(GetLicensedProductRequestElement request);
+	GetLicensedProductResponseElement getLicensedProducts(GetLicensedProductRequestElement request);
 
 }

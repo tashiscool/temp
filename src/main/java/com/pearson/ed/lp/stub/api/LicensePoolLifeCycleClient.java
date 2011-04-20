@@ -13,6 +13,13 @@ import com.pearson.ed.lp.message.LicensePoolResponse;
  */
 public interface LicensePoolLifeCycleClient {
 
+	/**
+	 * Get request service activator to call the GetLicensePoolsByOrganizationId service function
+	 * of the LicensePoolLifeCycle service.
+	 * 
+	 * @param request {@link LicensePoolByOrganizationIdRequest}
+	 * @return {@link LicensePoolResponse}
+	 */
 	@ServiceActivator
 	LicensePoolResponse getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request);
 

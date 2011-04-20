@@ -24,6 +24,21 @@ public class ProductOrderDetailsRequestSplitter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductOrderDetailsRequestSplitter.class);
 
+	/**
+	 * Split a single {@link LicensedProductDataCollection} message into several other messages
+	 * for downstream processing.
+	 * 
+	 * Products of split:
+	 * <ul>
+	 * <li>{@link OrderLineItemsRequest}</li>
+	 * <li>{@link ProductEntityIdsRequest}</li>
+	 * <li>{@link LicensedProductDataCollection}, original for passthrough</li>
+	 * </ul>
+	 * 
+	 * @param licensePoolsAndOrgDisplayNames {@link LicensedProductDataCollection} to split
+	 * @return {@link List} containing a {@link OrderLineItemsRequest}, {@link ProductEntityIdsRequest}, and 
+	 * 			the original request as a pass through
+	 */
 	@Splitter
 	public List<Object> split(LicensedProductDataCollection licensePoolsAndOrgDisplayNames) {
 		if (LOGGER.isDebugEnabled()) {

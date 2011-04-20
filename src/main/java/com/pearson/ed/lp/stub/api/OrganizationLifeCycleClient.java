@@ -1,5 +1,6 @@
 package com.pearson.ed.lp.stub.api;
 
+import com.pearson.ed.commons.service.exception.AbstractRumbaException;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
 
 /**
@@ -10,10 +11,37 @@ import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
  */
 public interface OrganizationLifeCycleClient {
 
-	OrganizationDisplayNamesResponse getParentTreeDisplayNamesByOrganizationId(String organizationId);
+	/**
+	 * Get request service activator to call the GetParentTreeByOrganizationId service function
+	 * of the OrganizationLifeCycle service.
+	 * 
+	 * @param organizationId organization id string
+	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @throws AbstractRumbaException on service error
+	 */
+	OrganizationDisplayNamesResponse getParentTreeDisplayNamesByOrganizationId(String organizationId)
+		throws AbstractRumbaException;
 
-	OrganizationDisplayNamesResponse getChildTreeDisplayNamesByOrganizationId(String organizationId);
+	/**
+	 * Get request service activator to call the GetChildTreeByOrganizationId service function
+	 * of the OrganizationLifeCycle service.
+	 * 
+	 * @param organizationId organization id string
+	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @throws AbstractRumbaException on service error
+	 */
+	OrganizationDisplayNamesResponse getChildTreeDisplayNamesByOrganizationId(String organizationId)
+		throws AbstractRumbaException;
 
-	OrganizationDisplayNamesResponse getOrganizationDisplayName(String organizationId);
+	/**
+	 * Get request service activator to call the GetOrganizationById service function
+	 * of the OrganizationLifeCycle service.
+	 * 
+	 * @param organizationId organization id string
+	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @throws AbstractRumbaException on service error
+	 */
+	OrganizationDisplayNamesResponse getOrganizationDisplayName(String organizationId)
+		throws AbstractRumbaException;
 
 }

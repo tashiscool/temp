@@ -19,6 +19,13 @@ public class GetLicensedProductsRequestTransformer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GetLicensedProductsRequestTransformer.class);
 
+	/**
+	 * Transform the JAXB2 generated {@link GetLicensedProductRequestElement} into
+	 * the internal {@link LicensePoolByOrganizationIdRequest}.
+	 * 
+	 * @param request {@link GetLicensedProductRequestElement}
+	 * @return {@link LicensePoolByOrganizationIdRequest}
+	 */
 	@Transformer
 	public LicensePoolByOrganizationIdRequest transform(GetLicensedProductRequestElement request) {
 		if (LOGGER.isDebugEnabled()) {

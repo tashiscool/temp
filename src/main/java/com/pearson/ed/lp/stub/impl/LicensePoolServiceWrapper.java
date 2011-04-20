@@ -24,6 +24,14 @@ public class LicensePoolServiceWrapper implements LicensePoolLifeCycleClient {
 	@Autowired(required = true)
 	private LicensePoolService licensePoolService;
 
+	/**
+	 * Implementation of 
+	 * {@link LicensePoolLifeCycleClient#getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest)}
+	 * which wraps the internal {@link LicensePoolService} instance which in turn wraps LicensePoolLifeCycle DAOs.
+	 * 
+	 * @param request {@link LicensePoolByOrganizationIdRequest}
+	 * @return {@link LicensePoolResponse}
+	 */
 	public LicensePoolResponse getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request) {
 		List<OrganizationLPMapping> licensePools = licensePoolService.getLicensePoolByOrganizationId(
 				request.getOrganizationId(), request.getQualifyingLicensePool());

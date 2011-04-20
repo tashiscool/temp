@@ -14,6 +14,14 @@ import com.pearson.ed.lp.message.OrderLineItemsResponse;
  */
 public interface OrderLifeCycleClient {
 
+	/**
+	 * Get request service activator to call the GetOrderLineItemById service function
+	 * of the OrderLifeCycle service.
+	 * 
+	 * @param request {@link OrderLineItemsRequest}
+	 * @return {@link OrderLineItemsResponse}
+	 * @throws AbstractRumbaException on error from the service
+	 */
 	@ServiceActivator
 	OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request)
 			throws AbstractRumbaException;

@@ -28,10 +28,12 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 
 	/**
 	 * Get all ISBN numbers associated with the given order ids by calling the OrderLifeCycle service.
+	 * Implements {@link OrderLifeCycleClient#getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest)}.
 	 * 
 	 * @param request
 	 *            OrderLineItemsRequest wrapping a list of order line item ids
 	 * @return OrderLineItemsResponse mapping ISBN strings to associated order line item ids
+	 * @throws AbstractRumbaException on service error
 	 */
 	public OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request)
 			throws AbstractRumbaException {
