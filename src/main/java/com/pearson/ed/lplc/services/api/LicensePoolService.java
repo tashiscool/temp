@@ -44,8 +44,8 @@ public interface LicensePoolService {
 
 	/**
 	 * 
-	 * Get License pool to subscribe. Fetches the license pool Id that qualifies
-	 * to be used for subscription for the given organizationId and ProductId.
+	 * Get License pool to subscribe. Fetches the license pool Id that qualifies to be used for subscription for the
+	 * given organizationId and ProductId.
 	 * 
 	 * @param organizationId
 	 *            - id of the organization.
@@ -53,15 +53,13 @@ public interface LicensePoolService {
 	 *            - Id of the product
 	 * @return instance of qualifying LicensePoolMapping object
 	 * 
-	 * @throw NewSubscriptionsDeniedException - throws this exception if new
-	 *        subscriptions are denied for the license pool or organization
-	 * @throw LicensePoolExpiredException - throws this exception if license
-	 *        pool's start and end dates are out of bound of the current date
-	 * @throw LicensePoolForFutureException - throws this exception if existing
-	 *        license pools are configured for future use and not available
-	 *        currently
-	 * @throw LicensePoolUnavailableException - if no license pools exist for
-	 *        the given product and organization
+	 * @throw NewSubscriptionsDeniedException - throws this exception if new subscriptions are denied for the license
+	 *        pool or organization
+	 * @throw LicensePoolExpiredException - throws this exception if license pool's start and end dates are out of bound
+	 *        of the current date
+	 * @throw LicensePoolForFutureException - throws this exception if existing license pools are configured for future
+	 *        use and not available currently
+	 * @throw LicensePoolUnavailableException - if no license pools exist for the given product and organization
 	 */
 	LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId);
 
@@ -75,8 +73,7 @@ public interface LicensePoolService {
 	LicensePoolDetails getLicensePoolDetailsById(String licensePoolId);
 
 	/**
-	 * This service will find expired license pools that expired yesterday. It
-	 * returns list of license pool id.
+	 * This service will find expired license pools that expired yesterday. It returns list of license pool id.
 	 * 
 	 * @return List List of license pool id.
 	 */
@@ -108,13 +105,13 @@ public interface LicensePoolService {
 	 * @return licensepoolId
 	 */
 	String cancel(String licensePoolId, String createdBy, boolean isCancel);
-	
+
 	/**
 	 * Applies licensepools in the hierarchy to a newly added organization.
 	 * 
 	 * @param organizationId
 	 * @param parentOrganizationId
-	 *	 
+	 * 
 	 */
 	void applyLicensesToNewOrganization(String organizationId, String parentOrganizationId);
 }

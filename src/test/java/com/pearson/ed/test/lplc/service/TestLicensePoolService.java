@@ -17,8 +17,8 @@ import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 public class TestLicensePoolService extends BaseIntegrationTest {
 
 	/**
-	 * testDenyNewSubscriptions() method to test the functionality of
-	 * denyNewSubscriptions() method of LicensePoolService.
+	 * testDenyNewSubscriptions() method to test the functionality of denyNewSubscriptions() method of
+	 * LicensePoolService.
 	 */
 
 	@Test
@@ -46,8 +46,8 @@ public class TestLicensePoolService extends BaseIntegrationTest {
 	}
 
 	/**
-	 * testgetLicensePoolByOrganizationId() method to test the functionality of
-	 * getLicensePoolByOrganizationId() method of LicensePoolService.
+	 * testgetLicensePoolByOrganizationId() method to test the functionality of getLicensePoolByOrganizationId() method
+	 * of LicensePoolService.
 	 */
 
 	@Test

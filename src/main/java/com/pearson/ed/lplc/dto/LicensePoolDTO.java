@@ -22,7 +22,7 @@ public class LicensePoolDTO implements Serializable {
 
 	private static final long serialVersionUID = -6791950440540657878L;
 	private String licensepoolId;
-	
+
 	private String type;
 	private Date startDate;
 	private Date endDate;
@@ -44,7 +44,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param orderLineItemId the orderLineItemId to set
+	 * @param orderLineItemId
+	 *            the orderLineItemId to set
 	 */
 	public void setOrderLineItemId(String orderLineItemId) {
 		this.orderLineItemId = orderLineItemId;
@@ -58,7 +59,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param managedChildOrganization the managedChildOrganization to set
+	 * @param managedChildOrganization
+	 *            the managedChildOrganization to set
 	 */
 	public void setManagedChildOrganization(boolean managedChildOrganization) {
 		this.managedChildOrganization = managedChildOrganization;
@@ -72,12 +74,12 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param managedParentOrganization the managedParentOrganization to set
+	 * @param managedParentOrganization
+	 *            the managedParentOrganization to set
 	 */
 	public void setManagedParentOrganization(boolean managedParentOrganization) {
 		this.managedParentOrganization = managedParentOrganization;
 	}
-
 
 	/**
 	 * @return the organizationLevel
@@ -87,7 +89,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param organizationLevel the organizationLevel to set
+	 * @param organizationLevel
+	 *            the organizationLevel to set
 	 */
 	public void setOrganizationLevel(int organizationLevel) {
 		this.organizationLevel = organizationLevel;
@@ -99,6 +102,7 @@ public class LicensePoolDTO implements Serializable {
 	private String createdBy;
 	private String sourceSystem;
 	private String mode;
+
 	/**
 	 * @return the licensepoolId
 	 */
@@ -107,11 +111,13 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param licensepoolId the licensepoolId to set
+	 * @param licensepoolId
+	 *            the licensepoolId to set
 	 */
 	public void setLicensepoolId(String licensepoolId) {
 		this.licensepoolId = licensepoolId;
 	}
+
 	/**
 	 * @return the sourceSystem
 	 */
@@ -120,7 +126,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param sourceSystem the sourceSystem to set
+	 * @param sourceSystem
+	 *            the sourceSystem to set
 	 */
 	public void setSourceSystem(String sourceSystem) {
 		this.sourceSystem = sourceSystem;
@@ -134,7 +141,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -148,7 +156,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param startDate the startDate to set
+	 * @param startDate
+	 *            the startDate to set
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
@@ -162,7 +171,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param endDate the endDate to set
+	 * @param endDate
+	 *            the endDate to set
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
@@ -176,7 +186,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param quantity the quantity to set
+	 * @param quantity
+	 *            the quantity to set
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
@@ -190,7 +201,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param usedLicenses the usedLicenses to set
+	 * @param usedLicenses
+	 *            the usedLicenses to set
 	 */
 	public void setUsedLicenses(int usedLicenses) {
 		this.usedLicenses = usedLicenses;
@@ -204,13 +216,12 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param subscriptionStatus the subscriptionStatus to set
+	 * @param subscriptionStatus
+	 *            the subscriptionStatus to set
 	 */
 	public void setDenyManualSubscription(int denyManualSubscription) {
 		this.denyManualSubscription = denyManualSubscription;
 	}
-
-	
 
 	/**
 	 * @return the productId
@@ -220,7 +231,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param productId the productId to set
+	 * @param productId
+	 *            the productId to set
 	 */
 	public void setProductId(String productId) {
 		this.productId = productId;
@@ -234,7 +246,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param organizationId the organizationId to set
+	 * @param organizationId
+	 *            the organizationId to set
 	 */
 	public void setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
@@ -248,7 +261,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param lastUpdatedDate the lastUpdatedDate to set
+	 * @param lastUpdatedDate
+	 *            the lastUpdatedDate to set
 	 */
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
@@ -262,7 +276,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param createdDate the createdDate to set
+	 * @param createdDate
+	 *            the createdDate to set
 	 */
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
@@ -276,7 +291,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param lastUpdatedBy the lastUpdatedBy to set
+	 * @param lastUpdatedBy
+	 *            the lastUpdatedBy to set
 	 */
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
@@ -290,7 +306,8 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param createdBy the createdBy to set
+	 * @param createdBy
+	 *            the createdBy to set
 	 */
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
@@ -304,23 +321,17 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * @param mode the mode to set
+	 * @param mode
+	 *            the mode to set
 	 */
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
 
-	
-	
-	
-	
-	
-	
 	/**
-	 * Compares two LicensePool objects for equality. LicensePools are equal if they're the
-	 * same instance or if they have the same values for their User members
-	 * which are used to generate the hash code, therefore also having matching
-	 * hash codes.
+	 * Compares two LicensePool objects for equality. LicensePools are equal if they're the same instance or if they
+	 * have the same values for their User members which are used to generate the hash code, therefore also having
+	 * matching hash codes.
 	 * 
 	 * @return true if the objects are equal.
 	 */
@@ -332,14 +343,14 @@ public class LicensePoolDTO implements Serializable {
 			return true;
 		}
 		LicensePoolDTO u = (LicensePoolDTO) obj;
-		
+
 		EqualsBuilder equalsBuilder = new EqualsBuilder();
 		equalsBuilder.append(this.type, u.type);
 		equalsBuilder.append(this.startDate, u.startDate);
 		equalsBuilder.append(this.endDate, u.endDate);
 		equalsBuilder.append(this.quantity, u.quantity);
 		equalsBuilder.append(this.usedLicenses, u.usedLicenses);
-		
+
 		equalsBuilder.append(this.denyManualSubscription, u.denyManualSubscription);
 		equalsBuilder.append(this.organizationId, u.organizationId);
 		equalsBuilder.append(this.lastUpdatedDate, u.lastUpdatedDate);
@@ -350,14 +361,13 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * Returns the hash code for a User. The hash code is generated from all
-	 * persistent member variables.
+	 * Returns the hash code for a User. The hash code is generated from all persistent member variables.
 	 * 
 	 * @return the LicensePool's hash code.
 	 */
 	public int hashCode() {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(11, 37);
-		
+
 		hashCodeBuilder.append(type);
 		hashCodeBuilder.append(startDate);
 		hashCodeBuilder.append(endDate);
@@ -374,14 +384,12 @@ public class LicensePoolDTO implements Serializable {
 	}
 
 	/**
-	 * Constructs a String that contains all of the information stored in a User
-	 * object.
+	 * Constructs a String that contains all of the information stored in a User object.
 	 * 
 	 * @return a String representation of the information store in a User.
 	 */
 	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat(
-				"yyyy-MMM-dd KK:mm:ss.SSS aa");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd KK:mm:ss.SSS aa");
 		StringBuffer sb = new StringBuffer();
 		sb.append(super.toString());
 		sb.append(",");
@@ -399,11 +407,9 @@ public class LicensePoolDTO implements Serializable {
 		sb.append(",");
 		sb.append("OrganizationId:" + organizationId);
 		sb.append(",");
-		sb.append("LastUpdatedDate:" + ((lastUpdatedDate != null) ?
-				format.format(lastUpdatedDate) : "null"));
+		sb.append("LastUpdatedDate:" + ((lastUpdatedDate != null) ? format.format(lastUpdatedDate) : "null"));
 		sb.append(",");
-		sb.append("CreatedDate:" + ((createdDate != null) ?
-				format.format(createdDate) : "null"));
+		sb.append("CreatedDate:" + ((createdDate != null) ? format.format(createdDate) : "null"));
 		sb.append(",");
 		sb.append("LastUpdatedBy:" + lastUpdatedBy);
 		sb.append(",");

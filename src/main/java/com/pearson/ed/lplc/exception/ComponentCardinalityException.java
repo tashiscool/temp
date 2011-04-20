@@ -4,8 +4,7 @@
 package com.pearson.ed.lplc.exception;
 
 /**
- * Thrown to indicated that a component has an incorrect or unexpected
- * cardinality.
+ * Thrown to indicated that a component has an incorrect or unexpected cardinality.
  * 
  * @author UCRUZFI
  */
@@ -24,13 +23,12 @@ public class ComponentCardinalityException extends LPLCBaseException {
 	}
 
 	/**
-	 * Constructs a new ComponentCardinalityException with the passed message
-	 * and cause.
+	 * Constructs a new ComponentCardinalityException with the passed message and cause.
 	 * 
 	 * @param message
-	 * 			the message for the exception.
+	 *            the message for the exception.
 	 * @param cause
-	 * 			the cause of the exception.
+	 *            the cause of the exception.
 	 */
 	public ComponentCardinalityException(String message, Throwable cause) {
 		super(message, cause);
@@ -40,18 +38,18 @@ public class ComponentCardinalityException extends LPLCBaseException {
 	 * Constructs a new ComponentCardinalityException with the passed message.
 	 * 
 	 * @param message
-	 * 			the message for the exception.
+	 *            the message for the exception.
 	 */
 	public ComponentCardinalityException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Constructs a new ComponentCardinalityException with the passed cause.
-	 * The message is automatically generated from the cause.
+	 * Constructs a new ComponentCardinalityException with the passed cause. The message is automatically generated from
+	 * the cause.
 	 * 
 	 * @param cause
-	 * 			the cause of the exception.
+	 *            the cause of the exception.
 	 */
 	public ComponentCardinalityException(Throwable cause) {
 		super(cause);

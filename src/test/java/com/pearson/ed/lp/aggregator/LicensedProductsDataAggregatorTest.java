@@ -20,10 +20,10 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
 
 /**
  * @author ULLOYNI
- *
+ * 
  */
 public class LicensedProductsDataAggregatorTest {
-	
+
 	private LicensedProductsDataAggregator aggregator = new LicensedProductsDataAggregator();
 
 	/**
@@ -35,34 +35,37 @@ public class LicensedProductsDataAggregatorTest {
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
 	public void testAggregateResponseEmptyResponseObjectsNoOrgDisplayNamesResponse() {
 		List<Object> input = new ArrayList<Object>();
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
-		
+
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
-		
+
 		assertEmptyResult(result);
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
 	public void testAggregateResponseEmptyResponseObjectsOneOrgDisplayNamesResponse() {
 		List<Object> input = new ArrayList<Object>();
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 		input.add(new OrganizationDisplayNamesResponse());
-		
+
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
-		
+
 		assertEmptyResult(result);
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
 	public void testAggregateResponseEmptyResponseObjectsManyOrgDisplayNamesResponses() {
@@ -70,33 +73,35 @@ public class LicensedProductsDataAggregatorTest {
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 		input.add(new OrganizationDisplayNamesResponse());
 		input.add(new OrganizationDisplayNamesResponse());
-		
+
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
-		
+
 		assertEmptyResult(result);
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
 	public void testAggregateResponseOneOrgDisplayNamesResponse() {
 		List<Object> input = new ArrayList<Object>();
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 		input.add(generateOrgDisplayNameDummyData());
-		
+
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
 
 		assertNotNull(result.getLicensePools());
 		assertNotNull(result.getLicensePools().getLicensePools());
 		assertNotNull(result.getOrganizationDisplayNames());
 		assertEquals(3, result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds().size());
-		assertEquals(generateOrgDisplayNameDummyData().getOrganizationDisplayNamesByIds(),
-				result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds());
+		assertEquals(generateOrgDisplayNameDummyData().getOrganizationDisplayNamesByIds(), result
+				.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds());
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
 	public void testAggregateResponseMultipleSameOrgDisplayNamesResponses() {
@@ -104,56 +109,59 @@ public class LicensedProductsDataAggregatorTest {
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 		input.add(generateOrgDisplayNameDummyData());
 		input.add(generateOrgDisplayNameDummyData());
-		
+
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
 
 		assertNotNull(result.getLicensePools());
 		assertNotNull(result.getLicensePools().getLicensePools());
 		assertNotNull(result.getOrganizationDisplayNames());
 		assertEquals(3, result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds().size());
-		assertEquals(generateOrgDisplayNameDummyData().getOrganizationDisplayNamesByIds(),
-				result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds());
+		assertEquals(generateOrgDisplayNameDummyData().getOrganizationDisplayNamesByIds(), result
+				.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds());
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
 	public void testAggregateResponseMultipleDifferentOrgDisplayNamesResponses() {
 		OrganizationDisplayNamesResponse diffResponse = generateOrgDisplayNameDummyData();
 		diffResponse.getOrganizationDisplayNamesByIds().put("and-no-for-something", "completely-different");
-		
+
 		List<Object> input = new ArrayList<Object>();
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 		input.add(generateOrgDisplayNameDummyData());
 		input.add(diffResponse);
-		
+
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
 
 		assertNotNull(result.getLicensePools());
 		assertNotNull(result.getLicensePools().getLicensePools());
 		assertNotNull(result.getOrganizationDisplayNames());
 		assertEquals(4, result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds().size());
-		assertEquals(diffResponse.getOrganizationDisplayNamesByIds(),
-				result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds());
+		assertEquals(diffResponse.getOrganizationDisplayNamesByIds(), result.getOrganizationDisplayNames()
+				.getOrganizationDisplayNamesByIds());
 	}
-	
+
 	/**
 	 * Helper function to generate dummy OrganizationDisplayNamesResponse data.
+	 * 
 	 * @return
 	 */
 	private OrganizationDisplayNamesResponse generateOrgDisplayNameDummyData() {
 		OrganizationDisplayNamesResponse orgDisplayNamesData = new OrganizationDisplayNamesResponse();
-		
+
 		orgDisplayNamesData.getOrganizationDisplayNamesByIds().put("1", "dummy-1");
 		orgDisplayNamesData.getOrganizationDisplayNamesByIds().put("2", "dummy-2");
 		orgDisplayNamesData.getOrganizationDisplayNamesByIds().put("3", "dummy-3");
-		
+
 		return orgDisplayNamesData;
 	}
-	
+
 	/**
 	 * Helper empty result set assertion function.
+	 * 
 	 * @param result
 	 */
 	private void assertEmptyResult(LicensedProductDataCollection result) {
@@ -163,5 +171,5 @@ public class LicensedProductsDataAggregatorTest {
 		assertNotNull(result.getOrganizationDisplayNames());
 		assertEquals(0, result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds().size());
 	}
-	
+
 }

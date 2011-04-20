@@ -15,14 +15,13 @@
 package com.pearson.ed.lplc.services.api;
 
 /**
- * EntityEndpoint is the interface that all entity endpoints should implement
- * in the LPLC.
+ * EntityEndpoint is the interface that all entity endpoints should implement in the LPLC.
  * 
  * @author RUMBA
  */
 
 public interface EntityEndpoint {
-	
+
 	/**
 	 * Fetches the transaction ID.
 	 * 

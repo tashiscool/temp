@@ -22,8 +22,7 @@ import com.pearson.ed.lplc.jms.api.JMSListener;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 
 /**
- * Implementation class for JMSListener interface to listen message from
- * organization.
+ * Implementation class for JMSListener interface to listen message from organization.
  * 
  * @author vsethsa
  * 
@@ -31,7 +30,7 @@ import com.pearson.ed.lplc.services.api.LicensePoolService;
 public class JMSListenerImpl implements JMSListener {
 
 	private static final Logger logger = Logger.getLogger(JMSListenerImpl.class);
-	
+
 	private LicensePoolService licensepoolService;
 
 	/**
@@ -42,7 +41,8 @@ public class JMSListenerImpl implements JMSListener {
 	}
 
 	/**
-	 * @param licensepoolService the licensepoolService to set
+	 * @param licensepoolService
+	 *            the licensepoolService to set
 	 */
 	public void setLicensepoolService(LicensePoolService licensepoolService) {
 		this.licensepoolService = licensepoolService;

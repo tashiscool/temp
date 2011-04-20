@@ -1,4 +1,4 @@
-package com.pearson.ed.lplc.model;             
+package com.pearson.ed.lplc.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -58,13 +58,13 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 
 	@Column(nullable = false, name = "organization_id", length = 128)
 	private String org_id;
-	
+
 	@Column(nullable = true, name = "status", insertable = false, updatable = false, length = 25)
 	private String status;
-	
+
 	@Column(nullable = false, name = "product_id", length = 128)
 	private String product_id;
-	
+
 	@Column(nullable = false, name = "IS_CANCELLED", length = 1)
 	private String isCancelled;
 
@@ -72,12 +72,11 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	@OrderBy("createdDate ASC")
 	private Set<OrderLineItemLPMapping> orderLineItems = new HashSet<OrderLineItemLPMapping>();
-	
+
 	@OneToMany(mappedBy = "licensepoolMapping", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<OrganizationLPMapping> organizations = new HashSet<OrganizationLPMapping>();
 
-	
 	/**
 	 * @return the orderLineItems
 	 */
@@ -86,7 +85,8 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param orderLineItems the orderLineItems to set
+	 * @param orderLineItems
+	 *            the orderLineItems to set
 	 */
 	public void setOrderLineItems(Set<OrderLineItemLPMapping> orderLineItems) {
 		this.orderLineItems = orderLineItems;
@@ -100,7 +100,8 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param organizations the organizations to set
+	 * @param organizations
+	 *            the organizations to set
 	 */
 	public void setOrganizations(Set<OrganizationLPMapping> organizations) {
 		this.organizations = organizations;
@@ -154,7 +155,8 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param product_id the product_id to set
+	 * @param product_id
+	 *            the product_id to set
 	 */
 	public void setProduct_id(String product_id) {
 		this.product_id = product_id;
@@ -242,7 +244,7 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	public void setOrg_id(String org_id) {
 		this.org_id = org_id;
 	}
-	
+
 	/**
 	 * @return the status
 	 */
@@ -251,7 +253,8 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param status
+	 *            the status to set
 	 */
 	public void setStatus(String status) {
 		this.status = status;
@@ -265,16 +268,16 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param isCancelled the isCancelled to set
+	 * @param isCancelled
+	 *            the isCancelled to set
 	 */
 	public void setIsCancelled(String isCancelled) {
 		this.isCancelled = isCancelled;
 	}
 
 	/**
-	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
-	 * persistent member variables in order to maintain the hashCode contract
-	 * that equal objects must have the same hash code.
+	 * Generates a hashCode for a LicensePoolMapping object, based on all of the persistent member variables in order to
+	 * maintain the hashCode contract that equal objects must have the same hash code.
 	 * 
 	 * @return the hash code for the LicensePoolMapping object.
 	 */
@@ -291,9 +294,8 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	}
 
 	/**
-	 * Compares two LicensePoolMapping objects for equality. licensepoolMapping
-	 * objects are equal if all of their persistent member variables are equal
-	 * or if they are the same instance of a class.
+	 * Compares two LicensePoolMapping objects for equality. licensepoolMapping objects are equal if all of their
+	 * persistent member variables are equal or if they are the same instance of a class.
 	 * 
 	 * @param obj
 	 *            the object to compare.

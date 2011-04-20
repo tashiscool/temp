@@ -9,12 +9,11 @@ import com.pearson.ed.lp.message.LicensePoolResponse;
  * Client stub API for the LicensePoolLifeCycle service.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public interface LicensePoolLifeCycleClient {
 
 	@ServiceActivator
-	LicensePoolResponse getLicensePoolsByOrganizationId(
-			LicensePoolByOrganizationIdRequest request);
+	LicensePoolResponse getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request);
 
 }

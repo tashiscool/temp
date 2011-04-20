@@ -15,21 +15,29 @@ import com.pearson.ed.lplc.model.common.LPLCBaseEntity;
 public abstract class LPLCBaseDAOImpl extends HibernateDaoSupport {
 	/**
 	 * Save the licensepool object.
-	 * @param entity entity.
+	 * 
+	 * @param entity
+	 *            entity.
 	 */
 	public void save(LPLCBaseEntity entity) {
 		getHibernateTemplate().save(entity);
 	}
+
 	/**
 	 * Update the licensepool object.
-	 * @param entity entity.
+	 * 
+	 * @param entity
+	 *            entity.
 	 */
 	public void update(LPLCBaseEntity entity) {
 		getHibernateTemplate().update(entity);
 	}
+
 	/**
 	 * Delete the licensepool object.
-	 * @param entity entity.
+	 * 
+	 * @param entity
+	 *            entity.
 	 */
 	public void delete(LPLCBaseEntity entity) {
 		getHibernateTemplate().delete(entity);
@@ -72,7 +80,8 @@ public abstract class LPLCBaseDAOImpl extends HibernateDaoSupport {
 	/**
 	 * set modified and create fields so that they are in synch
 	 * 
-	 * @param entity  LPLCBaseEntity
+	 * @param entity
+	 *            LPLCBaseEntity
 	 */
 	protected void setCreateAndModifiedValues(LPLCBaseEntity entity) {
 		setCreatedValues(entity);

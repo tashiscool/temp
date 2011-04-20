@@ -5,22 +5,25 @@ import java.util.List;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 
 /**
- * Response for the LicensePoolLifeCycleClient that wraps 
- * a collection of {@link OrganizationLPMapping} objects.
+ * Response for the LicensePoolLifeCycleClient that wraps a collection of {@link OrganizationLPMapping} objects.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class LicensePoolResponse {
-	
+
 	private List<OrganizationLPMapping> licensePools = null;
-	
-	public LicensePoolResponse() {}
-	
+
+	/**
+	 * Default constructor.
+	 */
+	public LicensePoolResponse() {
+	}
+
 	/**
 	 * Parameterized constructor.
 	 * 
-	 * @param licensePools
+	 * @param licensePools collection of {@link OrganizationLPMapping} instances
 	 */
 	public LicensePoolResponse(List<OrganizationLPMapping> licensePools) {
 		this.licensePools = licensePools;
@@ -28,7 +31,8 @@ public class LicensePoolResponse {
 
 	/**
 	 * Get the list of {@link OrganizationLPMapping} objects.
-	 * @return
+	 * 
+	 * @return list of {@link OrganizationLPMapping} objects
 	 */
 	public List<OrganizationLPMapping> getLicensePools() {
 		return licensePools;
@@ -36,7 +40,8 @@ public class LicensePoolResponse {
 
 	/**
 	 * Set the list of {@link OrganizationLPMapping} objects.
-	 * @param licensePools
+	 * 
+	 * @param licensePools list of {@link OrganizationLPMapping} objects
 	 */
 	public void setLicensePools(List<OrganizationLPMapping> licensePools) {
 		this.licensePools = licensePools;

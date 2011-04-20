@@ -13,59 +13,70 @@ import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
 
 /**
- * Aggregator that collects a {@link LicensePoolResponse} object 
- * and one or more {@link OrganizationDisplayNameResponse} objects into a single
- * {@link LicensedProductDataCollection} object for downstream processing.
+ * Aggregator that collects a {@link LicensePoolResponse} object and one or more {@link OrganizationDisplayNameResponse}
+ * objects into a single {@link LicensedProductDataCollection} object for downstream processing.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class LicensedProductsDataAggregator {
-	
-	private static final Logger LOGGER  = LoggerFactory.getLogger(LicensedProductsDataAggregator.class);
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LicensedProductsDataAggregator.class);
+
+	/**
+	 * Aggregate a collection of response objects into a single {@link LicensedProductDataCollection}.
+	 * Expected responses in set:
+	 * <ul>
+	 * <li>one of {@link LicensePoolResponse}</li>
+	 * <li>one to many of {@link OrganizationDisplayNamesResponse}</li>
+	 * </ul>
+	 * @param responses collection of response objects to aggregate
+	 * @return {@link LicensedProductDataCollection}
+	 */
 	public LicensedProductDataCollection aggregateResponse(List<Object> responses) {
-		if(LOGGER.isDebugEnabled()) {
+		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(String.format("Received messages to aggregate, count: %d", responses.size()));
 			LOGGER.debug(responses.toString());
 		}
-		
+
 		LicensePoolResponse licensePoolResponse = null;
-		List<OrganizationDisplayNamesResponse> orgDisplayNameResponses = new ArrayList<OrganizationDisplayNamesResponse>();
-		
-		for(Object response : responses) {
-			if(response instanceof LicensePoolResponse) {
-				licensePoolResponse = (LicensePoolResponse)response;
-			} else if(response instanceof OrganizationDisplayNamesResponse) {
-				orgDisplayNameResponses.add((OrganizationDisplayNamesResponse)response);
+		List<OrganizationDisplayNamesResponse> orgDisplayNameResponses = 
+			new ArrayList<OrganizationDisplayNamesResponse>();
+
+		for (Object response : responses) {
+			if (response instanceof LicensePoolResponse) {
+				licensePoolResponse = (LicensePoolResponse) response;
+			} else if (response instanceof OrganizationDisplayNamesResponse) {
+				orgDisplayNameResponses.add((OrganizationDisplayNamesResponse) response);
 			}
 		}
-		
+
 		OrganizationDisplayNamesResponse mergedResponse = merge(orgDisplayNameResponses);
-		
+
 		LicensedProductDataCollection collectedData = new LicensedProductDataCollection();
 		collectedData.setLicensePools(licensePoolResponse);
 		collectedData.setOrganizationDisplayNames(mergedResponse);
-		
+
 		return collectedData;
 	}
-	
+
 	/**
 	 * Merges multiple {@link OrganizationDisplayNamesResponse} instances into one.
 	 * 
-	 * @param responses {@link List} of {@link OrganizationDisplayNamesResponse}
+	 * @param responses
+	 *            {@link List} of {@link OrganizationDisplayNamesResponse}
 	 * @return a single, merged {@link OrganizationDisplayNamesResponse} instance
 	 */
 	private OrganizationDisplayNamesResponse merge(List<OrganizationDisplayNamesResponse> responses) {
-		Map<String,String> mergedDisplayNames = new Hashtable<String,String>();
+		Map<String, String> mergedDisplayNames = new Hashtable<String, String>();
 		OrganizationDisplayNamesResponse mergedResponse = new OrganizationDisplayNamesResponse();
 		mergedResponse.setOrganizationDisplayNamesByIds(mergedDisplayNames);
-		
-		for(OrganizationDisplayNamesResponse response : responses) {
+
+		for (OrganizationDisplayNamesResponse response : responses) {
 			mergedDisplayNames.putAll(response.getOrganizationDisplayNamesByIds());
 		}
-		
+
 		return mergedResponse;
 	}
-	
+
 }

@@ -14,58 +14,60 @@ import com.pearson.rws.order.doc._2009._02._09.GetOrderLineItemByIdResponse;
 import com.pearson.rws.order.doc._2009._02._09.ReadOrderLineType;
 
 /**
- * Web Service Client stub implementation of the {@link OrderLifeCycleClient} interface.
- * Wraps an instance of the {@link WebServiceTemplate} class pointing to the OrderLifeCycle service.
+ * Web Service Client stub implementation of the {@link OrderLifeCycleClient} interface. Wraps an instance of the
+ * {@link WebServiceTemplate} class pointing to the OrderLifeCycle service.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
-	
+
 	private WebServiceTemplate serviceClient;
-	
-//	private LicensedProductExceptionFactory exceptionFactory;
+
+	// private LicensedProductExceptionFactory exceptionFactory;
 
 	/**
-	 * Get all ISBN numbers associated with the given order ids by calling the
-	 * OrderLifeCycle service.
-	 * @param request OrderLineItemsRequest wrapping a list of order line item ids
+	 * Get all ISBN numbers associated with the given order ids by calling the OrderLifeCycle service.
+	 * 
+	 * @param request
+	 *            OrderLineItemsRequest wrapping a list of order line item ids
 	 * @return OrderLineItemsResponse mapping ISBN strings to associated order line item ids
 	 */
-	public OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request) 
-		throws AbstractRumbaException {
-		
+	public OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request)
+			throws AbstractRumbaException {
+
 		OrderLineItemsResponse response = new OrderLineItemsResponse();
-		Map<String,String> responsePayload = response.getOrderedISBNsByOrderLineItemIds();
-		
+		Map<String, String> responsePayload = response.getOrderedISBNsByOrderLineItemIds();
+
 		// we have to loop for each OrderLineItemId since this is a one-at-a-time request, NOT ideal
-		for(String orderLineItemId : request.getOrderLineItemIds()) {
+		for (String orderLineItemId : request.getOrderLineItemIds()) {
 			GetOrderLineItemByIdRequest orderLineItemRequest = new GetOrderLineItemByIdRequest();
 			orderLineItemRequest.setOrderLineItemId(orderLineItemId);
-			
+
 			GetOrderLineItemByIdResponse orderLineItemResponse = null;
-			
+
 			try {
-				orderLineItemResponse = (GetOrderLineItemByIdResponse)serviceClient
+				orderLineItemResponse = (GetOrderLineItemByIdResponse) serviceClient
 						.marshalSendAndReceive(orderLineItemRequest);
 			} catch (SoapFaultClientException exception) {
 				// TODO
 			} catch (Exception exception) {
 				// TODO
-//				throw new ExternalServiceCallException(exception.getMessage());
+				// throw new ExternalServiceCallException(exception.getMessage());
 			}
-			
-			if(orderLineItemResponse != null) {
+
+			if (orderLineItemResponse != null) {
 				// find the right order line item
-				for(ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems().getOrderLine()) {
-					if(orderLineItem.getOrderLineItemId().equals(orderLineItemId)) {
+				for (ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems()
+						.getOrderLine()) {
+					if (orderLineItem.getOrderLineItemId().equals(orderLineItemId)) {
 						responsePayload.put(orderLineItemId, orderLineItem.getOrderedISBN());
 						break;
 					}
 				}
 			}
 		}
-		
+
 		return response;
 	}
 

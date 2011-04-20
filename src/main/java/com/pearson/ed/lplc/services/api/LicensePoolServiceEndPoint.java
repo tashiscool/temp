@@ -13,8 +13,8 @@ import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 
 public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	/**
-	 * Creates all the components for the given user. Optional components like
-	 * email and phone will only be created if they are present.
+	 * Creates all the components for the given user. Optional components like email and phone will only be created if
+	 * they are present.
 	 * 
 	 * @param licenseId
 	 *            the license pool to be created.
@@ -34,8 +34,7 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 * 
 	 * @param request
 	 *            organizationID.
-	 * @return GetLicensePoolByOrganizationIdResponse
-	 *         GetLicensePoolByOrganizationIdResponse.
+	 * @return GetLicensePoolByOrganizationIdResponse GetLicensePoolByOrganizationIdResponse.
 	 */
 	public LicensepoolsByOrganizationId getLicensePoolByOrganizationId(String organizationId, String qualifyingOrgs);
 

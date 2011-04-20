@@ -40,31 +40,26 @@ import com.pearson.rws.organization.doc._2009._07._01.ReadAttributeType;
 import com.pearson.rws.organization.doc._2009._07._01.ReadAttributesListType;
 
 /**
- * Unit test of {@link }  using Spring WS mock objects.
+ * Unit test of {@link } using Spring WS mock objects.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-		"classpath:applicationContext-lp-clients.xml",
-		"classpath:applicationContext-test-lplc-ws.xml",
-		"classpath:applicationContext-lplc.xml"
-})
+@ContextConfiguration(locations = { "classpath:applicationContext-lp-clients.xml",
+		"classpath:applicationContext-test-lplc-ws.xml", "classpath:applicationContext-lplc.xml" })
 public class OrganizationLifeCycleClientImplTest {
-	
+
 	private static enum OrgRequestType {
-		ROOT_ONLY,
-		PARENT_TREE,
-		CHILD_TREE;
+		ROOT_ONLY, PARENT_TREE, CHILD_TREE;
 	}
-	
+
 	@Autowired(required = true)
 	private OrganizationLifeCycleClientImpl testClient;
-	
+
 	@Autowired(required = true)
 	private Jaxb2Marshaller marshaller;
-	
+
 	private MockWebServiceServer mockServer;
 
 	/**
@@ -73,112 +68,120 @@ public class OrganizationLifeCycleClientImplTest {
 	@Before
 	public void setUp() throws Exception {
 		BasicConfigurator.configure();
-		
+
 		mockServer = MockWebServiceServer.createServer(testClient.getServiceClient());
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}
+	 * .
 	 */
 	@Test
 	public void testGetChildTreeDisplayNamesByOrganizationId() {
 		String dummyOrgId = "dummy-org-id";
 		String dummyOrgDisplayName = "dummy-display-name";
-		
-		Map<String,String> dummyChildTree = new Hashtable<String,String>();
+
+		Map<String, String> dummyChildTree = new Hashtable<String, String>();
 		dummyChildTree.put(dummyOrgId, dummyOrgDisplayName);
 		dummyChildTree.put("child-1", "child-display-name-1");
 		dummyChildTree.put("child-2", "child-display-name-2");
 		dummyChildTree.put("child-3", "child-display-name-3");
-		
-		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.CHILD_TREE)))
-			.andRespond(withPayload(generateDummyGetOrgResponseData(dummyChildTree, OrgRequestType.CHILD_TREE)));
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.CHILD_TREE))).andRespond(
+				withPayload(generateDummyGetOrgResponseData(dummyChildTree, OrgRequestType.CHILD_TREE)));
 
 		OrganizationDisplayNamesResponse response = testClient.getChildTreeDisplayNamesByOrganizationId(dummyOrgId);
-		
+
 		mockServer.verify();
-		
+
 		assertEquivalent(dummyChildTree, response);
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}
+	 * .
 	 */
 	@Test
 	public void testGetParentTreeDisplayNamesByOrganizationId() {
 		String dummyOrgId = "dummy-org-id";
 		String dummyOrgDisplayName = "dummy-display-name";
-		
-		Map<String,String> dummyParentTree = new Hashtable<String,String>();
+
+		Map<String, String> dummyParentTree = new Hashtable<String, String>();
 		dummyParentTree.put("parent-1", "parent-display-name-1");
 		dummyParentTree.put("parent-2", "parent-display-name-2");
 		dummyParentTree.put("parent-3", "parent-display-name-3");
 		dummyParentTree.put(dummyOrgId, dummyOrgDisplayName);
-		
-		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.PARENT_TREE)))
-			.andRespond(withPayload(generateDummyGetOrgResponseData(dummyParentTree, OrgRequestType.PARENT_TREE)));
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.PARENT_TREE))).andRespond(
+				withPayload(generateDummyGetOrgResponseData(dummyParentTree, OrgRequestType.PARENT_TREE)));
 
 		OrganizationDisplayNamesResponse response = testClient.getParentTreeDisplayNamesByOrganizationId(dummyOrgId);
-		
+
 		mockServer.verify();
-		
+
 		assertEquivalent(dummyParentTree, response);
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getOrganizationDisplayName(String)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getOrganizationDisplayName(String)}.
 	 */
 	@Test
 	public void testGetOrganizationDisplayName() {
 		String dummyOrgId = "dummy-org-id";
 		String dummyOrgDisplayName = "dummy-display-name";
-		
-		Map<String,String> dummyOrgData = new Hashtable<String,String>();
+
+		Map<String, String> dummyOrgData = new Hashtable<String, String>();
 		dummyOrgData.put(dummyOrgId, dummyOrgDisplayName);
-		
-		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.ROOT_ONLY)))
-			.andRespond(withPayload(generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.ROOT_ONLY))).andRespond(
+				withPayload(generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
 
 		OrganizationDisplayNamesResponse response = testClient.getOrganizationDisplayName(dummyOrgId);
-		
+
 		mockServer.verify();
-		
+
 		assertEquivalent(dummyOrgData, response);
 	}
 
 	/**
-	 * Compare with assertions the contents of the seed data with the response object.
-	 * Wraps a series of assertions.
+	 * Compare with assertions the contents of the seed data with the response object. Wraps a series of assertions.
 	 * 
-	 * @param seedData seed data
-	 * @param responseData {@link OrganizationDisplayNamesResponse} instance to compare against
+	 * @param seedData
+	 *            seed data
+	 * @param responseData
+	 *            {@link OrganizationDisplayNamesResponse} instance to compare against
 	 */
-	private void assertEquivalent(Map<String,String> seedData, OrganizationDisplayNamesResponse responseData) {
+	private void assertEquivalent(Map<String, String> seedData, OrganizationDisplayNamesResponse responseData) {
 		assertNotNull(seedData);
 		assertNotNull(responseData);
-		
-		Map<String,String> actuals = responseData.getOrganizationDisplayNamesByIds();
-		
-		for(Entry<String,String> expected : seedData.entrySet()) {
-			assertTrue(String.format("Missing DisplayName for org id: %s", expected.getKey()), 
+
+		Map<String, String> actuals = responseData.getOrganizationDisplayNamesByIds();
+
+		for (Entry<String, String> expected : seedData.entrySet()) {
+			assertTrue(String.format("Missing DisplayName for org id: %s", expected.getKey()),
 					actuals.containsKey(expected.getKey()));
-			assertEquals(String.format("Mismatched DisplayName for org id: %s", expected.getKey()), 
+			assertEquals(String.format("Mismatched DisplayName for org id: %s", expected.getKey()),
 					expected.getValue(), actuals.get(expected.getKey()));
 		}
 	}
-	
+
 	/**
-	 * Helper function to generate a dummy GetOrganizationById, GetChildTreeByOrganizationId, or GetParentTreeByOrganizationId
-	 * service request.
+	 * Helper function to generate a dummy GetOrganizationById, GetChildTreeByOrganizationId, or
+	 * GetParentTreeByOrganizationId service request.
 	 * 
-	 * @param orgId dummy organization id
-	 * @param requestType what type of request to generate
+	 * @param orgId
+	 *            dummy organization id
+	 * @param requestType
+	 *            what type of request to generate
 	 * @return {@link Source} instance
 	 */
 	private Source generateDummyGetOrgRequest(String orgId, OrgRequestType requestType) {
 		Object request = null;
-		
-		switch(requestType) {
+
+		switch (requestType) {
 		case CHILD_TREE:
 			GetChildTreeByOrganizationIdRequest getChildTreeRequest = new GetChildTreeByOrganizationIdRequest();
 			getChildTreeRequest.setOrganizationId(orgId);
@@ -196,35 +199,38 @@ public class OrganizationLifeCycleClientImplTest {
 			request = getOrgRequest;
 			break;
 		}
-		
+
 		return marshal(marshaller, request);
 	}
-	
+
 	/**
-	 * Helper function to generate a dummy GetOrganizationById, GetChildTreeByOrganizationId, or GetParentTreeByOrganizationId
-	 * service response using the provided seed data.
+	 * Helper function to generate a dummy GetOrganizationById, GetChildTreeByOrganizationId, or
+	 * GetParentTreeByOrganizationId service response using the provided seed data.
 	 * 
-	 * For the GetOrganizationById response only the first entry of the provided map of seed data is used.
-	 * For the Get*TreeByOrganizationId responses, the seed data is turned into a depth-only tree with each subsequent entry
-	 * in the seed data map being the child/parent organization of the preceding entry.
+	 * For the GetOrganizationById response only the first entry of the provided map of seed data is used. For the
+	 * Get*TreeByOrganizationId responses, the seed data is turned into a depth-only tree with each subsequent entry in
+	 * the seed data map being the child/parent organization of the preceding entry.
 	 * 
-	 * @param dummyOrgDisplayNamesByOrgId seed data, map of organization ids to organization display names
-	 * @param requestType what type of request we need a response to
+	 * @param dummyOrgDisplayNamesByOrgId
+	 *            seed data, map of organization ids to organization display names
+	 * @param requestType
+	 *            what type of request we need a response to
 	 * @return {@link Source} instance
 	 */
-	private Source generateDummyGetOrgResponseData(Map<String,String> dummyOrgDisplayNamesByOrgId, OrgRequestType requestType) {
+	private Source generateDummyGetOrgResponseData(Map<String, String> dummyOrgDisplayNamesByOrgId,
+			OrgRequestType requestType) {
 		Object response = null;
-		
+
 		int levelCounter = 0;
-		
-		switch(requestType) {
+
+		switch (requestType) {
 		case CHILD_TREE:
 			OrganizationTreeResponse childTreeResponse = new OrganizationTreeResponse();
-			
+
 			OrganizationTreeType lastChildOrg = null;
 			levelCounter = 0;
-			for(Entry<String,String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				if(lastChildOrg == null) {
+			for (Entry<String, String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
+				if (lastChildOrg == null) {
 					lastChildOrg = new OrganizationTreeType();
 					childTreeResponse.setOrganization(lastChildOrg);
 					lastChildOrg.setOrganizationId(dummyOrgData.getKey());
@@ -234,23 +240,23 @@ public class OrganizationLifeCycleClientImplTest {
 					OrganizationTreeType childOrg = new OrganizationTreeType();
 					lastChildOrg.getOrganization().add(childOrg);
 					lastChildOrg = childOrg;
-					
+
 					childOrg.setOrganizationId(dummyOrgData.getKey());
 					childOrg.setName(dummyOrgData.getValue());
 					childOrg.setLevel(levelCounter);
 				}
 				levelCounter++;
 			}
-			
+
 			response = childTreeResponse;
 			break;
 		case PARENT_TREE:
 			OrganizationTreeResponse parentTreeResponse = new OrganizationTreeResponse();
-			
+
 			OrganizationTreeType lastParentOrg = null;
 			levelCounter = 0;
-			for(Entry<String,String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				if(lastParentOrg == null) {
+			for (Entry<String, String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
+				if (lastParentOrg == null) {
 					lastParentOrg = new OrganizationTreeType();
 					parentTreeResponse.setOrganization(lastParentOrg);
 					lastParentOrg.setOrganizationId(dummyOrgData.getKey());
@@ -260,7 +266,7 @@ public class OrganizationLifeCycleClientImplTest {
 					OrganizationTreeType parentOrg = new OrganizationTreeType();
 					lastParentOrg.getOrganization().add(parentOrg);
 					lastParentOrg = parentOrg;
-					
+
 					parentOrg.setOrganizationId(dummyOrgData.getKey());
 					parentOrg.setName(dummyOrgData.getValue());
 					parentOrg.setLevel(levelCounter);
@@ -271,24 +277,23 @@ public class OrganizationLifeCycleClientImplTest {
 			break;
 		case ROOT_ONLY:
 			OrganizationResponse orgResponse = new OrganizationResponse();
-			
+
 			Organization org = new Organization();
 			orgResponse.setOrganization(org);
-			
-			Entry<String,String> justOneDummyOrg = dummyOrgDisplayNamesByOrgId.entrySet().iterator().next();
-			
+
+			Entry<String, String> justOneDummyOrg = dummyOrgDisplayNamesByOrgId.entrySet().iterator().next();
+
 			org.setOrganizationId(justOneDummyOrg.getKey());
 			org.setAttributes(new ReadAttributesListType());
 			ReadAttributeType attribute = new ReadAttributeType();
 			org.getAttributes().getAttribute().add(attribute);
 			attribute.setAttributeKey(AttributeKeyType.ORG_DISPLAY_NAME);
 			attribute.setAttributeValue(justOneDummyOrg.getValue());
-			
+
 			response = orgResponse;
 			break;
 		}
-		
-		
+
 		return marshal(marshaller, response);
 	}
 

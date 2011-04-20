@@ -6,8 +6,8 @@ package com.pearson.ed.lplc.common;
 import java.util.Date;
 
 /**
- * All the constants used for the LPLC service. These may be migrated out to the
- * configuration service at some point, but for now they will live here.
+ * All the constants used for the LPLC service. These may be migrated out to the configuration service at some point,
+ * but for now they will live here.
  * 
  * 
  */
@@ -151,17 +151,17 @@ public interface LPLCConstants {
 	 * Represents the parent organization id.
 	 */
 	public static final String PARENT_ORG_ID = "ParentOrganizationId";
-	
+
 	/**
 	 * Represents the event type.
 	 */
 	public static final String ORG_EVENT_TYPE = "EventType";
-	
+
 	/**
 	 * Represents a default used quantity of 0.
 	 */
 	public static final int USED_QUANTITY = 0;
-	
+
 	/**
 	 * Represents Root and Parents for Qualifying organizations.
 	 */

@@ -39,26 +39,22 @@ import com.pearson.rws.licensepool.doc._2009._04._01.QualifyingOrganizationListT
 import com.pearson.rws.licensepool.doc._2009._04._01.StatusType;
 import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 
-
 public class LicensePoolConverterImpl implements LicensePoolConverter {
-	private static final Logger logger = Logger
-			.getLogger(LicensePoolConverterImpl.class);
+	private static final Logger logger = Logger.getLogger(LicensePoolConverterImpl.class);
 
 	/**
 	 * Converts a LicensePoolMapping to a LicensePool.
-	 *
+	 * 
 	 * @param licensepoolMapping
 	 *            the LicensePoolMapping object.
-	 *
+	 * 
 	 * @return the LicensePool object.
 	 */
-	public LicensePoolDTO convertLicensePoolFromLicensePoolMapping(
-			LicensePoolMapping licensepoolMapping) {
+	public LicensePoolDTO convertLicensePoolFromLicensePoolMapping(LicensePoolMapping licensepoolMapping) {
 		LicensePoolDTO licensepool = new LicensePoolDTO();
 		licensepool.setLicensepoolId(licensepoolMapping.getLicensepoolId());
 		licensepool.setType(licensepoolMapping.getType());
-		licensepool.setDenyManualSubscription(licensepoolMapping
-				.getDenyManualSubscription());
+		licensepool.setDenyManualSubscription(licensepoolMapping.getDenyManualSubscription());
 		licensepool.setQuantity(licensepoolMapping.getQuantity());
 		licensepool.setStartDate(licensepoolMapping.getStart_date());
 		licensepool.setEndDate(licensepoolMapping.getEnd_date());
@@ -74,22 +70,22 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepool.setCreatedDate(licensepoolMapping.getCreatedDate());
 		licensepool.setLastUpdatedBy(licensepoolMapping.getLastUpdatedBy());
 		licensepool.setLastUpdatedDate(licensepoolMapping.getLastUpdatedDate());
-	
+
 		return licensepool;
 	}
 
 	/**
 	 * Converts a LicensePool to a LicensePoolMappings.
-	 *
+	 * 
 	 * @param user
 	 *            the LicensePool object.
 	 * @param userMapping
 	 *            the LicensePoolMapping object
-	 *
+	 * 
 	 * @return the LicensePoolMapping object.
 	 */
-	public LicensePoolMapping convertLicensePoolToLicensePoolMapping(
-			LicensePoolDTO licensepool, LicensePoolMapping licensepoolMapping) {
+	public LicensePoolMapping convertLicensePoolToLicensePoolMapping(LicensePoolDTO licensepool,
+			LicensePoolMapping licensepoolMapping) {
 		// validate and set mode
 		if (StringUtils.isEmpty(licensepool.getMode())) {
 			if (StringUtils.isEmpty(licensepool.getLicensepoolId())) {
@@ -102,8 +98,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		return buildLicensePoolMapping(licensepool, licensepoolMapping);
 	}
 
-	private LicensePoolMapping buildLicensePoolMapping(
-			LicensePoolDTO licensepool, LicensePoolMapping licensepoolMapping) {
+	private LicensePoolMapping buildLicensePoolMapping(LicensePoolDTO licensepool, LicensePoolMapping licensepoolMapping) {
 		String mode = licensepool.getMode();
 		if (LPLCConstants.CREATE_MODE.equals(mode)) {
 			licensepoolMapping = new LicensePoolMapping();
@@ -113,8 +108,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		if (StringUtils.isNotBlank(type)) {
 			licensepoolMapping.setType(type);
 		}
-		licensepoolMapping.setDenyManualSubscription(licensepool
-				.getDenyManualSubscription());
+		licensepoolMapping.setDenyManualSubscription(licensepool.getDenyManualSubscription());
 
 		licensepoolMapping.setStart_date(licensepool.getStartDate());
 		licensepoolMapping.setEnd_date(licensepool.getEndDate());
@@ -132,14 +126,13 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		}
 		setModifiedValues(licensepoolMapping, licensepool);
 		if (StringUtils.isNotEmpty(licensepool.getOrderLineItemId()))
-			buildOrderLineItemMapping(licensepool, licensepoolMapping, mode,
-				createdBy);
+			buildOrderLineItemMapping(licensepool, licensepoolMapping, mode, createdBy);
 
 		return licensepoolMapping;
 	}
 
-	private void buildOrderLineItemMapping(LicensePoolDTO licensepool,
-			LicensePoolMapping licensepoolMapping, String mode, String createdBy) {
+	private void buildOrderLineItemMapping(LicensePoolDTO licensepool, LicensePoolMapping licensepoolMapping,
+			String mode, String createdBy) {
 		OrderLineItemLPMapping orderLineItem = new OrderLineItemLPMapping();
 		orderLineItem.setOrderLineItemId(licensepool.getOrderLineItemId());
 		orderLineItem.setLicensepoolMapping(licensepoolMapping);
@@ -153,10 +146,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		licensepoolMapping.getOrderLineItems().add(orderLineItem);
 	}
 
-
-
-	private void setModifiedValues(LPLCBaseEntity lplcBaseEntity,
-			LicensePoolDTO licensepool) {
+	private void setModifiedValues(LPLCBaseEntity lplcBaseEntity, LicensePoolDTO licensepool) {
 		String lastUpdatedBy = licensepool.getLastUpdatedBy();
 		if (StringUtils.isEmpty(lastUpdatedBy)) {
 			lastUpdatedBy = LPLCConstants.DEFAULT_USER;
@@ -170,8 +160,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		lplcBaseEntity.setLastUpdatedDate(lastUpdatedDate);
 	}
 
-	private void setCreatedValues(LPLCBaseEntity lplcBaseEntity,
-			LicensePoolDTO licensepool) {
+	private void setCreatedValues(LPLCBaseEntity lplcBaseEntity, LicensePoolDTO licensepool) {
 		String createdBy = lplcBaseEntity.getCreatedBy();
 		if (StringUtils.isEmpty(createdBy)) {
 			createdBy = LPLCConstants.DEFAULT_USER;
@@ -185,24 +174,19 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		lplcBaseEntity.setCreatedDate(createdDate);
 	}
 
-	public LicensePoolDTO covertCreateRequestToLicensePoolDTO(
-			CreateLicensePool createLicensePoolSchemaObj) {
+	public LicensePoolDTO covertCreateRequestToLicensePoolDTO(CreateLicensePool createLicensePoolSchemaObj) {
 		LicensePoolDTO licensepoolDTO = new LicensePoolDTO();
 		licensepoolDTO.setType(createLicensePoolSchemaObj.getType());
-		licensepoolDTO.setDenyManualSubscription((createLicensePoolSchemaObj
-				.getDenyNewSubscription()==null)?0:createLicensePoolSchemaObj
-						.getDenyNewSubscription().intValue());
-		licensepoolDTO.setStartDate(createLicensePoolSchemaObj.getStartDate()
-				.toGregorianCalendar().getTime());
-		licensepoolDTO.setEndDate(createLicensePoolSchemaObj.getEndDate()
-				.toGregorianCalendar().getTime());
+		licensepoolDTO.setDenyManualSubscription((createLicensePoolSchemaObj.getDenyNewSubscription() == null) ? 0
+				: createLicensePoolSchemaObj.getDenyNewSubscription().intValue());
+		licensepoolDTO.setStartDate(createLicensePoolSchemaObj.getStartDate().toGregorianCalendar().getTime());
+		licensepoolDTO.setEndDate(createLicensePoolSchemaObj.getEndDate().toGregorianCalendar().getTime());
 		licensepoolDTO.setQuantity(createLicensePoolSchemaObj.getQuantity());
-		licensepoolDTO.setOrganizationId(createLicensePoolSchemaObj
-				.getOrganizationId());
+		licensepoolDTO.setOrganizationId(createLicensePoolSchemaObj.getOrganizationId());
 		licensepoolDTO.setProductId(getProducts(createLicensePoolSchemaObj).get(0));
-		licensepoolDTO.setOrderLineItemId((createLicensePoolSchemaObj.getOrderLineItemId()==null)?null:createLicensePoolSchemaObj.getOrderLineItemId());
-		licensepoolDTO.setSourceSystem(createLicensePoolSchemaObj
-				.getSourceSystem());
+		licensepoolDTO.setOrderLineItemId((createLicensePoolSchemaObj.getOrderLineItemId() == null) ? null
+				: createLicensePoolSchemaObj.getOrderLineItemId());
+		licensepoolDTO.setSourceSystem(createLicensePoolSchemaObj.getSourceSystem());
 		licensepoolDTO.setCreatedBy(createLicensePoolSchemaObj.getCreatedBy());
 		return licensepoolDTO;
 	}
@@ -220,55 +204,55 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 	/**
 	 * Converts updateLicensepoolSchema object to update licensepooldto.
-	 *
+	 * 
 	 * @param licensepool
 	 * @return update licensepool DTO.
 	 */
-	public UpdateLicensePoolDTO convertupdateRequestToUpdateLicensePoolDTO(
-			UpdateLicensePool licensepool) {
+	public UpdateLicensePoolDTO convertupdateRequestToUpdateLicensePoolDTO(UpdateLicensePool licensepool) {
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepool.getLicensePoolId());
 		if (licensepool.getStartDate() != null)
-			updateDTO.setStartDate(licensepool.getStartDate()
-					.toGregorianCalendar().getTime());
+			updateDTO.setStartDate(licensepool.getStartDate().toGregorianCalendar().getTime());
 		if (licensepool.getEndDate() != null)
-			updateDTO.setEndDate(licensepool.getEndDate().toGregorianCalendar()
-					.getTime());
+			updateDTO.setEndDate(licensepool.getEndDate().toGregorianCalendar().getTime());
 		if (licensepool.getQuantity() != null)
 			updateDTO.setQuantity(licensepool.getQuantity());
-		if (licensepool.getOrderLineItemId()!=null)
+		if (licensepool.getOrderLineItemId() != null)
 			updateDTO.setOrderLineItem(licensepool.getOrderLineItemId());
-		if (licensepool.getUsedLicenses()!=null){
+		if (licensepool.getUsedLicenses() != null) {
 			updateDTO.setUsedLicenses(licensepool.getUsedLicenses().getUsedLicenses());
-		    updateDTO.setOrganizationId(licensepool.getUsedLicenses().getOrganizationId());
+			updateDTO.setOrganizationId(licensepool.getUsedLicenses().getOrganizationId());
 		}
 		return updateDTO;
 
 	}
-	
+
 	/**
 	 * Convert mapping object to DTO for update licensepool.
-	 * @param updateLicensepool UpdateLicensePoolDTO.
-	 * @param licensepool mapping object.
+	 * 
+	 * @param updateLicensepool
+	 *            UpdateLicensePoolDTO.
+	 * @param licensepool
+	 *            mapping object.
 	 */
-	public void buildLicensepoolMappingFromUpdateLicensepoolDTO(
-			UpdateLicensePoolDTO updateLicensepool,
+	public void buildLicensepoolMappingFromUpdateLicensepoolDTO(UpdateLicensePoolDTO updateLicensepool,
 			LicensePoolMapping licensepool) {
 		if (updateLicensepool.getStartDate() != null)
-	    	licensepool.setStart_date(updateLicensepool.getStartDate());
-	    if (updateLicensepool.getEndDate() != null)
-	    	licensepool.setEnd_date(updateLicensepool.getEndDate());
-	    if (updateLicensepool.getQuantity()!= 0)
-	    	licensepool.setQuantity(updateLicensepool.getQuantity());
-	    if ((updateLicensepool.getUsedLicenses()!=0) && ("ALL".equalsIgnoreCase(updateLicensepool.getOrganizationId())))
-	    	 throw new LPLCBaseException(LPLCErrorMessages.CAN_NOT_UPDATE_ALL_ORGANIZAITON_WITH_NONZERO_VALUE);
-	  
-	    if (updateLicensepool.getUsedLicenses()!=0){
-	    	boolean update= false;
-	       Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
-	        for (OrganizationLPMapping organizationLPMapping : organizations) {
-				if (organizationLPMapping.getOrganization_id().trim().equalsIgnoreCase(
-						updateLicensepool.getOrganizationId().trim())) {
+			licensepool.setStart_date(updateLicensepool.getStartDate());
+		if (updateLicensepool.getEndDate() != null)
+			licensepool.setEnd_date(updateLicensepool.getEndDate());
+		if (updateLicensepool.getQuantity() != 0)
+			licensepool.setQuantity(updateLicensepool.getQuantity());
+		if ((updateLicensepool.getUsedLicenses() != 0)
+				&& ("ALL".equalsIgnoreCase(updateLicensepool.getOrganizationId())))
+			throw new LPLCBaseException(LPLCErrorMessages.CAN_NOT_UPDATE_ALL_ORGANIZAITON_WITH_NONZERO_VALUE);
+
+		if (updateLicensepool.getUsedLicenses() != 0) {
+			boolean update = false;
+			Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
+			for (OrganizationLPMapping organizationLPMapping : organizations) {
+				if (organizationLPMapping.getOrganization_id().trim()
+						.equalsIgnoreCase(updateLicensepool.getOrganizationId().trim())) {
 					int usedlicenses = organizationLPMapping.getUsed_quantity() + updateLicensepool.getUsedLicenses();
 					if (usedlicenses < 0)
 						throw new ComponentValidationException(LPLCErrorMessages.LICENSEPOOL_CONSUMPTION_NEGATIVE);
@@ -278,48 +262,48 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 					update = true;
 				}
 			}
-	        if (update==false)
-	        	 throw new LPLCBaseException(LPLCErrorMessages.NO_ORGNAIZATION_FOUND_UPDATE_LICENSEPOOL);
-	       licensepool.setOrganizations(organizations);
-	    }
-	    if ((updateLicensepool.getUsedLicenses()==0) && ("ALL".equalsIgnoreCase(updateLicensepool.getOrganizationId())))
-	    {
-	    	 Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
-	    	 for (OrganizationLPMapping organizationLPMapping : organizations) {
+			if (update == false)
+				throw new LPLCBaseException(LPLCErrorMessages.NO_ORGNAIZATION_FOUND_UPDATE_LICENSEPOOL);
+			licensepool.setOrganizations(organizations);
+		}
+		if ((updateLicensepool.getUsedLicenses() == 0)
+				&& ("ALL".equalsIgnoreCase(updateLicensepool.getOrganizationId()))) {
+			Set<OrganizationLPMapping> organizations = licensepool.getOrganizations();
+			for (OrganizationLPMapping organizationLPMapping : organizations) {
 				organizationLPMapping.setUsed_quantity(0);
 				organizationLPMapping.setLastUpdatedBy(licensepool.getLastUpdatedBy());
 				organizationLPMapping.setLastUpdatedDate(new Date());
 			}
-	    }
-	    
-	    if (licensepool.getStart_date().after(licensepool.getEnd_date()))
+		}
+
+		if (licensepool.getStart_date().after(licensepool.getEnd_date()))
 			throw new ComponentValidationException(LPLCErrorMessages.DATE_ERROR);
-	    if (updateLicensepool.getOrderLineItem()!= null){
-	    	OrderLineItemLPMapping orderLineItem = new OrderLineItemLPMapping();
-	    	orderLineItem.setLicensepoolMapping(licensepool);
-	    	orderLineItem.setOrderLineItemId(updateLicensepool.getOrderLineItem());
-	    	orderLineItem.setCreatedBy(licensepool.getCreatedBy());
-	    	orderLineItem.setCreatedDate(new Date());
-	    	orderLineItem.setLastUpdatedBy(licensepool.getCreatedBy());
-	    	orderLineItem.setLastUpdatedDate(new Date());
-	        licensepool.getOrderLineItems().add(orderLineItem);
-	    }
+		if (updateLicensepool.getOrderLineItem() != null) {
+			OrderLineItemLPMapping orderLineItem = new OrderLineItemLPMapping();
+			orderLineItem.setLicensepoolMapping(licensepool);
+			orderLineItem.setOrderLineItemId(updateLicensepool.getOrderLineItem());
+			orderLineItem.setCreatedBy(licensepool.getCreatedBy());
+			orderLineItem.setCreatedDate(new Date());
+			orderLineItem.setLastUpdatedBy(licensepool.getCreatedBy());
+			orderLineItem.setLastUpdatedDate(new Date());
+			licensepool.getOrderLineItems().add(orderLineItem);
+		}
 	}
-	
+
 	/**
 	 * This will convert Mapping object to Schema object for GetLicensepoolsByOrganizationId.
-	 *
-	 * @param licenses list of licensepool mappings.
+	 * 
+	 * @param licenses
+	 *            list of licensepool mappings.
 	 * @return LicensepoolsByOrganizationId LicensepoolsByOrganizationId.
 	 */
-	public LicensepoolsByOrganizationId convertForGetFromLPMappingToSchema(
-			List<OrganizationLPMapping> licenses)  {
+	public LicensepoolsByOrganizationId convertForGetFromLPMappingToSchema(List<OrganizationLPMapping> licenses) {
 		LicensepoolsByOrganizationId schemaList = new LicensepoolsByOrganizationId();
 		if (licenses == null)
 			return schemaList;
 		Iterator<OrganizationLPMapping> iterator = licenses.iterator();
 		LicensePoolByOrganizationId licensepoolSchemaObj;
-		while (iterator.hasNext()){
+		while (iterator.hasNext()) {
 			licensepoolSchemaObj = new LicensePoolByOrganizationId();
 			OrganizationLPMapping orgLPMapping = iterator.next();
 			if (orgLPMapping == null)
@@ -329,22 +313,26 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 			licensepoolSchemaObj.setRootOrganizationId(orgLPMapping.getLicensepoolMapping().getOrg_id());
 			licensepoolSchemaObj.setType(orgLPMapping.getLicensepoolMapping().getType());
 			try {
-				licensepoolSchemaObj.setStartDate(convertToXMLGregorianCalendar(orgLPMapping.getLicensepoolMapping().getStart_date()));
-				licensepoolSchemaObj.setEndDate(convertToXMLGregorianCalendar(orgLPMapping.getLicensepoolMapping().getEnd_date()));
+				licensepoolSchemaObj.setStartDate(convertToXMLGregorianCalendar(orgLPMapping.getLicensepoolMapping()
+						.getStart_date()));
+				licensepoolSchemaObj.setEndDate(convertToXMLGregorianCalendar(orgLPMapping.getLicensepoolMapping()
+						.getEnd_date()));
 			} catch (DatatypeConfigurationException e) {
 				logger.log(Level.ERROR, e.getMessage());
 			}
 			licensepoolSchemaObj.setQuantity(orgLPMapping.getLicensepoolMapping().getQuantity());
 			licensepoolSchemaObj.setUsedLicenses(orgLPMapping.getUsed_quantity());
 			/*
-			 * Setting the licensepool's DenyManualSubscription value to licensepoolSchemaObj 
-			 * explicitly as per the business requirement.
+			 * Setting the licensepool's DenyManualSubscription value to licensepoolSchemaObj explicitly as per the
+			 * business requirement.
 			 */
-			licensepoolSchemaObj.setDenyNewSubscription(orgLPMapping.getLicensepoolMapping().getDenyManualSubscription());
+			licensepoolSchemaObj.setDenyNewSubscription(orgLPMapping.getLicensepoolMapping()
+					.getDenyManualSubscription());
 			licensepoolSchemaObj.setStatus(getStatusType(orgLPMapping.getLicensepoolMapping().getStatus()));
 			Set<OrderLineItemLPMapping> orderLineItems = orgLPMapping.getLicensepoolMapping().getOrderLineItems();
 			// first element is the order line that created the license pool
-			licensepoolSchemaObj.setInitialOrderLineItemId(((OrderLineItemLPMapping) orderLineItems.iterator().next()).getOrderLineItemId());
+			licensepoolSchemaObj.setInitialOrderLineItemId(((OrderLineItemLPMapping) orderLineItems.iterator().next())
+					.getOrderLineItemId());
 			schemaList.getLicensePoolByOrganizationId().add(licensepoolSchemaObj);
 		}
 		return schemaList;
@@ -352,12 +340,13 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 	/**
 	 * Convert method to convert LPMapping object to Schema object.
-	 * @param organizationLPMapping organizationLPMapping.
+	 * 
+	 * @param organizationLPMapping
+	 *            organizationLPMapping.
 	 * @return LicensePoolToSubscribe.
 	 */
 
-	public LicensePoolToSubscribe convertForGetLicensepoolToSubscribe(
-			LicensePoolMapping organizationLPMapping){
+	public LicensePoolToSubscribe convertForGetLicensepoolToSubscribe(LicensePoolMapping organizationLPMapping) {
 		LicensePoolToSubscribe licensePoolToSubscribe = new LicensePoolToSubscribe();
 		LicensePoolToSubscribeType licensepoolSchema = new LicensePoolToSubscribeType();
 		try {
@@ -371,15 +360,12 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		return licensePoolToSubscribe;
 	}
 
-
-
 	/**
 	 * Convert LicensePoolMapping object to LicensePoolDetails object.
-	 *
+	 * 
 	 * @param licensePool
 	 *            the LicensePoolMapping object.
-	 * @return licensePoolDetails
-	 * 			   the LicensePoolDetails object.
+	 * @return licensePoolDetails the LicensePoolDetails object.
 	 */
 	public LicensePoolDetails convertLicensePoolMappingToLicensePoolDetails(LicensePoolMapping licensePool) {
 		LicensePoolDetails licensePoolDetails = new LicensePoolDetails();
@@ -421,13 +407,13 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 		return licensePoolDetails;
 	}
-	
+
 	/**
 	 * Assigns parent licensepools to newly added organization.
 	 * 
 	 * @param parentOrgLicenses
 	 *            LicensePoolMapping object
-	 * @param organizationId	 
+	 * @param organizationId
 	 * 
 	 * @return List<OrganizationLPMapping> the newly applied licenses.
 	 */
@@ -450,7 +436,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		}
 		return appliedParentLicenses;
 	}
-	
+
 	private XMLGregorianCalendar convertToXMLGregorianCalendar(Date date) throws DatatypeConfigurationException {
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(date);
@@ -459,7 +445,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 	/**
 	 * Populates used licenses.
-	 *
+	 * 
 	 * @param qualifyingOrganizations
 	 *            Qualifying organizations details.
 	 * @param licensePoolSummary
@@ -477,7 +463,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 	/**
 	 * Populates the organization data from the organizationLPMapping.
-	 *
+	 * 
 	 * @param qualifyingOrganizations
 	 *            Qualifying organizations details.
 	 * @param licensePoolSummary
@@ -488,7 +474,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 		QualifyingOrganizationListType qualifyingOrganizationList = new QualifyingOrganizationListType();
 
 		OrganizationDetails qualifyingOrganizationDetails = null;
-		
+
 		for (OrganizationLPMapping organizationLPMapping : qualifyingOrganizations) {
 			qualifyingOrganizationDetails = new OrganizationDetails();
 			qualifyingOrganizationDetails.setOrganizationId(organizationLPMapping.getOrganization_id());
@@ -512,7 +498,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 	/**
 	 * Populates order line items from orderLineItemLPMapping.
-	 *
+	 * 
 	 * @param orderLineItems
 	 *            OrderLineItems Details.
 	 * @param licensePoolSummary
@@ -520,7 +506,7 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 	 */
 	private void populateOrderLineItems(Set<OrderLineItemLPMapping> orderLineItems,
 			LicensePoolDetails licensePoolDetails) {
-		
+
 		OrderListType orderList = new OrderListType();
 		OrderLineItemDetails orderLineItemDetails = null;
 		for (OrderLineItemLPMapping orderLineItemLPMapping : orderLineItems) {
@@ -543,9 +529,9 @@ public class LicensePoolConverterImpl implements LicensePoolConverter {
 
 	/**
 	 * Gets StatusType value.
-	 *
+	 * 
 	 * @param status
-	 *
+	 * 
 	 * @return statusType.
 	 */
 	private StatusType getStatusType(String status) {

@@ -24,8 +24,7 @@ import com.pearson.ed.lplc.model.common.LPLCBaseEntity;
 @Entity
 @org.hibernate.annotations.GenericGenerator(name = "hibernate-uuid", strategy = "uuid")
 @Table(name = "LicensePool_OrderLineItem")
-public class OrderLineItemLPMapping extends LPLCBaseEntity implements
-		Serializable {
+public class OrderLineItemLPMapping extends LPLCBaseEntity implements Serializable {
 	/**
 	 * serialVersionUID
 	 */
@@ -35,11 +34,11 @@ public class OrderLineItemLPMapping extends LPLCBaseEntity implements
 	@GeneratedValue(generator = "hibernate-uuid")
 	@Column(name = "ORDERLINEITEM_LP_ID")
 	private String orderLineItemLPId;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "LICENSEPOOL_ID")
 	private LicensePoolMapping licensepoolMapping;
-	
+
 	@Column(nullable = false, name = "ORDERLINEITEM_ID", length = 128)
 	private String orderLineItemId;
 
@@ -51,7 +50,8 @@ public class OrderLineItemLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @param orderLineItemLPId the orderLineItemLPId to set
+	 * @param orderLineItemLPId
+	 *            the orderLineItemLPId to set
 	 */
 	public void setOrderLineItemLPId(String orderLineItemLPId) {
 		this.orderLineItemLPId = orderLineItemLPId;
@@ -65,7 +65,8 @@ public class OrderLineItemLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @param licensepoolMapping the licensepoolMapping to set
+	 * @param licensepoolMapping
+	 *            the licensepoolMapping to set
 	 */
 	public void setLicensepoolMapping(LicensePoolMapping licensepoolMapping) {
 		this.licensepoolMapping = licensepoolMapping;
@@ -79,16 +80,16 @@ public class OrderLineItemLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @param orderLineItemId the orderLineItemId to set
+	 * @param orderLineItemId
+	 *            the orderLineItemId to set
 	 */
 	public void setOrderLineItemId(String orderLineItemId) {
 		this.orderLineItemId = orderLineItemId;
 	}
 
 	/**
-	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
-	 * persistent member variables in order to maintain the hashCode contract
-	 * that equal objects must have the same hash code.
+	 * Generates a hashCode for a LicensePoolMapping object, based on all of the persistent member variables in order to
+	 * maintain the hashCode contract that equal objects must have the same hash code.
 	 * 
 	 * @return the hash code for the LicensePoolMapping object.
 	 */
@@ -100,9 +101,8 @@ public class OrderLineItemLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * Compares two OrderLineItemLPMapping objects for equality. OrderLineItemLPMapping
-	 * objects are equal if all of their persistent member variables are equal
-	 * or if they are the same instance of a class.
+	 * Compares two OrderLineItemLPMapping objects for equality. OrderLineItemLPMapping objects are equal if all of
+	 * their persistent member variables are equal or if they are the same instance of a class.
 	 * 
 	 * @param obj
 	 *            the object to compare.

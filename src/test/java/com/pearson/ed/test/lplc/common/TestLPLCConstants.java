@@ -1,6 +1,5 @@
 package com.pearson.ed.test.lplc.common;
 
-
 /**
  * All the constants used for to test the LPLC service.
  * 

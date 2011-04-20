@@ -207,8 +207,8 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 
 	/**
 	 * 
-	 * Get License pool to subscribe. Fetches the license pool Id that qualifies
-	 * to be used for subscription for the given organizationId and ProductId.
+	 * Get License pool to subscribe. Fetches the license pool Id that qualifies to be used for subscription for the
+	 * given organizationId and ProductId.
 	 * 
 	 * @param organizationId
 	 *            - id of the organization.
@@ -216,17 +216,15 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 *            - Id of the product
 	 * @return instance of qualifying LicensePoolMapping object
 	 * 
-	 * @throw NewSubscriptionsDeniedException - throws this exception if new
-	 *        subscriptions are denied for the license pool or organization
-	 * @throw LicensePoolExpiredException - throws this exception if license
-	 *        pool's start and end dates are out of bound of the current date
-	 * @throw LicensePoolForFutureException - throws this exception if existing
-	 *        license pools are configured for future use and not available
-	 *        currently
-	 * @throw LicensePoolUnavailableException - if no license pools exist for
-	 *        the given product and organization
-	 * @throw LicensePoolCanceledException - throws this exception if no active
-	 *        license pool for the given organization and product is found
+	 * @throw NewSubscriptionsDeniedException - throws this exception if new subscriptions are denied for the license
+	 *        pool or organization
+	 * @throw LicensePoolExpiredException - throws this exception if license pool's start and end dates are out of bound
+	 *        of the current date
+	 * @throw LicensePoolForFutureException - throws this exception if existing license pools are configured for future
+	 *        use and not available currently
+	 * @throw LicensePoolUnavailableException - if no license pools exist for the given product and organization
+	 * @throw LicensePoolCanceledException - throws this exception if no active license pool for the given organization
+	 *        and product is found
 	 */
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public LicensePoolMapping getLicensePoolToSubscribeId(String organizationId, String productId) {
@@ -242,9 +240,10 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			}
 		}
 
-		/*if (qualifyingLicensePools != null && qualifyingLicensePools.size() > 0 && count > 0) {
-			return qualifyingLicensePools.get(0);
-		}*/
+		/*
+		 * if (qualifyingLicensePools != null && qualifyingLicensePools.size() > 0 && count > 0) { return
+		 * qualifyingLicensePools.get(0); }
+		 */
 
 		// No license pools found, check other conditions
 		// Remove date and deny subscription restrictions and check for
@@ -258,7 +257,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		boolean lpExpired = false;
 		boolean denySubscriptionsSet = false;
 		boolean lpForFuture = false;
-		
+
 		for (LicensePoolMapping licensePool : qualifyingLicensePools) {
 			if (currentDate.after(licensePool.getStart_date()) && !currentDate.before(licensePool.getEnd_date())) {
 				lpExpired = true;
@@ -309,7 +308,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 			throw new LicensePoolCanceledException(
 					"Active License pool(s) for the given organization and product not found.");
 		}
-		
+
 		return null;
 	}
 
@@ -317,24 +316,24 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 
 		Set<OrganizationLPMapping> orgList = new HashSet<OrganizationLPMapping>();
 		addRootOrg(orgId, licensepool, orgList);
-		
-			List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(orgId);
 
-			OrganizationLPMapping organization;
-			for (OrganizationDTO organizationDTO : childOrganizaitons) {
-				organization = new OrganizationLPMapping();
-				organization.setLicensepoolMapping(licensepool);
-				organization.setOrganization_id(organizationDTO.getOrgId());
-				organization.setOrganization_level(organizationDTO.getOrgLevel());
-				organization.setUsed_quantity(0);
-				organization.setDenyManualSubscription(licensepool.getDenyManualSubscription());
-				organization.setCreatedBy(licensepool.getCreatedBy());
-				organization.setCreatedDate(licensepool.getCreatedDate());
-				organization.setLastUpdatedBy(licensepool.getLastUpdatedBy());
-				organization.setLastUpdatedDate(licensepool.getLastUpdatedDate());
-				orgList.add(organization);
-			}
-		
+		List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(orgId);
+
+		OrganizationLPMapping organization;
+		for (OrganizationDTO organizationDTO : childOrganizaitons) {
+			organization = new OrganizationLPMapping();
+			organization.setLicensepoolMapping(licensepool);
+			organization.setOrganization_id(organizationDTO.getOrgId());
+			organization.setOrganization_level(organizationDTO.getOrgLevel());
+			organization.setUsed_quantity(0);
+			organization.setDenyManualSubscription(licensepool.getDenyManualSubscription());
+			organization.setCreatedBy(licensepool.getCreatedBy());
+			organization.setCreatedDate(licensepool.getCreatedDate());
+			organization.setLastUpdatedBy(licensepool.getLastUpdatedBy());
+			organization.setLastUpdatedDate(licensepool.getLastUpdatedDate());
+			orgList.add(organization);
+		}
+
 		licensepool.setOrganizations(orgList);
 
 	}
@@ -354,8 +353,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	}
 
 	/*
-	 * This function isolate the logic to figure out license status based on
-	 * current date, start date and end date.
+	 * This function isolate the logic to figure out license status based on current date, start date and end date.
 	 */
 	private String getLicenseStatus(LicensePoolDTO licensepoolDTO) {
 		Date startDate = licensepoolDTO.getStartDate();
@@ -393,8 +391,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	}
 
 	/**
-	 * This service will find expired license pools that expired yesterday. It
-	 * returns list of license pool id.
+	 * This service will find expired license pools that expired yesterday. It returns list of license pool id.
 	 * 
 	 * @return List List of license pool id.
 	 */
@@ -413,8 +410,7 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 	 * @param createdBy
 	 *            the created by.
 	 * @throws RequiredObjectNotFound
-	 *             - throws this exception at required license pool is not
-	 *             found.
+	 *             - throws this exception at required license pool is not found.
 	 * @return licensePoolId.
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -433,33 +429,29 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		}
 
 		/*
-		 * Set<OrganizationLPMapping> organizationLPMappings =
-		 * licensePool.getOrganizations(); for (OrganizationLPMapping
-		 * organizationLPMapping : organizationLPMappings) {
-		 * organizationLPMapping
-		 * .setDenyManualSubscription(LPLCConstants.DENY_SUBSCRIPTIONS_TRUE); if
-		 * (null != createdBy) {
-		 * organizationLPMapping.setLastUpdatedBy(createdBy); }
-		 * licensePool.setOrganizations(organizationLPMappings); }
+		 * Set<OrganizationLPMapping> organizationLPMappings = licensePool.getOrganizations(); for
+		 * (OrganizationLPMapping organizationLPMapping : organizationLPMappings) { organizationLPMapping
+		 * .setDenyManualSubscription(LPLCConstants.DENY_SUBSCRIPTIONS_TRUE); if (null != createdBy) {
+		 * organizationLPMapping.setLastUpdatedBy(createdBy); } licensePool.setOrganizations(organizationLPMappings); }
 		 */
 
 		licensePoolDAO.update(licensePool);
 		return licensePool.getLicensepoolId();
 	}
-	
+
 	/**
 	 * Applies licensepools in the hierarchy to a newly added organization.
 	 * 
 	 * @param organizationId
 	 * @param parentOrganizationId
-	 *	 
+	 * 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void applyLicensesToNewOrganization(String organizationId, String parentOrganizationId) {
 		List<OrganizationLPMapping> rootLicenses = getLicensePoolByOrganizationId(organizationId,
 				LPLCConstants.ROOT_AND_PARENTS);
 		if (rootLicenses != null && rootLicenses.size() >= 1) {
-		  return;
+			return;
 		}
 		List<OrganizationLPMapping> parentLicenses = getLicensePoolByOrganizationId(parentOrganizationId,
 				LPLCConstants.ROOT_AND_PARENTS);
@@ -485,7 +477,8 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		List<OrganizationDTO> childOrganizaitons = organizationServiceClient.getChildOrganizations(organizationId);
 		for (OrganizationDTO organizationDTO : childOrganizaitons) {
 			// Do not add parent organization into the list.
-			if (organizationDTO.getOrgId().equals(organizationId)) continue;			
+			if (organizationDTO.getOrgId().equals(organizationId))
+				continue;
 			childOrgIds.add(organizationDTO.getOrgId());
 		}
 		if (null != childOrgIds && childOrgIds.size() > 0) {

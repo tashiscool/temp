@@ -24,32 +24,27 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
 		LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
-		String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
+		String licensepoolId = licensepoolService.createLicensePool(licensepool);
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
 		updateDTO.setQuantity(500);
-		String updateLicensePool = licensepoolService
-				.updateLicensePool(updateDTO);
-		LicensePoolMapping findByLicensePoolId = licensepoolDAO
-				.findByLicensePoolId(updateLicensePool);
+		String updateLicensePool = licensepoolService.updateLicensePool(updateDTO);
+		LicensePoolMapping findByLicensePoolId = licensepoolDAO.findByLicensePoolId(updateLicensePool);
 		assertEquals(500, findByLicensePoolId.getQuantity());
 	}
+
 	@Test
 	public void testUpdateLicensePoolForOrderLineItem() {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
 		LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
-		String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
+		String licensepoolId = licensepoolService.createLicensePool(licensepool);
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
 		updateDTO.setQuantity(500);
 		updateDTO.setOrderLineItem("TestOrderLineItem2");
-		String updateLicensePool = licensepoolService
-				.updateLicensePool(updateDTO);
-		LicensePoolMapping findByLicensePoolId = licensepoolDAO
-				.findByLicensePoolId(updateLicensePool);
+		String updateLicensePool = licensepoolService.updateLicensePool(updateDTO);
+		LicensePoolMapping findByLicensePoolId = licensepoolDAO.findByLicensePoolId(updateLicensePool);
 		assertEquals(500, findByLicensePoolId.getQuantity());
 		assertEquals(2, findByLicensePoolId.getOrderLineItems().size());
 	}
@@ -58,37 +53,33 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 	public void testUpdateLicensePoolForStartDateEndDate() {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
-		String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
+		String licensepoolId = licensepoolService.createLicensePool(licensepool);
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
 		updateDTO.setStartDate(new Date());
-		try{
+		try {
 			licensepoolService.updateLicensePool(updateDTO);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			assertEquals("Start Date can not be greater than End Date", e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void testUpdateLicensePoolForConsumption() {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
 		LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
-		String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
+		String licensepoolId = licensepoolService.createLicensePool(licensepool);
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
 		updateDTO.setUsedLicenses(0);
 		updateDTO.setOrganizationId("UnitTestOrganizationID");
-			licensepoolService.updateLicensePool(updateDTO);
-		LicensePoolMapping findByLicensePoolId = licensepoolDAO
-			.findByLicensePoolId(licensepoolId);
+		licensepoolService.updateLicensePool(updateDTO);
+		LicensePoolMapping findByLicensePoolId = licensepoolDAO.findByLicensePoolId(licensepoolId);
 		Set<OrganizationLPMapping> organizations = findByLicensePoolId.getOrganizations();
 		for (OrganizationLPMapping organizationLPMapping : organizations) {
 			assertEquals(0, organizationLPMapping.getUsed_quantity());
-			
+
 		}
 	}
 
@@ -97,15 +88,13 @@ public class TestUpdateLicensePool extends BaseIntegrationTest {
 		LicensePoolService licensepoolService = loadLicensePoolService();
 		LicensePoolDTO licensepool = loadLicensePool();
 		LicensePoolDAO licensepoolDAO = loadLicensePoolDAO();
-		String licensepoolId = licensepoolService
-				.createLicensePool(licensepool);
+		String licensepoolId = licensepoolService.createLicensePool(licensepool);
 		String createdBy = getCreatedBy();
 		UpdateLicensePoolDTO updateDTO = new UpdateLicensePoolDTO();
 		updateDTO.setLicensepoolId(licensepoolId);
-		String updateLicensePool = licensepoolService
-				.cancel(updateDTO.getLicensepoolId(),createdBy, LPLCConstants.IS_DENIED_OR_CANCELED_TRUE);
-		LicensePoolMapping findByLicensePoolId = licensepoolDAO
-				.findByLicensePoolId(updateLicensePool);		
+		String updateLicensePool = licensepoolService.cancel(updateDTO.getLicensepoolId(), createdBy,
+				LPLCConstants.IS_DENIED_OR_CANCELED_TRUE);
+		LicensePoolMapping findByLicensePoolId = licensepoolDAO.findByLicensePoolId(updateLicensePool);
 		assertTrue("Created licensepool has not cancelled", findByLicensePoolId.getIsCancelled().equals("Y"));
 	}
 

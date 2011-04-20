@@ -1,12 +1,12 @@
 package com.pearson.ed.lplc.ws;
 
 public interface LicensePoolWebServiceConstants {
-	
+
 	/**
 	 * Create licensepool request element.
 	 */
 	String CREATE_LICENSEPOOL_REQUEST_ELEMENT = "CreateLicensePoolRequest";
-	
+
 	/**
 	 * Update licensepool request element.
 	 */
@@ -16,15 +16,15 @@ public interface LicensePoolWebServiceConstants {
 	 */
 	String GET_LICENSEPOOL_REQUEST_ELEMENT = "GetLicensePoolByOrganizationIdRequest";
 	/**
-	 * Get licensepool  to subscribe request element.
+	 * Get licensepool to subscribe request element.
 	 */
 	String GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT = "GetLicensePoolToSubscribeRequest";
-	
+
 	/**
 	 * Get licensepool details by id request element.
 	 */
 	String GET_LICENCEPOOL_DETAILS_BY_ID_REQUEST_ELEMENT = "GetLicensePoolDetailsByIdRequest";
-	
+
 	/**
 	 * Denies New Subscriptions request element.
 	 */
@@ -34,7 +34,7 @@ public interface LicensePoolWebServiceConstants {
 	 * Cancel licensepool request element.
 	 */
 	String CANCEL_LICENSEPOOL_REQUEST_ELEMENT = "CancelLicensePoolRequest";
-	
+
 	/**
 	 * The licensepool namespace.
 	 */

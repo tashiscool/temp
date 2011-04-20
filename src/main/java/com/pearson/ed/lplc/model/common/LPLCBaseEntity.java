@@ -60,32 +60,28 @@ public class LPLCBaseEntity {
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
-	
+
 	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat(
-		"yyyy-MMM-dd KK:mm:ss.SSS aa");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd KK:mm:ss.SSS aa");
 		StringBuffer sb = new StringBuffer();
 		sb.append(super.toString());
 		sb.append(",");
-		sb.append("createdDate:" + ((createdDate != null) ?
-				format.format(createdDate) : "null"));
+		sb.append("createdDate:" + ((createdDate != null) ? format.format(createdDate) : "null"));
 		sb.append(",");
 		sb.append("createdBy:" + createdBy);
-		sb.append(",");		
-		sb.append("lastUpdatedDate:" + ((lastUpdatedDate != null) ?
-				format.format(lastUpdatedDate) : "null"));
+		sb.append(",");
+		sb.append("lastUpdatedDate:" + ((lastUpdatedDate != null) ? format.format(lastUpdatedDate) : "null"));
 		sb.append(",");
 		sb.append("lastUpdatedBy:" + lastUpdatedBy);
 		return sb.toString();
 	}
-	
+
 	/**
-	 * Compares two LPLCBaseEntity objects for equality. LPLCBaseEntity objects
-	 * are equal if all of their persistent member variables are equal or if
-	 * they are the same instance of a class.
+	 * Compares two LPLCBaseEntity objects for equality. LPLCBaseEntity objects are equal if all of their persistent
+	 * member variables are equal or if they are the same instance of a class.
 	 * 
 	 * @param obj
-	 * 			the object to compare.
+	 *            the object to compare.
 	 * 
 	 * @return true if the LPLCBaseEntity objects are equal.
 	 */
@@ -94,22 +90,21 @@ public class LPLCBaseEntity {
 			return false;
 		if (this == obj)
 			return true;
-		
-		LPLCBaseEntity u = (LPLCBaseEntity)obj;
-		
+
+		LPLCBaseEntity u = (LPLCBaseEntity) obj;
+
 		EqualsBuilder equalsBuilder = new EqualsBuilder();
 		equalsBuilder.append(this.createdDate, u.createdDate);
 		equalsBuilder.append(this.createdBy, u.createdBy);
 		equalsBuilder.append(this.lastUpdatedDate, u.lastUpdatedDate);
 		equalsBuilder.append(this.lastUpdatedBy, u.lastUpdatedBy);
-		
+
 		return equalsBuilder.isEquals();
 	}
-	
+
 	/**
-	 * Generates a hashCode for a LPLCBaseEntity object, based on all of the
-	 * persistent member variables in order to maintain the hashCode contract
-	 * that equal objects must have the same hash code.
+	 * Generates a hashCode for a LPLCBaseEntity object, based on all of the persistent member variables in order to
+	 * maintain the hashCode contract that equal objects must have the same hash code.
 	 * 
 	 * @return the hash code for the LPLCBaseEntity object.
 	 */
@@ -121,5 +116,5 @@ public class LPLCBaseEntity {
 		hashCodeBuilder.append(lastUpdatedBy);
 		return hashCodeBuilder.toHashCode();
 	}
-	
+
 }

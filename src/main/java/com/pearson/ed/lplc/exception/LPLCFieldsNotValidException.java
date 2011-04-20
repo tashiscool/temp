@@ -21,7 +21,7 @@ package com.pearson.ed.lplc.exception;
  */
 public class LPLCFieldsNotValidException extends LPLCBaseException {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * The default constructor for LPLCFieldsNotValidException.
 	 */
@@ -30,13 +30,12 @@ public class LPLCFieldsNotValidException extends LPLCBaseException {
 	}
 
 	/**
-	 * Constructs a new LPLCFieldsNotValidException with the passed message and
-	 * cause.
+	 * Constructs a new LPLCFieldsNotValidException with the passed message and cause.
 	 * 
 	 * @param message
-	 * 			the message for the exception.
+	 *            the message for the exception.
 	 * @param cause
-	 * 			the cause of the exception.
+	 *            the cause of the exception.
 	 */
 	public LPLCFieldsNotValidException(String message, Throwable cause) {
 		super(message, cause);
@@ -46,18 +45,18 @@ public class LPLCFieldsNotValidException extends LPLCBaseException {
 	 * Constructs a new LPLCFieldsNotValidException with the passed message.
 	 * 
 	 * @param message
-	 * 			the message for the exception.
+	 *            the message for the exception.
 	 */
 	public LPLCFieldsNotValidException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Constructs a new LPLCFieldsNotValidException with the passed cause. The
-	 * message is automatically generated from the cause.
+	 * Constructs a new LPLCFieldsNotValidException with the passed cause. The message is automatically generated from
+	 * the cause.
 	 * 
 	 * @param cause
-	 * 			the cause of the exception.
+	 *            the cause of the exception.
 	 */
 	public LPLCFieldsNotValidException(Throwable cause) {
 		super(cause);

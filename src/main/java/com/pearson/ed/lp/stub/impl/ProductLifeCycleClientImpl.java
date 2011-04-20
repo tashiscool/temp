@@ -24,7 +24,7 @@ import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
  * 
  */
 public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
-	
+
 	public static final String CG_PROGRAM_ATTR_KEY = "CG PROGRAM";
 	public static final String GRADE_LEVEL_ATTR_KEY = "LEVEL";
 
@@ -47,7 +47,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 
 		GetProductsByProductEntityIdsRequest productEntityIdRequest = new GetProductsByProductEntityIdsRequest();
 		GetProductsByProductEntityIdsResponse productEntityIdResponse = null;
-		
+
 		productEntityIdRequest.getProductEntityId().addAll(request.getProductEntityIds());
 
 		try {
@@ -65,28 +65,34 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 			for (GetProductsByProductEntityIdsResponseType responseType : productEntityIdResponse.getProduct()) {
 				ProductData productData = new ProductData();
 				responsePayload.put(responseType.getProductEntityId(), productData);
-				
+
 				productData.setProductId(responseType.getProductId());
-				
+
 				// quirk of the contract allows each possibility for empty display information
-				if((responseType.getDisplayInformation() == null) 
+				if ((responseType.getDisplayInformation() == null)
 						|| (responseType.getDisplayInformation().getDisplayInfo().isEmpty())) {
 					// TODO throw exception, we need this data! Display Name is required!!!
 				}
-				
-				DisplayInfoType firstDisplayInfo = responseType.getDisplayInformation().getDisplayInfo().iterator().next();
-				
+
+				DisplayInfoType firstDisplayInfo = responseType.getDisplayInformation().getDisplayInfo().iterator()
+						.next();
+
 				// get the first display info name, just like the legacy service
 				productData.setDisplayName(firstDisplayInfo.getName());
 				productData.setShortDescription(firstDisplayInfo.getShortDescription());
 				productData.setLongDescription(firstDisplayInfo.getLongDescription());
 
 				// iterate through the attributes for the ones we want
-				if(responseType.getAttributes() != null) {
-					for(AttributeType attribute : responseType.getAttributes().getAttribute()) {
-						if(attribute.getAttributeKey().equals(CG_PROGRAM_ATTR_KEY)) {
-							productData.setCgProgram(attribute.getAttributeValue());
-						} else if(attribute.getAttributeKey().equals(GRADE_LEVEL_ATTR_KEY)) {
+				if (responseType.getAttributes() != null) {
+					for (AttributeType attribute : responseType.getAttributes().getAttribute()) {
+						if (attribute.getAttributeKey().equals(CG_PROGRAM_ATTR_KEY)) {
+							if(productData.getCgProgram() != null) {
+								productData.setCgProgram(
+										productData.getCgProgram() + " " + attribute.getAttributeValue());
+							} else {
+								productData.setCgProgram(attribute.getAttributeValue());
+							}
+						} else if (attribute.getAttributeKey().equals(GRADE_LEVEL_ATTR_KEY)) {
 							productData.addGradeLevel(attribute.getAttributeValue());
 						}
 					}

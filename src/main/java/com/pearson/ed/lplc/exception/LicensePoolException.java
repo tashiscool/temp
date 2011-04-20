@@ -21,18 +21,15 @@ public class LicensePoolException extends LPLCBaseException {
 		this.codeAndDesc = codeAndDesc;
 	}
 
-	public LicensePoolException(String message,
-			LicensePoolExceptionElement codeAndDesc) {
+	public LicensePoolException(String message, LicensePoolExceptionElement codeAndDesc) {
 		this(message, null, codeAndDesc);
 	}
 
-	public LicensePoolException(Throwable cause,
-			LicensePoolExceptionElement codeAndDesc) {
+	public LicensePoolException(Throwable cause, LicensePoolExceptionElement codeAndDesc) {
 		this(cause != null ? cause.getMessage() : "", cause, codeAndDesc);
 	}
 
-	public LicensePoolException(String message, Throwable cause,
-			LicensePoolExceptionElement codeAndDesc) {
+	public LicensePoolException(String message, Throwable cause, LicensePoolExceptionElement codeAndDesc) {
 		super(message, cause);
 		this.codeAndDesc = codeAndDesc;
 	}

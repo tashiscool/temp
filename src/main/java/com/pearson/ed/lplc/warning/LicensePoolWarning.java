@@ -11,15 +11,15 @@ public class LicensePoolWarning implements Serializable {
 
 	private LicensePoolWarningElement codeAndDesc;
 	private String message;
-	
+
 	public LicensePoolWarningElement getCodeAndDesc() {
 		return codeAndDesc;
 	}
-	
+
 	public void setCodeAndDesc(LicensePoolWarningElement codeAndDesc) {
 		this.codeAndDesc = codeAndDesc;
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}
@@ -31,16 +31,16 @@ public class LicensePoolWarning implements Serializable {
 	public LicensePoolWarning(String message) {
 		this(message, null);
 	}
-	
+
 	public LicensePoolWarning(LicensePoolWarningElement codeAndDesc) {
 		this(null, codeAndDesc);
 	}
-	
+
 	public LicensePoolWarning(String message, LicensePoolWarningElement codeAndDesc) {
 		this.message = message;
 		this.codeAndDesc = codeAndDesc;
 	}
-	
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("LicensePool Warning - ");
@@ -53,5 +53,5 @@ public class LicensePoolWarning implements Serializable {
 		}
 		return sb.toString();
 	}
-	
+
 }

@@ -22,9 +22,8 @@ import com.pearson.ed.test.lplc.common.TestLPLCConstants;
 public class TestOrganizationLPDAO extends BaseIntegrationTest {
 
 	/**
-	 * testListOrganizationMappingByOrganizationId() method to test the
-	 * functionality of listOrganizationMappingByOrganizationId() method of
-	 * LicensePool.
+	 * testListOrganizationMappingByOrganizationId() method to test the functionality of
+	 * listOrganizationMappingByOrganizationId() method of LicensePool.
 	 */
 	@Test
 	public void testOrganizationMappingByOrganizationId() {
@@ -97,9 +96,8 @@ public class TestOrganizationLPDAO extends BaseIntegrationTest {
 	}
 
 	/**
-	 * testListOrganizationMappingByOrganizationId() method to test the
-	 * functionality of listOrganizationMappingByOrganizationId() method of
-	 * LicensePool.
+	 * testListOrganizationMappingByOrganizationId() method to test the functionality of
+	 * listOrganizationMappingByOrganizationId() method of LicensePool.
 	 */
 	@Test
 	public void testListOrganizationMappingByOrganizationId() {

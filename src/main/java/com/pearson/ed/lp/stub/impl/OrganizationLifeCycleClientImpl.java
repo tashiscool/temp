@@ -61,9 +61,8 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		}
 
 		if ((organizationResponse != null) && (organizationResponse.getOrganization().getAttributes() != null)) {
-			for (ReadAttributeType attribute : organizationResponse.getOrganization().getAttributes()
-					.getAttribute()) {
-				if(attribute.getAttributeKey().value().equals(ORG_DISPLAY_NAME_ATTR_KEY)) {
+			for (ReadAttributeType attribute : organizationResponse.getOrganization().getAttributes().getAttribute()) {
+				if (attribute.getAttributeKey().value().equals(ORG_DISPLAY_NAME_ATTR_KEY)) {
 					responsePayload.put(organizationResponse.getOrganization().getOrganizationId(),
 							attribute.getAttributeValue());
 				}
@@ -141,7 +140,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			// dive into the response tree, hitting every node
 			parseOrganizationTree(treeResponse.getOrganization(), responsePayload);
 		}
-		
+
 		return response;
 	}
 
@@ -152,19 +151,21 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 	public void setServiceClient(WebServiceTemplate serviceClient) {
 		this.serviceClient = serviceClient;
 	}
-	
+
 	/**
-	 * Recursive funtion to parse an entire OrganizationTreeType result tree and populate the provided
-	 * result map with the organization id and name values as the keys and values in the map.
+	 * Recursive funtion to parse an entire OrganizationTreeType result tree and populate the provided result map with
+	 * the organization id and name values as the keys and values in the map.
 	 * 
-	 * @param orgTreeNode organization tree to parse
-	 * @param resultPayload result map to populate
+	 * @param orgTreeNode
+	 *            organization tree to parse
+	 * @param resultPayload
+	 *            result map to populate
 	 */
-	private void parseOrganizationTree(OrganizationTreeType orgTreeNode, Map<String,String> resultPayload) {
+	private void parseOrganizationTree(OrganizationTreeType orgTreeNode, Map<String, String> resultPayload) {
 		resultPayload.put(orgTreeNode.getOrganizationId(), orgTreeNode.getName());
-		
-		if(!orgTreeNode.getOrganization().isEmpty()) {
-			for(OrganizationTreeType childNode : orgTreeNode.getOrganization()) {
+
+		if (!orgTreeNode.getOrganization().isEmpty()) {
+			for (OrganizationTreeType childNode : orgTreeNode.getOrganization()) {
 				parseOrganizationTree(childNode, resultPayload);
 			}
 		}

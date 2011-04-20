@@ -14,13 +14,13 @@ import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
  * LicensedProduct service endpoints for handling JAXB2 requests/responses.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 @Endpoint
 public interface MarshallingLicensedProductServiceEndpoint {
-	
+
 	@PayloadRoot(localPart = GET_LICENSEDPRODUCT_REQUEST_ELEMENT, namespace = LICENSEDPRODUCT_V2_NAMESPACE)
 	@Gateway
 	public GetLicensedProductResponseElement getLicensedProducts(GetLicensedProductRequestElement request);
-	
+
 }

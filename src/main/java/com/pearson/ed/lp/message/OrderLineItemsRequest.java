@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Request for OrderLifeCycleClient api that wraps 
- * a collection of Order Line Item Id strings.
+ * Request for OrderLifeCycleClient api that wraps a collection of Order Line Item Id strings.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class OrderLineItemsRequest {
 
@@ -16,7 +15,8 @@ public class OrderLineItemsRequest {
 
 	/**
 	 * Get list of Order Line Item Id strings.
-	 * @return
+	 * 
+	 * @return list of order line item id strings
 	 */
 	public List<String> getOrderLineItemIds() {
 		return orderLineItemIds;
@@ -24,10 +24,11 @@ public class OrderLineItemsRequest {
 
 	/**
 	 * Set list of Order Line Item Id strings.
-	 * @param orderLineItemIds
+	 * 
+	 * @param orderLineItemIds list of order line item id strings
 	 */
 	public void setOrderLineItemIds(List<String> orderLineItemIds) {
 		this.orderLineItemIds = orderLineItemIds;
 	}
-	
+
 }

@@ -10,12 +10,12 @@ import com.pearson.ed.lp.message.OrderLineItemsResponse;
  * Client stub API for the OrderLifeCycle service.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public interface OrderLifeCycleClient {
 
 	@ServiceActivator
-	OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request) 
-		throws AbstractRumbaException;
-	
+	OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request)
+			throws AbstractRumbaException;
+
 }

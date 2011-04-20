@@ -1,22 +1,21 @@
 package com.pearson.ed.lp.message;
 
 /**
- * Special response message for collection of 
- * client response data for the final response aggregator.
+ * Special response message for collection of client response data for the final response aggregator.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class LicensedProductDataCollection {
-	
+
 	private LicensePoolResponse licensePools = null;
-	
+
 	private OrganizationDisplayNamesResponse organizationDisplayNames = null;
 
 	/**
 	 * Get the license pools in the response.
 	 * 
-	 * @return
+	 * @return {@link LicensePoolResponse} instance
 	 */
 	public LicensePoolResponse getLicensePools() {
 		return licensePools;
@@ -25,7 +24,7 @@ public class LicensedProductDataCollection {
 	/**
 	 * Set the license pools for the response.
 	 * 
-	 * @param licensePools
+	 * @param licensePools {@link LicensePoolResponse} instance
 	 */
 	public void setLicensePools(LicensePoolResponse licensePools) {
 		this.licensePools = licensePools;
@@ -34,7 +33,7 @@ public class LicensedProductDataCollection {
 	/**
 	 * Get the organization display names in the response.
 	 * 
-	 * @return
+	 * @return {@link OrganizationDisplayNamesResponse} instance
 	 */
 	public OrganizationDisplayNamesResponse getOrganizationDisplayNames() {
 		return organizationDisplayNames;
@@ -43,7 +42,7 @@ public class LicensedProductDataCollection {
 	/**
 	 * Set the organization display names for the response.
 	 * 
-	 * @param organizationDisplayNames
+	 * @param organizationDisplayNames {@link OrganizationDisplayNamesResponse} instance
 	 */
 	public void setOrganizationDisplayNames(OrganizationDisplayNamesResponse organizationDisplayNames) {
 		this.organizationDisplayNames = organizationDisplayNames;

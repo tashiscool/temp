@@ -3,7 +3,6 @@ package com.pearson.ed.lplc.stub.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.log4j.Logger;
 import org.springframework.ws.WebServiceMessage;
@@ -20,8 +19,7 @@ import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeResponse;
 import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeType;
 
 /**
- * This class is a Client stub class and implements methods to be invoked on
- * Organization Life Cycle service.
+ * This class is a Client stub class and implements methods to be invoked on Organization Life Cycle service.
  * 
  * @author vtirura
  * 
@@ -84,14 +82,13 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 
 		return organizationDTOList;
 	}
-	
-	protected OrganizationTreeResponse getOrgHierarchy(String organizationId) throws SoapFaultClientException{
+
+	protected OrganizationTreeResponse getOrgHierarchy(String organizationId) throws SoapFaultClientException {
 		Object request = getChildTreeByOrganizationIdRequest(organizationId);
 		OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
-					.marshalSendAndReceive(request);
+				.marshalSendAndReceive(request);
 		return organizationTreeResponse;
 	}
-	
 
 	/**
 	 * Private method to create a GetOrganizationByIdRequest object.
@@ -106,7 +103,7 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 	}
 
 	/**
-	 * Method to get list of all child organizations. 
+	 * Method to get list of all child organizations.
 	 * 
 	 * @param organizationTreeTypes
 	 * @param organizationDTOList
@@ -128,15 +125,15 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 		}
 		return organizationDTOList;
 	}
-	
+
 	/**
-	 * Method to get fault message. 
+	 * Method to get fault message.
 	 * 
 	 * @param message
 	 * 
 	 * @return fault message
 	 */
-	private String getFaultMessage(WebServiceMessage message){
+	private String getFaultMessage(WebServiceMessage message) {
 		AxiomSoapMessage soapMessage = (AxiomSoapMessage) message;
 		SOAPFaultText sOAPFaultText = soapMessage.getAxiomMessage().getSOAPEnvelope().getBody().getFault().getReason()
 				.getSOAPFaultText("en");

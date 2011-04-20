@@ -14,98 +14,118 @@ public class UpdateLicensePoolDTO {
 	private String orderLineItem;
 	private int usedLicenses;
 	private String organizationId;
-	
+
 	/**
 	 * @return the organizationId
 	 */
 	public String getOrganizationId() {
 		return organizationId;
 	}
+
 	/**
-	 * @param organizationId the organizationId to set
+	 * @param organizationId
+	 *            the organizationId to set
 	 */
 	public void setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
 	}
+
 	/**
 	 * @return the usedLicenses
 	 */
 	public int getUsedLicenses() {
 		return usedLicenses;
 	}
+
 	/**
-	 * @param usedLicenses the usedLicenses to set
+	 * @param usedLicenses
+	 *            the usedLicenses to set
 	 */
 	public void setUsedLicenses(int usedLicenses) {
 		this.usedLicenses = usedLicenses;
 	}
+
 	/**
 	 * @return the orderLineItem
 	 */
 	public String getOrderLineItem() {
 		return orderLineItem;
 	}
+
 	/**
-	 * @param orderLineItem the orderLineItem to set
+	 * @param orderLineItem
+	 *            the orderLineItem to set
 	 */
 	public void setOrderLineItem(String orderLineItem) {
 		this.orderLineItem = orderLineItem;
 	}
 
 	private String licensepoolId;
-  	/**
+
+	/**
 	 * @return the licensepoolId
 	 */
 	public String getLicensepoolId() {
 		return licensepoolId;
 	}
+
 	/**
-	 * @param licensepoolId the licensepoolId to set
+	 * @param licensepoolId
+	 *            the licensepoolId to set
 	 */
 	public void setLicensepoolId(String licensepoolId) {
 		this.licensepoolId = licensepoolId;
 	}
+
 	/**
 	 * @return the startDate
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
+
 	/**
-	 * @param startDate the startDate to set
+	 * @param startDate
+	 *            the startDate to set
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
 	/**
 	 * @return the endDate
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
+
 	/**
-	 * @param endDate the endDate to set
+	 * @param endDate
+	 *            the endDate to set
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+
 	/**
 	 * @return the quantity
 	 */
 	public int getQuantity() {
 		return quantity;
 	}
+
 	/**
-	 * @param quantity the quantity to set
+	 * @param quantity
+	 *            the quantity to set
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
 	/**
-	 * Compares two LicensePool objects for equality. LicensePools are equal if they're the
-	 * same instance or if they have the same values for their User members
-	 * which are used to generate the hash code, therefore also having matching
-	 * hash codes.
+	 * Compares two LicensePool objects for equality. LicensePools are equal if they're the same instance or if they
+	 * have the same values for their User members which are used to generate the hash code, therefore also having
+	 * matching hash codes.
 	 * 
 	 * @return true if the objects are equal.
 	 */
@@ -117,7 +137,7 @@ public class UpdateLicensePoolDTO {
 			return true;
 		}
 		UpdateLicensePoolDTO u = (UpdateLicensePoolDTO) obj;
-		
+
 		EqualsBuilder equalsBuilder = new EqualsBuilder();
 		equalsBuilder.append(this.startDate, u.startDate);
 		equalsBuilder.append(this.endDate, u.endDate);
@@ -126,8 +146,7 @@ public class UpdateLicensePoolDTO {
 	}
 
 	/**
-	 * Returns the hash code for a User. The hash code is generated from all
-	 * persistent member variables.
+	 * Returns the hash code for a User. The hash code is generated from all persistent member variables.
 	 * 
 	 * @return the LicensePool's hash code.
 	 */
@@ -140,14 +159,12 @@ public class UpdateLicensePoolDTO {
 	}
 
 	/**
-	 * Constructs a String that contains all of the information stored in a User
-	 * object.
+	 * Constructs a String that contains all of the information stored in a User object.
 	 * 
 	 * @return a String representation of the information store in a User.
 	 */
 	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat(
-				"yyyy-MMM-dd KK:mm:ss.SSS aa");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd KK:mm:ss.SSS aa");
 		StringBuffer sb = new StringBuffer();
 		sb.append(super.toString());
 		sb.append(",");

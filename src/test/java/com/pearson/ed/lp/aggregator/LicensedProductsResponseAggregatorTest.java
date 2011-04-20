@@ -12,10 +12,10 @@ import org.junit.Test;
 
 /**
  * @author ULLOYNI
- *
+ * 
  */
 public class LicensedProductsResponseAggregatorTest {
-	
+
 	private LicensedProductsResponseAggregator aggregator = new LicensedProductsResponseAggregator();
 
 	/**
@@ -27,7 +27,8 @@ public class LicensedProductsResponseAggregatorTest {
 	}
 
 	/**
-	 * Test method for {@link com.pearson.ed.lp.aggregator.LicensedProductsResponseAggregator#aggregateResponse(java.util.List)}.
+	 * Test method for
+	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsResponseAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Ignore
 	@Test

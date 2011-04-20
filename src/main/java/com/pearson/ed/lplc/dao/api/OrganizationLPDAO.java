@@ -31,16 +31,14 @@ public interface OrganizationLPDAO {
 	 * @return List of organization license pool mapping
 	 */
 	List<OrganizationLPMapping> listOrganizationMappingByOrganizationId(List<String> organizationIds, int level);
-	
+
 	/**
 	 * Saves newly updated licensepools to an organization.
 	 * 
 	 * @param licenses
-	 * 			the newly applied licenses
-	 *	 
+	 *            the newly applied licenses
+	 * 
 	 */
 	void saveAllLicenses(List<OrganizationLPMapping> licenses);
-	
-	
 
 }

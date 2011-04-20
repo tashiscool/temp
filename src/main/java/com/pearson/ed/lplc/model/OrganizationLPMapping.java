@@ -25,8 +25,7 @@ import com.pearson.ed.lplc.model.common.LPLCBaseEntity;
 @Entity
 @org.hibernate.annotations.GenericGenerator(name = "hibernate-uuid", strategy = "uuid")
 @Table(name = "LicensePool_Organization")
-public class OrganizationLPMapping extends LPLCBaseEntity implements
-		Serializable {
+public class OrganizationLPMapping extends LPLCBaseEntity implements Serializable {
 	/**
 	 * serialVersionUID
 	 */
@@ -52,7 +51,7 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false, name = "LICENSEPOOL_ID")
 	private LicensePoolMapping licensepoolMapping;
-	
+
 	/**
 	 * @return the licensepoolMapping
 	 */
@@ -61,7 +60,8 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @param licensepoolMapping the licensepoolMapping to set
+	 * @param licensepoolMapping
+	 *            the licensepoolMapping to set
 	 */
 	public void setLicensepoolMapping(LicensePoolMapping licensepoolMapping) {
 		this.licensepoolMapping = licensepoolMapping;
@@ -120,7 +120,8 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @param organization_id the organization_id to set
+	 * @param organization_id
+	 *            the organization_id to set
 	 */
 	public void setOrganization_id(String organization_id) {
 		this.organization_id = organization_id;
@@ -134,16 +135,16 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * @param organization_level the organization_level to set
+	 * @param organization_level
+	 *            the organization_level to set
 	 */
 	public void setOrganization_level(int organization_level) {
 		this.organization_level = organization_level;
 	}
 
 	/**
-	 * Generates a hashCode for a LicensePoolMapping object, based on all of the
-	 * persistent member variables in order to maintain the hashCode contract
-	 * that equal objects must have the same hash code.
+	 * Generates a hashCode for a LicensePoolMapping object, based on all of the persistent member variables in order to
+	 * maintain the hashCode contract that equal objects must have the same hash code.
 	 * 
 	 * @return the hash code for the LicensePoolMapping object.
 	 */
@@ -156,9 +157,8 @@ public class OrganizationLPMapping extends LPLCBaseEntity implements
 	}
 
 	/**
-	 * Compares two LicensePoolMapping objects for equality. licensepoolMapping
-	 * objects are equal if all of their persistent member variables are equal
-	 * or if they are the same instance of a class.
+	 * Compares two LicensePoolMapping objects for equality. licensepoolMapping objects are equal if all of their
+	 * persistent member variables are equal or if they are the same instance of a class.
 	 * 
 	 * @param obj
 	 *            the object to compare.

@@ -4,21 +4,20 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Response for the ProductLifeCycleClient api which wraps a map
- * of Product Entity Id values to ProductData instances which
- * are simple POJOs containing all necessary product data for the
- * GetLicensedProduct service response.
+ * Response for the ProductLifeCycleClient api which wraps a map of Product Entity Id values to ProductData instances
+ * which are simple POJOs containing all necessary product data for the GetLicensedProduct service response.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class ProductEntityIdsResponse {
-	
-	private Map<Long,ProductData> productDataByEntityIds = new Hashtable<Long,ProductData>();
+
+	private Map<Long, ProductData> productDataByEntityIds = new Hashtable<Long, ProductData>();
 
 	/**
 	 * Get the map of Product Entity Id values to Product data collections.
-	 * @return
+	 * 
+	 * @return {@link Map} of product entity ids to {@link ProductData}
 	 */
 	public Map<Long, ProductData> getProductDataByEntityIds() {
 		return productDataByEntityIds;
@@ -26,7 +25,8 @@ public class ProductEntityIdsResponse {
 
 	/**
 	 * Set the map of Product Entity Id values to Product data collections.
-	 * @param productDataByEntityIds
+	 * 
+	 * @param productDataByEntityIds {@link Map} of product entity ids to {@link ProductData}
 	 */
 	public void setProductDataByEntityIds(Map<Long, ProductData> productDataByEntityIds) {
 		this.productDataByEntityIds = productDataByEntityIds;

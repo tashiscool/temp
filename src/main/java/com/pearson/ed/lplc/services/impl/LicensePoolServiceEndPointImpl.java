@@ -63,12 +63,12 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	}
 
 	/**
-	 * Creates all the components for the given user. Optional components like
-	 * email and phone will only be created if they are present.
+	 * Creates all the components for the given user. Optional components like email and phone will only be created if
+	 * they are present.
 	 * 
 	 * @param licensepool
 	 *            the licensepool to be created.
-	 * @throws LicensePoolJMSException            
+	 * @throws LicensePoolJMSException
 	 */
 	public String createLicensePool(CreateLicensePool licensepool) {
 		LicensePoolDTO licensePoolDTO = licensePoolConverter.covertCreateRequestToLicensePoolDTO(licensepool);

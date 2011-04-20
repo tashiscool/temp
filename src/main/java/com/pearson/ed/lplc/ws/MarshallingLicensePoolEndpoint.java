@@ -310,8 +310,8 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	}
 
 	/**
-	 * This endpoint method uses marshalling to handle message with a
-	 * <code>&lt;DenyNewSubscriptionsRequest&gt;</code> payload.
+	 * This endpoint method uses marshalling to handle message with a <code>&lt;DenyNewSubscriptionsRequest&gt;</code>
+	 * payload.
 	 * 
 	 * @param denyNewSubscriptionsRequest
 	 *            DenyNewSubscriptionsRequest element.

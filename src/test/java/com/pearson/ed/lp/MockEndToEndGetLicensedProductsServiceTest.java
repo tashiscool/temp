@@ -42,21 +42,17 @@ import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
 import com.pearson.rws.licensedproduct.doc.v2.QualifyingLicensePool;
 
 /**
- * Simple test of Spring Integration configuration, verifying that the end-to-end
- * messaging is functioning as expected complete with message routing.
- * Uses mock web service client objects.
+ * Simple test of Spring Integration configuration, verifying that the end-to-end messaging is functioning as expected
+ * complete with message routing. Uses mock web service client objects.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-		"classpath:applicationContext-lp-integration.xml",
-		"classpath:applicationContext-test-lp-client-mocks.xml"
-})
+@ContextConfiguration(locations = { "classpath:applicationContext-lp-integration.xml",
+		"classpath:applicationContext-test-lp-client-mocks.xml" })
 public class MockEndToEndGetLicensedProductsServiceTest {
-	
-	
+
 	@Autowired(required = true)
 	private MarshallingLicensedProductServiceEndpoint serviceEndpoint;
 
@@ -75,7 +71,7 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BasicConfigurator.configure();
-		
+
 		mockLicensePoolClient.setMockClient(createMock(LicensePoolLifeCycleClient.class));
 		mockProductClient.setMockClient(createMock(ProductLifeCycleClient.class));
 		mockOrderClient.setMockClient(createMock(OrderLifeCycleClient.class));
@@ -84,58 +80,57 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 
 	/**
 	 * Setup the mock client service object behaviors based on the value for the qualifying license pool.
-	 * @param qualifyingLicensePool {@link QualifyingLicensePool} value
+	 * 
+	 * @param qualifyingLicensePool
+	 *            {@link QualifyingLicensePool} value
 	 */
 	private void setMockClientsBehaviors(QualifyingLicensePool qualifyingLicensePool) {
 		LicensePoolLifeCycleClient innerMockLicensePoolClient = mockLicensePoolClient.getMockClient();
 		ProductLifeCycleClient innerMockProductClient = mockProductClient.getMockClient();
 		OrderLifeCycleClient innerMockOrderClient = mockOrderClient.getMockClient();
 		OrganizationLifeCycleClient innerMockOrganizationClient = mockOrganizationClient.getMockClient();
-		
-		reset(mockLicensePoolClient.getMockClient(), 
-				mockProductClient.getMockClient(), 
-				mockOrderClient.getMockClient(), 
-				mockOrganizationClient.getMockClient());
-		
+
+		reset(mockLicensePoolClient.getMockClient(), mockProductClient.getMockClient(),
+				mockOrderClient.getMockClient(), mockOrganizationClient.getMockClient());
+
 		LicensePoolResponse dummyLicensePoolResponse = new LicensePoolResponse();
 		dummyLicensePoolResponse.setLicensePools(new ArrayList<OrganizationLPMapping>());
 		ProductEntityIdsResponse dummyProducEntityIdsResponse = new ProductEntityIdsResponse();
 		OrderLineItemsResponse dummyOrderLineItemsResponse = new OrderLineItemsResponse();
 		OrganizationDisplayNamesResponse dummyOrgDisplayNamesResponse = new OrganizationDisplayNamesResponse();
-		
-		expect(innerMockLicensePoolClient.getLicensePoolsByOrganizationId(
-				isA(LicensePoolByOrganizationIdRequest.class)))
-				.andReturn(dummyLicensePoolResponse);
-		expect(innerMockProductClient.getProductDataByProductEntityIds(isA(ProductEntityIdsRequest.class)))
-			.andReturn(dummyProducEntityIdsResponse);
-		expect(innerMockOrderClient.getOrderedISBNsByOrderLineItemIds(isA(OrderLineItemsRequest.class)))
-			.andReturn(dummyOrderLineItemsResponse);
-		
-		switch(qualifyingLicensePool) {
+
+		expect(
+				innerMockLicensePoolClient
+						.getLicensePoolsByOrganizationId(isA(LicensePoolByOrganizationIdRequest.class))).andReturn(
+				dummyLicensePoolResponse);
+		expect(innerMockProductClient.getProductDataByProductEntityIds(isA(ProductEntityIdsRequest.class))).andReturn(
+				dummyProducEntityIdsResponse);
+		expect(innerMockOrderClient.getOrderedISBNsByOrderLineItemIds(isA(OrderLineItemsRequest.class))).andReturn(
+				dummyOrderLineItemsResponse);
+
+		switch (qualifyingLicensePool) {
 		case ALL_IN_HIERARCHY:
-			expect(innerMockOrganizationClient.getParentTreeDisplayNamesByOrganizationId(isA(String.class)))
-				.andReturn(dummyOrgDisplayNamesResponse);
-			expect(innerMockOrganizationClient.getChildTreeDisplayNamesByOrganizationId(isA(String.class)))
-				.andReturn(dummyOrgDisplayNamesResponse);
-			expect(innerMockOrganizationClient.getOrganizationDisplayName(isA(String.class)))
-				.andReturn(dummyOrgDisplayNamesResponse);
+			expect(innerMockOrganizationClient.getParentTreeDisplayNamesByOrganizationId(isA(String.class))).andReturn(
+					dummyOrgDisplayNamesResponse);
+			expect(innerMockOrganizationClient.getChildTreeDisplayNamesByOrganizationId(isA(String.class))).andReturn(
+					dummyOrgDisplayNamesResponse);
+			expect(innerMockOrganizationClient.getOrganizationDisplayName(isA(String.class))).andReturn(
+					dummyOrgDisplayNamesResponse);
 			break;
 		case ROOT_AND_PARENTS:
-			expect(innerMockOrganizationClient.getParentTreeDisplayNamesByOrganizationId(isA(String.class)))
-			.andReturn(dummyOrgDisplayNamesResponse);
-			expect(innerMockOrganizationClient.getOrganizationDisplayName(isA(String.class)))
-				.andReturn(dummyOrgDisplayNamesResponse);
+			expect(innerMockOrganizationClient.getParentTreeDisplayNamesByOrganizationId(isA(String.class))).andReturn(
+					dummyOrgDisplayNamesResponse);
+			expect(innerMockOrganizationClient.getOrganizationDisplayName(isA(String.class))).andReturn(
+					dummyOrgDisplayNamesResponse);
 			break;
 		case ROOT_ONLY:
-			expect(innerMockOrganizationClient.getOrganizationDisplayName(isA(String.class)))
-				.andReturn(dummyOrgDisplayNamesResponse);
+			expect(innerMockOrganizationClient.getOrganizationDisplayName(isA(String.class))).andReturn(
+					dummyOrgDisplayNamesResponse);
 			break;
 		}
-		
-		replay(mockLicensePoolClient.getMockClient(), 
-				mockProductClient.getMockClient(), 
-				mockOrderClient.getMockClient(), 
-				mockOrganizationClient.getMockClient());
+
+		replay(mockLicensePoolClient.getMockClient(), mockProductClient.getMockClient(),
+				mockOrderClient.getMockClient(), mockOrganizationClient.getMockClient());
 	}
 
 	/**
@@ -145,12 +140,12 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	public void testEndToEndMessagingWithQualifyingLicensePoolRootOnly() {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ROOT_ONLY;
 		setMockClientsBehaviors(qualifyingLicensePool);
-		
+
 		GetLicensedProductRequestElement request = new GetLicensedProductRequestElement();
 		request.setGetLicensedProduct(new GetLicensedProduct());
 		request.getGetLicensedProduct().setOrganizationId("dummyId");
 		request.getGetLicensedProduct().setQualifyingLicensePool(qualifyingLicensePool);
-		
+
 		try {
 			GetLicensedProductResponseElement response = serviceEndpoint.getLicensedProducts(request);
 			assertNotNull(response);
@@ -158,10 +153,8 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 			fail(e.getMessage());
 		}
 
-		verify(mockLicensePoolClient.getMockClient(), 
-				mockProductClient.getMockClient(), 
-				mockOrderClient.getMockClient(), 
-				mockOrganizationClient.getMockClient());
+		verify(mockLicensePoolClient.getMockClient(), mockProductClient.getMockClient(),
+				mockOrderClient.getMockClient(), mockOrganizationClient.getMockClient());
 	}
 
 	/**
@@ -171,12 +164,12 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	public void testEndToEndMessagingWithQualifyingLicensePoolRootAndParents() {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ROOT_AND_PARENTS;
 		setMockClientsBehaviors(qualifyingLicensePool);
-		
+
 		GetLicensedProductRequestElement request = new GetLicensedProductRequestElement();
 		request.setGetLicensedProduct(new GetLicensedProduct());
 		request.getGetLicensedProduct().setOrganizationId("dummyId");
 		request.getGetLicensedProduct().setQualifyingLicensePool(qualifyingLicensePool);
-		
+
 		try {
 			GetLicensedProductResponseElement response = serviceEndpoint.getLicensedProducts(request);
 			assertNotNull(response);
@@ -184,10 +177,8 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 			fail(e.getMessage());
 		}
 
-		verify(mockLicensePoolClient.getMockClient(), 
-				mockProductClient.getMockClient(), 
-				mockOrderClient.getMockClient(), 
-				mockOrganizationClient.getMockClient());
+		verify(mockLicensePoolClient.getMockClient(), mockProductClient.getMockClient(),
+				mockOrderClient.getMockClient(), mockOrganizationClient.getMockClient());
 	}
 
 	/**
@@ -197,12 +188,12 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	public void testEndToEndMessagingWithQualifyingLicensePoolAllInHierarchy() {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ALL_IN_HIERARCHY;
 		setMockClientsBehaviors(qualifyingLicensePool);
-		
+
 		GetLicensedProductRequestElement request = new GetLicensedProductRequestElement();
 		request.setGetLicensedProduct(new GetLicensedProduct());
 		request.getGetLicensedProduct().setOrganizationId("dummyId");
 		request.getGetLicensedProduct().setQualifyingLicensePool(qualifyingLicensePool);
-		
+
 		try {
 			GetLicensedProductResponseElement response = serviceEndpoint.getLicensedProducts(request);
 			assertNotNull(response);
@@ -210,9 +201,7 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 			fail(e.getMessage());
 		}
 
-		verify(mockLicensePoolClient.getMockClient(), 
-				mockProductClient.getMockClient(), 
-				mockOrderClient.getMockClient(), 
-				mockOrganizationClient.getMockClient());
+		verify(mockLicensePoolClient.getMockClient(), mockProductClient.getMockClient(),
+				mockOrderClient.getMockClient(), mockOrganizationClient.getMockClient());
 	}
 }

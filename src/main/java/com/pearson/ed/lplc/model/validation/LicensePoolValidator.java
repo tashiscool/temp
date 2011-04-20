@@ -1,4 +1,3 @@
-
 package com.pearson.ed.lplc.model.validation;
 
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 
-
 public class LicensePoolValidator implements Validator {
 
 	private final Class<?>[] validatedTypes = new Class<?>[] { LicensePoolDTO.class };
@@ -17,9 +15,8 @@ public class LicensePoolValidator implements Validator {
 	private LicensePoolDTO licensepool;
 
 	/**
-	 * Returns an array of valid types that LicensePoolValidator can validate.
-	 * LicensePoolValidator is current designed to validate LicensePool and any of its
-	 * subclasses.
+	 * Returns an array of valid types that LicensePoolValidator can validate. LicensePoolValidator is current designed
+	 * to validate LicensePool and any of its subclasses.
 	 * 
 	 * @return an array of classes the validator supports.
 	 */
@@ -37,9 +34,8 @@ public class LicensePoolValidator implements Validator {
 	}
 
 	/**
-	 * Performs validation on the domain object. The method checks to see that
-	 * the object is an instance of a class supported by the validator (i.e.
-	 * User, and then checks that the ID and password are not empty.
+	 * Performs validation on the domain object. The method checks to see that the object is an instance of a class
+	 * supported by the validator (i.e. User, and then checks that the ID and password are not empty.
 	 * 
 	 * @return true if the object passes validation.
 	 */
@@ -53,7 +49,7 @@ public class LicensePoolValidator implements Validator {
 		String mode = licensepool.getMode();
 
 		if (LPLCConstants.CREATE_MODE.equals(mode)) {
-			if (licensepool.getStartDate()==null) {
+			if (licensepool.getStartDate() == null) {
 				result = false;
 				validationErrors.add("LicensePool Start Date must not be empty");
 			}

@@ -4,19 +4,19 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Response for OrderLifeCycleClient api which wraps
- * a map of Order Line Item Id strings to Ordered ISBN strings.
+ * Response for OrderLifeCycleClient api which wraps a map of Order Line Item Id strings to Ordered ISBN strings.
  * 
  * @author ULLOYNI
- *
+ * 
  */
 public class OrderLineItemsResponse {
 
-	private Map<String,String> orderedISBNsByOrderLineItemIds = new Hashtable<String,String>();
+	private Map<String, String> orderedISBNsByOrderLineItemIds = new Hashtable<String, String>();
 
 	/**
 	 * Get map of Order Line Item Id strings to Ordered ISBN strings.
-	 * @return
+	 * 
+	 * @return map of order line item id strings to ordered isbn strings
 	 */
 	public Map<String, String> getOrderedISBNsByOrderLineItemIds() {
 		return orderedISBNsByOrderLineItemIds;
@@ -24,7 +24,8 @@ public class OrderLineItemsResponse {
 
 	/**
 	 * Set map of Order Line Item Id strings to Ordered ISBN strings.
-	 * @param orderedISBNsByOrderLineItemIds
+	 * 
+	 * @param orderedISBNsByOrderLineItemIds map of order line item id strings to ordered isbn strings
 	 */
 	public void setOrderedISBNsByOrderLineItemIds(Map<String, String> orderedISBNsByOrderLineItemIds) {
 		this.orderedISBNsByOrderLineItemIds = orderedISBNsByOrderLineItemIds;
