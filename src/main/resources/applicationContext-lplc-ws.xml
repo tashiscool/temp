@@ -126,7 +126,7 @@
 	</bean>
 	
 	<bean
-		class="com.pearson.ed.lp.LicensedProductV2SoapFaultExceptionResolver">
+		class="com.pearson.ed.lp.exception.LicensedProductV2SoapFaultExceptionResolver">
 		<description>
 			This exception resolver maps exceptions with the @SoapFault
 			annotation to SOAP Faults. The business logic exceptions

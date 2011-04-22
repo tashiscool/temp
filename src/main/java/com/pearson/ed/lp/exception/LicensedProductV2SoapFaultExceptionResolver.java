@@ -1,4 +1,4 @@
-package com.pearson.ed.lp;
+package com.pearson.ed.lp.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

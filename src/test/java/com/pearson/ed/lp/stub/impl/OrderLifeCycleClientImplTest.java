@@ -3,7 +3,7 @@
  */
 package com.pearson.ed.lp.stub.impl;
 
-import static com.pearson.ed.lp.TestHelperUtils.marshal;
+import static com.pearson.ed.ltg.rumba.common.test.XmlUtils.marshalToSource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -121,7 +121,7 @@ public class OrderLifeCycleClientImplTest {
 		GetOrderLineItemByIdRequest request = new GetOrderLineItemByIdRequest();
 		request.setOrderLineItemId(requestedOrderLineItemId);
 
-		return marshal(marshaller, request);
+		return marshalToSource(marshaller, request);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class OrderLifeCycleClientImplTest {
 			orderLineItem.setOrderedISBN(dummyIsbn);
 		}
 
-		return marshal(marshaller, response);
+		return marshalToSource(marshaller, response);
 	}
 
 	/**
@@ -186,6 +186,6 @@ public class OrderLifeCycleClientImplTest {
 			orderLineItem.setOrderLineItemId("NOT-" + requestedOrderLineItemId);
 		}
 
-		return marshal(marshaller, response);
+		return marshalToSource(marshaller, response);
 	}
 }
