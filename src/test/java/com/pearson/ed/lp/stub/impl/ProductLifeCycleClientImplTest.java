@@ -4,14 +4,21 @@
 package com.pearson.ed.lp.stub.impl;
 
 import static com.pearson.ed.ltg.rumba.common.test.XmlUtils.marshalToSource;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.ws.test.client.RequestMatchers.payload;
+import static org.springframework.ws.test.client.ResponseCreators.withClientOrSenderFault;
+import static org.springframework.ws.test.client.ResponseCreators.withException;
 import static org.springframework.ws.test.client.ResponseCreators.withPayload;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -20,13 +27,12 @@ import javax.xml.transform.Source;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.test.client.MockWebServiceServer;
 
+import com.pearson.ed.lp.exception.ExternalServiceCallException;
+import com.pearson.ed.lp.exception.ProductNotFoundException;
+import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
@@ -44,18 +50,10 @@ import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
  * @author ULLOYNI
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-lp-clients.xml",
-		"classpath:applicationContext-test-lplc-ws.xml", "classpath:applicationContext-lplc.xml" })
-public class ProductLifeCycleClientImplTest {
+public class ProductLifeCycleClientImplTest extends BaseLicensedProductClientStubTest {
 
 	@Autowired(required = true)
 	private ProductLifeCycleClientImpl testClient;
-
-	@Autowired(required = true)
-	private Jaxb2Marshaller marshaller;
-
-	private MockWebServiceServer mockServer;
 
 	/**
 	 * @throws java.lang.Exception
@@ -101,6 +99,118 @@ public class ProductLifeCycleClientImplTest {
 		mockServer.verify();
 
 		assertEquivalent(dummyProductData, response);
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl#getProductDataByProductEntityIds(com.pearson.ed.lp.message.ProductEntityIdsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetDisplayNamesByProductEntityIdsNonSpecificClientFault() {
+		Long[] dummyEntityIds = new Long[] { 1l, 2l, 3l, 4l, 5l };
+
+		mockServer.expect(payload(generateDummyGetProductRequest(dummyEntityIds))).andRespond(
+				withClientOrSenderFault("Bad service! No cookie!", Locale.ENGLISH));
+
+		ProductEntityIdsRequest request = new ProductEntityIdsRequest();
+		request.getProductEntityIds().addAll(Arrays.asList(dummyEntityIds));
+		
+		try {
+			testClient.getProductDataByProductEntityIds(request);
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl#getProductDataByProductEntityIds(com.pearson.ed.lp.message.ProductEntityIdsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetDisplayNamesByProductEntityIdsNonSpecificIOException() {
+		Long[] dummyEntityIds = new Long[] { 1l, 2l, 3l, 4l, 5l };
+
+		mockServer.expect(payload(generateDummyGetProductRequest(dummyEntityIds))).andRespond(
+				withException(new IOException("Bad service! No cookie!")));
+
+		ProductEntityIdsRequest request = new ProductEntityIdsRequest();
+		request.getProductEntityIds().addAll(Arrays.asList(dummyEntityIds));
+		
+		try {
+			testClient.getProductDataByProductEntityIds(request);
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl#getProductDataByProductEntityIds(com.pearson.ed.lp.message.ProductEntityIdsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetDisplayNamesByProductEntityIdsBadProductEntityIds() {
+		Long[] dummyEntityIds = new Long[] { 1l, 2l, 3l, 4l, 5l };
+
+		mockServer.expect(payload(generateDummyGetProductRequest(dummyEntityIds))).andRespond(
+				withClientOrSenderFault("Required object not found", Locale.ENGLISH));
+
+		ProductEntityIdsRequest request = new ProductEntityIdsRequest();
+		request.getProductEntityIds().addAll(Arrays.asList(dummyEntityIds));
+		
+		try {
+			testClient.getProductDataByProductEntityIds(request);
+		} catch (Exception e) {
+			assertThat(e, is(ProductNotFoundException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl#getProductDataByProductEntityIds(com.pearson.ed.lp.message.ProductEntityIdsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetDisplayNamesByProductEntityIdsNoDisplayInfo() {
+		Long[] dummyEntityIds = new Long[] { 1l, 2l, 3l, 4l, 5l };
+		Map<Long, ProductData> dummyProductData = new Hashtable<Long, ProductData>(5);
+		// required data only (display name)
+		dummyProductData.put(dummyEntityIds[0], new ProductData("id-1", "dummyDisplayName-1", null, null, null, null));
+		// short description and long description
+		dummyProductData.put(dummyEntityIds[1], new ProductData("id-2", "dummyDisplayName-2", "shortDesc-2",
+				"longDesc-2", null, null));
+		// CG program
+		dummyProductData.put(dummyEntityIds[2], new ProductData("id-3", "dummyDisplayName-3", null, null,
+				"cgProgram-3", null));
+		// grade level
+		dummyProductData.put(dummyEntityIds[3], new ProductData("id-4", "dummyDisplayName-4", null, null, null,
+				new String[] { "gradeLevel-4" }));
+		// missing all but entity id for exception throw check
+		dummyProductData.put(dummyEntityIds[4], new ProductData("id-5", null, null,
+				null, null, null));
+
+		mockServer.expect(payload(generateDummyGetProductRequest(dummyEntityIds))).andRespond(
+				withPayload(generateDummyGetProductResponse(dummyProductData)));
+
+		ProductEntityIdsRequest request = new ProductEntityIdsRequest();
+		request.getProductEntityIds().addAll(Arrays.asList(dummyEntityIds));
+		
+		try {
+			testClient.getProductDataByProductEntityIds(request);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(RequiredObjectNotFoundException.class));
+		}
+
+		mockServer.verify();
 	}
 
 	/**
@@ -177,6 +287,14 @@ public class ProductLifeCycleClientImplTest {
 
 			product.setProductEntityId(dummyProduct.getKey());
 			product.setProductId(dummyData.getProductId());
+			
+			if((dummyData.getShortDescription() == null)
+					&& (dummyData.getLongDescription() == null)
+					&& (dummyData.getDisplayName() == null)
+					&& (dummyData.getCgProgram() == null)
+					&& ((dummyData.getGradeLevels() == null) || dummyData.getGradeLevels().isEmpty())) {
+				continue;
+			}
 
 			DisplayInfoType displayInfo = new DisplayInfoType();
 			displayInfo.setName(dummyData.getDisplayName());

@@ -6,14 +6,15 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.commons.service.exception.AbstractRumbaException;
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
-import com.pearson.ed.lp.exception.LicensedProductExceptionCode;
+import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
-import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
+import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
 import com.pearson.ed.lp.stub.api.OrganizationLifeCycleClient;
 import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
@@ -40,6 +41,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 
 	private WebServiceTemplate serviceClient;
 	
+	@Autowired(required = true)
 	private LicensedProductExceptionFactory exceptionFactory;
 
 	/**
@@ -68,9 +70,9 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		} catch (SoapFaultClientException exception) {
 			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
 			if(faultMessage.contains("No Organization with Organization Id")) {
-				throw new RequiredObjectNotFoundException(
+				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionCode.OLC0006.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
 						new Object[]{organizationId}, exception);
 			} else {
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
@@ -116,9 +118,9 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		} catch (SoapFaultClientException exception) {
 			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
 			if(faultMessage.contains("Invalid Organization Id")) {
-				throw new RequiredObjectNotFoundException(
+				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionCode.OLC0006.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
 						new Object[]{organizationId}, exception);
 			} else if(faultMessage.contains("No child organizations found")) {
 				// consume the exception, this is an acceptable situation
@@ -162,9 +164,9 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		} catch (SoapFaultClientException exception) {
 			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
 			if(faultMessage.contains("Invalid Organization Id")) {
-				throw new RequiredObjectNotFoundException(
+				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionCode.OLC0006.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
 						new Object[]{organizationId}, exception);
 			} else if(faultMessage.contains("No parent organizations found")) {
 				// consume the exception, this is an acceptable situation
@@ -209,6 +211,14 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 				parseOrganizationTree(childNode, resultPayload);
 			}
 		}
+	}
+
+	public LicensedProductExceptionFactory getExceptionFactory() {
+		return exceptionFactory;
+	}
+
+	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
 	}
 
 }

@@ -4,13 +4,20 @@
 package com.pearson.ed.lp.stub.impl;
 
 import static com.pearson.ed.ltg.rumba.common.test.XmlUtils.marshalToSource;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.ws.test.client.RequestMatchers.payload;
+import static org.springframework.ws.test.client.ResponseCreators.withClientOrSenderFault;
+import static org.springframework.ws.test.client.ResponseCreators.withException;
 import static org.springframework.ws.test.client.ResponseCreators.withPayload;
 
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,13 +26,11 @@ import javax.xml.transform.Source;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.test.client.MockWebServiceServer;
 
+import com.pearson.ed.lp.exception.ExternalServiceCallException;
+import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
 import com.pearson.rws.organization.doc._2009._07._01.AttributeKeyType;
 import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
@@ -40,15 +45,12 @@ import com.pearson.rws.organization.doc._2009._07._01.ReadAttributeType;
 import com.pearson.rws.organization.doc._2009._07._01.ReadAttributesListType;
 
 /**
- * Unit test of {@link } using Spring WS mock objects.
+ * Unit test of {@link OrganizationLifeCycleClientImpl} using Spring WS mock objects.
  * 
  * @author ULLOYNI
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-lp-clients.xml",
-		"classpath:applicationContext-test-lplc-ws.xml", "classpath:applicationContext-lplc.xml" })
-public class OrganizationLifeCycleClientImplTest {
+public class OrganizationLifeCycleClientImplTest extends BaseLicensedProductClientStubTest {
 
 	private static enum OrgRequestType {
 		ROOT_ONLY, PARENT_TREE, CHILD_TREE;
@@ -56,11 +58,6 @@ public class OrganizationLifeCycleClientImplTest {
 
 	@Autowired(required = true)
 	private OrganizationLifeCycleClientImpl testClient;
-
-	@Autowired(required = true)
-	private Jaxb2Marshaller marshaller;
-
-	private MockWebServiceServer mockServer;
 
 	/**
 	 * @throws java.lang.Exception
@@ -144,6 +141,237 @@ public class OrganizationLifeCycleClientImplTest {
 		mockServer.verify();
 
 		assertEquivalent(dummyOrgData, response);
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetChildTreeDisplayNamesByOrganizationIdInvalidOrganization() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.CHILD_TREE))).andRespond(
+				withClientOrSenderFault("Invalid Organization Id", Locale.ENGLISH));
+
+		try {
+			testClient.getChildTreeDisplayNamesByOrganizationId(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(InvalidOrganizationException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetChildTreeDisplayNamesByOrganizationIdNoChildOrganizations() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.CHILD_TREE))).andRespond(
+				withClientOrSenderFault("No child organizations found", Locale.ENGLISH));
+
+		try {
+			OrganizationDisplayNamesResponse response = testClient.getChildTreeDisplayNamesByOrganizationId(dummyOrgId);
+			assertEquals(0, response.getOrganizationDisplayNamesByIds().size());
+		} catch (Exception e) {
+			fail("I should not get here: " + e.getMessage());
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetChildTreeDisplayNamesByOrganizationIdNonSpecificClientSoapFault() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.CHILD_TREE))).andRespond(
+				withClientOrSenderFault("Stupid mock! No cookie!", Locale.ENGLISH));
+
+		try {
+			testClient.getChildTreeDisplayNamesByOrganizationId(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getChildTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetChildTreeDisplayNamesByOrganizationIdNonSpecificIOException() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.CHILD_TREE))).andRespond(
+				withException(new IOException("Stupid mock! No cookie!")));
+
+		try {
+			testClient.getChildTreeDisplayNamesByOrganizationId(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetParentTreeDisplayNamesByOrganizationIdInvalidOrganization() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.PARENT_TREE))).andRespond(
+				withClientOrSenderFault("Invalid Organization Id", Locale.ENGLISH));
+
+		try {
+			testClient.getParentTreeDisplayNamesByOrganizationId(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(InvalidOrganizationException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetParentTreeDisplayNamesByOrganizationIdNoParentOrganizations() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.PARENT_TREE))).andRespond(
+				withClientOrSenderFault("No parent organizations found", Locale.ENGLISH));
+
+		try {
+			OrganizationDisplayNamesResponse response = testClient.getParentTreeDisplayNamesByOrganizationId(dummyOrgId);
+			assertEquals(0, response.getOrganizationDisplayNamesByIds().size());
+		} catch (Exception e) {
+			fail("I should not get here: " + e.getMessage());
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetParentTreeDisplayNamesByOrganizationIdNonSpecificClientSoapFault() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.PARENT_TREE))).andRespond(
+				withClientOrSenderFault("Stupid mock! No cookie!", Locale.ENGLISH));
+
+		try {
+			testClient.getParentTreeDisplayNamesByOrganizationId(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getParentTreeDisplayNamesByOrganizationId(String)}.
+	 */
+	@Test
+	public void testGetParentTreeDisplayNamesByOrganizationIdNonSpecificIOException() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.PARENT_TREE))).andRespond(
+				withException(new IOException("Stupid mock! No cookie!")));
+
+		try {
+			testClient.getParentTreeDisplayNamesByOrganizationId(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getOrganizationDisplayName(String)}.
+	 */
+	@Test
+	public void testGetOrganizationDisplayNameInvalidOrganization() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.ROOT_ONLY))).andRespond(
+				withClientOrSenderFault("No Organization with Organization Id", Locale.ENGLISH));
+
+		try {
+			testClient.getOrganizationDisplayName(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(InvalidOrganizationException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getOrganizationDisplayName(String)}.
+	 */
+	@Test
+	public void testGetOrganizationDisplayNameNonSpecificClientSoapFault() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.ROOT_ONLY))).andRespond(
+				withClientOrSenderFault("Stupid mock! No cookie!", Locale.ENGLISH));
+
+		try {
+			testClient.getOrganizationDisplayName(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl#getOrganizationDisplayName(String)}.
+	 */
+	@Test
+	public void testGetOrganizationDisplayNameNonSpecificIOException() {
+		String dummyOrgId = "dummy-org-id";
+
+		mockServer.expect(payload(generateDummyGetOrgRequest(dummyOrgId, OrgRequestType.ROOT_ONLY))).andRespond(
+				withException(new IOException("Stupid mock! No cookie!")));
+
+		try {
+			testClient.getOrganizationDisplayName(dummyOrgId);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
 	}
 
 	/**

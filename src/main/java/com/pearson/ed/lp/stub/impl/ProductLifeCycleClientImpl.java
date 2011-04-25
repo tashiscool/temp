@@ -1,20 +1,30 @@
 package com.pearson.ed.lp.stub.impl;
 
+import static com.pearson.ed.lp.exception.LicensedProductExceptionFactory.getFaultMessage;
+
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.commons.service.exception.AbstractRumbaException;
+import com.pearson.ed.lp.exception.ExternalServiceCallException;
+import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
+import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
+import com.pearson.ed.lp.exception.ProductNotFoundException;
+import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
 import com.pearson.ed.lp.stub.api.ProductLifeCycleClient;
 import com.pearson.rws.product.doc.v2.AttributeType;
 import com.pearson.rws.product.doc.v2.DisplayInfoType;
+import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponse;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
-import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
 
 /**
  * Web Service Client stub implementation of the {@link ProductLifeCycleClient} interface. Wraps an instance of the
@@ -24,13 +34,16 @@ import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
  * 
  */
 public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLifeCycleClientImpl.class);
 
 	public static final String CG_PROGRAM_ATTR_KEY = "CG PROGRAM";
 	public static final String GRADE_LEVEL_ATTR_KEY = "LEVEL";
 
 	private WebServiceTemplate serviceClient;
 
-	// private LicensedProductExceptionFactory exceptionFactory;
+	@Autowired(required = true)
+	private LicensedProductExceptionFactory exceptionFactory;
 
 	/**
 	 * Populate ProductData pojos associated with the given product entity ids by calling the ProductLifeCycle service.
@@ -56,10 +69,17 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 			productEntityIdResponse = (GetProductsByProductEntityIdsResponse) serviceClient
 					.marshalSendAndReceive(productEntityIdRequest);
 		} catch (SoapFaultClientException exception) {
-			// TODO
+			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
+			if(faultMessage.contains("Required object not found")) {
+				throw new ProductNotFoundException(
+						exceptionFactory.findExceptionMessage(
+								LicensedProductExceptionMessageCode.LP_EXC_0004.toString()), 
+								request.getProductEntityIds().toArray(), exception);
+			} else {
+				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
+			}
 		} catch (Exception exception) {
-			// TODO
-			// throw new ExternalServiceCallException(exception.getMessage());
+			throw new ExternalServiceCallException(exception.getMessage(), null, exception);
 		}
 
 		if (productEntityIdResponse != null) {
@@ -73,7 +93,12 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 				// quirk of the contract allows each possibility for empty display information
 				if ((responseType.getDisplayInformation() == null)
 						|| (responseType.getDisplayInformation().getDisplayInfo().isEmpty())) {
-					// TODO throw exception, we need this data! Display Name is required!!!
+					LOGGER.error(String.format("No display information for product with entity id %d!", 
+							responseType.getProductEntityId()));
+					throw new RequiredObjectNotFoundException(
+							exceptionFactory.findExceptionMessage(
+									LicensedProductExceptionMessageCode.LP_EXC_0006.toString()), 
+									new Object[]{responseType.getProductEntityId()});
 				}
 
 				DisplayInfoType firstDisplayInfo = responseType.getDisplayInformation().getDisplayInfo().iterator()
@@ -111,5 +136,13 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 
 	public void setServiceClient(WebServiceTemplate serviceClient) {
 		this.serviceClient = serviceClient;
+	}
+
+	public LicensedProductExceptionFactory getExceptionFactory() {
+		return exceptionFactory;
+	}
+
+	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
 	}
 }

@@ -15,11 +15,7 @@ import javax.xml.transform.Source;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.test.client.MockWebServiceServer;
 
 import com.pearson.ed.lp.message.OrderLineItemsRequest;
@@ -36,18 +32,10 @@ import com.pearson.rws.order.doc._2009._02._09.ReadOrderType;
  * @author ULLOYNI
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-lp-clients.xml",
-		"classpath:applicationContext-test-lplc-ws.xml", "classpath:applicationContext-lplc.xml" })
-public class OrderLifeCycleClientImplTest {
+public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubTest {
 
 	@Autowired(required = true)
 	private OrderLifeCycleClientImpl testClient;
-
-	@Autowired(required = true)
-	private Jaxb2Marshaller marshaller;
-
-	private MockWebServiceServer mockServer;
 
 	/**
 	 * @throws java.lang.Exception

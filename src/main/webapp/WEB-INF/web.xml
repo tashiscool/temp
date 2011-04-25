@@ -20,7 +20,9 @@
 			classpath:applicationContext-lplc-exception.xml
             classpath:applicationContext-lplc-warning.xml
             classpath:applicationContext-lp-clients.xml
-            classpath:applicationContext-lp-integration.xml         
+            classpath:applicationContext-lp-lplcClient.xml
+            classpath:applicationContext-lp-integration.xml
+            classpath:applicationContext-lp-exception.xml
 		</param-value>
 	</context-param>
 

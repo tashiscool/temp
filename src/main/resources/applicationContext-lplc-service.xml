@@ -21,12 +21,6 @@
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
 	<context:property-placeholder location="classpath:app.properties" />
     <context:annotation-config/>
-    
-    <!-- Wraps licensepoolService, used by GetLicensedProduct service -->
-	<bean id="licensePoolLifeCycleClient" 
-		class="com.pearson.ed.lp.stub.impl.LicensePoolServiceWrapper"
-	/>
-	
 	
 	<bean id="licensepoolService"
 		class="com.pearson.ed.lplc.services.impl.LicensePoolServiceImpl">

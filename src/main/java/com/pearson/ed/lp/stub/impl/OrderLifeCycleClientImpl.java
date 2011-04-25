@@ -2,10 +2,13 @@ package com.pearson.ed.lp.stub.impl;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.commons.service.exception.AbstractRumbaException;
+import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.message.OrderLineItemsRequest;
 import com.pearson.ed.lp.message.OrderLineItemsResponse;
 import com.pearson.ed.lp.stub.api.OrderLifeCycleClient;
@@ -21,10 +24,12 @@ import com.pearson.rws.order.doc._2009._02._09.ReadOrderLineType;
  * 
  */
 public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderLifeCycleClientImpl.class);
 
 	private WebServiceTemplate serviceClient;
-
-	// private LicensedProductExceptionFactory exceptionFactory;
+	
+	private LicensedProductExceptionFactory exceptionFactory;
 
 	/**
 	 * Get all ISBN numbers associated with the given order ids by calling the OrderLifeCycle service.
@@ -79,6 +84,14 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 
 	public void setServiceClient(WebServiceTemplate serviceClient) {
 		this.serviceClient = serviceClient;
+	}
+
+	public LicensedProductExceptionFactory getExceptionFactory() {
+		return exceptionFactory;
+	}
+
+	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
 	}
 
 }

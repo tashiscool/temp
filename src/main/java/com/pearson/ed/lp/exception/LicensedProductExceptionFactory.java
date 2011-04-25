@@ -102,17 +102,17 @@ public class LicensedProductExceptionFactory {
 		String code;
 		String desc;
 
-		// TODO populate with proper code to exception instance mapping
 		if (cause == null) {
 			code = defaultKey;
-//		} else if (cause instanceof SubscriptionsNotFoundException) {
-//			code = "";	
-//		} else if (cause instanceof SubscriptionDataAccessException) {
-//			code = "";		
-//		} else if (cause instanceof AuthorizationDeniedException) {
-//			code = "";
-//		} else if (cause instanceof ProductResourceDataException) {
-//			code = "";
+		} else if(cause instanceof InvalidOrganizationException) {
+			code = LicensedProductExceptionCode.OLC0006.toString();
+		} else if(cause instanceof ProductNotFoundException) {
+			code = LicensedProductExceptionCode.PLC0006.toString();
+		} else if(cause instanceof ExternalServiceCallException) {
+			code = LicensedProductExceptionCode.LP0002.toString();
+		} else if(cause instanceof RequiredObjectNotFoundException) {
+			// TODO proper exception code
+			code = LicensedProductExceptionCode.LP0002.toString();
 		} else {
 			code = defaultKey;
 		}

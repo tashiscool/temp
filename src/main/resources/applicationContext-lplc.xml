@@ -45,6 +45,7 @@
 			<list>
             	<value>classpath:app.properties</value>
 				<value>classpath:exception.properties</value>
+				<value>classpath:exceptionMessages_en_US.properties</value>
 				<value>classpath:warning.properties</value>
 			</list>
 		</property>

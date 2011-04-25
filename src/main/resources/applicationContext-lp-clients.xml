@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
 		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
 
-	<!-- licensePoolLifeCycleClient can be found in applicationContext-lplc-service.xml -->
+	<!-- licensePoolLifeCycleClient can be found in applicationContext-lp-lplcClient.xml -->
 
 	<bean id="productLifeCycleClient" 
 		class="com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl"
