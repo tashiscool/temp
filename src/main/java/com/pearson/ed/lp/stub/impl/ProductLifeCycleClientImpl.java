@@ -93,7 +93,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 				// quirk of the contract allows each possibility for empty display information
 				if ((responseType.getDisplayInformation() == null)
 						|| (responseType.getDisplayInformation().getDisplayInfo().isEmpty())) {
-					LOGGER.error(String.format("No display information for product with entity id %d!", 
+					LOGGER.error(String.format("No display information for product with entity id %d", 
 							responseType.getProductEntityId()));
 					throw new RequiredObjectNotFoundException(
 							exceptionFactory.findExceptionMessage(

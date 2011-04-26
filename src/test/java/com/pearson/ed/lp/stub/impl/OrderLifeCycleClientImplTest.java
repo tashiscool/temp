@@ -4,11 +4,19 @@
 package com.pearson.ed.lp.stub.impl;
 
 import static com.pearson.ed.ltg.rumba.common.test.XmlUtils.marshalToSource;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.ws.test.client.RequestMatchers.payload;
+import static org.springframework.ws.test.client.ResponseCreators.withClientOrSenderFault;
+import static org.springframework.ws.test.client.ResponseCreators.withException;
 import static org.springframework.ws.test.client.ResponseCreators.withPayload;
+
+import java.io.IOException;
+import java.util.Locale;
 
 import javax.xml.transform.Source;
 
@@ -18,6 +26,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.test.client.MockWebServiceServer;
 
+import com.pearson.ed.lp.exception.ExternalServiceCallException;
+import com.pearson.ed.lp.exception.OrderLineNotFoundException;
+import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.OrderLineItemsRequest;
 import com.pearson.ed.lp.message.OrderLineItemsResponse;
 import com.pearson.rws.order.doc._2009._02._09.GetOrderLineItemByIdRequest;
@@ -95,6 +106,108 @@ public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubT
 		assertEquals(1, response.getOrderedISBNsByOrderLineItemIds().size());
 		assertTrue(response.getOrderedISBNsByOrderLineItemIds().containsKey(dummyOrderId));
 		assertEquals(dummyIsbn, response.getOrderedISBNsByOrderLineItemIds().get(dummyOrderId));
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetOrderedISBNsByOrderLineItemIdsNonSpecificClientFault() {
+		String dummyOrderId = "dummy-order-id";
+
+		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
+				withClientOrSenderFault("Bad service! No cookie!", Locale.ENGLISH));
+
+		OrderLineItemsRequest request = new OrderLineItemsRequest();
+		request.getOrderLineItemIds().add(dummyOrderId);
+		
+		try {
+			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetOrderedISBNsByOrderLineItemIdsNonSpecificIOException() {
+		String dummyOrderId = "dummy-order-id";
+
+		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
+				withException(new IOException("Bad service! No cookie!")));
+
+		OrderLineItemsRequest request = new OrderLineItemsRequest();
+		request.getOrderLineItemIds().add(dummyOrderId);
+		
+		try {
+			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(ExternalServiceCallException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetOrderedISBNsByOrderLineItemIdsBadOrderLineItemId() {
+		String dummyOrderId = "dummy-order-id";
+
+		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
+				withClientOrSenderFault("Order Exception - code:ORLC0006, description:Required object not found, " +
+						"message:com.pearson.ed.order.exception.RequiredObjectNotFound", 
+						Locale.ENGLISH));
+
+		OrderLineItemsRequest request = new OrderLineItemsRequest();
+		request.getOrderLineItemIds().add(dummyOrderId);
+		
+		try {
+			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(OrderLineNotFoundException.class));
+		}
+
+		mockServer.verify();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * .
+	 */
+	@Test
+	public void testGetOrderedISBNsByOrderLineItemIdsOrderLineItemWithoutIsbn() {
+		String dummyOrderId = "dummy-order-id";
+
+		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
+				withPayload(generateDummyOrderResponseMultipleItems(dummyOrderId, null, true)));
+
+		OrderLineItemsRequest request = new OrderLineItemsRequest();
+		request.getOrderLineItemIds().add(dummyOrderId);
+		
+		try {
+			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			fail("Must throw exception!");
+		} catch (Exception e) {
+			assertThat(e, is(RequiredObjectNotFoundException.class));
+		}
+
+		mockServer.verify();
 	}
 
 	/**

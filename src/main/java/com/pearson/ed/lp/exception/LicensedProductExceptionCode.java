@@ -24,6 +24,11 @@ public enum LicensedProductExceptionCode {
 	LP0003,
 	
 	/**
+	 * Required data not found
+	 */
+	LP0004,
+	
+	/**
 	 * Product not found
 	 */
 	PLC0006,

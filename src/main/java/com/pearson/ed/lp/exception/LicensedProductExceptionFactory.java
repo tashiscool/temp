@@ -108,10 +108,11 @@ public class LicensedProductExceptionFactory {
 			code = LicensedProductExceptionCode.OLC0006.toString();
 		} else if(cause instanceof ProductNotFoundException) {
 			code = LicensedProductExceptionCode.PLC0006.toString();
-		} else if(cause instanceof ExternalServiceCallException) {
-			code = LicensedProductExceptionCode.LP0002.toString();
+		} else if(cause instanceof OrderLineNotFoundException) {
+			code = LicensedProductExceptionCode.ORLC006.toString();
 		} else if(cause instanceof RequiredObjectNotFoundException) {
-			// TODO proper exception code
+			code = LicensedProductExceptionCode.LP0004.toString();
+		} else if(cause instanceof ExternalServiceCallException) {
 			code = LicensedProductExceptionCode.LP0002.toString();
 		} else {
 			code = defaultKey;

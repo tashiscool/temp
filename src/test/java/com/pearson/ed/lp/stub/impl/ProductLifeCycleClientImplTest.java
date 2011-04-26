@@ -118,6 +118,7 @@ public class ProductLifeCycleClientImplTest extends BaseLicensedProductClientStu
 		
 		try {
 			testClient.getProductDataByProductEntityIds(request);
+			fail("Must throw exception!");
 		} catch (Exception e) {
 			assertThat(e, is(ExternalServiceCallException.class));
 		}
@@ -142,6 +143,7 @@ public class ProductLifeCycleClientImplTest extends BaseLicensedProductClientStu
 		
 		try {
 			testClient.getProductDataByProductEntityIds(request);
+			fail("Must throw exception!");
 		} catch (Exception e) {
 			assertThat(e, is(ExternalServiceCallException.class));
 		}
@@ -166,6 +168,7 @@ public class ProductLifeCycleClientImplTest extends BaseLicensedProductClientStu
 		
 		try {
 			testClient.getProductDataByProductEntityIds(request);
+			fail("Must throw exception!");
 		} catch (Exception e) {
 			assertThat(e, is(ProductNotFoundException.class));
 		}
