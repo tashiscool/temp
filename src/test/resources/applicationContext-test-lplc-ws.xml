@@ -74,7 +74,9 @@
 
 			</list>
 		</property>
-		<property name="order" value="1" />
+		<property name="order">
+			<util:constant static-field="org.springframework.core.Ordered.HIGHEST_PRECEDENCE"/>
+		</property>
 	</bean>
 	
 	<!-- Test marshaller with contextPaths for this service and referenced client services -->
@@ -93,6 +95,24 @@
     </bean>
     
     <ws:annotation-driven />
+
+	<bean
+		id="exceptionResolver"
+		class="com.pearson.ed.lp.exception.LicensedProductV2SoapFaultExceptionResolver">
+		<description>
+			This exception resolver maps exceptions with the @SoapFault
+			annotation to SOAP Faults. The business logic exceptions
+			will have these.
+		</description>
+		<property name="order">
+			<util:constant static-field="org.springframework.core.Ordered.HIGHEST_PRECEDENCE"/>
+		</property>
+		<property name="mappedEndpoints">
+			<set>
+				<value>marshallingLicensedProductWebServiceGateway</value>
+			</set>
+		</property>
+	</bean>
 	
 	<bean
 		class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">

@@ -68,7 +68,8 @@ public abstract class BaseIntegrationTest extends AbstractTransactionalDataSourc
 				"classpath:applicationContext-lplc-hibernate.xml", "classpath:applicationContext-lplc-service.xml",
 				"classpath:applicationContext-lplc-jms.xml", "classpath:applicationContext-test-lplc-services.xml",
 				"classpath:applicationContext-lplc-ws.xml", "classpath:applicationContext-lplc.xml",
-				"classpath:applicationContext-lplc-exception.xml", "classpath:applicationContext-lplc-warning.xml" };
+				"classpath:applicationContext-lplc-exception.xml", "classpath:applicationContext-lplc-warning.xml",
+				"classpath:applicationContext-lp-exception.xml"};
 	}
 
 	protected LicensePoolService loadLicensePoolService() {

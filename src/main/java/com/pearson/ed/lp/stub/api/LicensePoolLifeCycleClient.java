@@ -2,6 +2,7 @@ package com.pearson.ed.lp.stub.api;
 
 import org.springframework.integration.annotation.ServiceActivator;
 
+import com.pearson.ed.commons.service.exception.AbstractRumbaException;
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 
@@ -19,8 +20,10 @@ public interface LicensePoolLifeCycleClient {
 	 * 
 	 * @param request {@link LicensePoolByOrganizationIdRequest}
 	 * @return {@link LicensePoolResponse}
+	 * @throws AbstractRumbaException on error
 	 */
 	@ServiceActivator
-	LicensePoolResponse getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request);
+	LicensePoolResponse getLicensePoolsByOrganizationId(LicensePoolByOrganizationIdRequest request)
+		throws AbstractRumbaException;
 
 }

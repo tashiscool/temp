@@ -52,4 +52,20 @@ public class OrderLineNotFoundException extends AbstractRumbaException {
 		super(message, values, cause);
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("OrderLineNotFound Exception - ");
+		if (getMessage() == null && getCause() != null) {
+			sb.append(", message:").append(getCause().toString());
+		} else {
+			sb.append(", message:").append(getMessage());
+		}
+		
+		if(getValues() != null) {
+			sb.append(", values:").append(getValues());
+		}
+		
+		return sb.toString();
+	}
+
 }

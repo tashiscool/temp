@@ -26,7 +26,6 @@ public class InvalidOrganizationException extends AbstractRumbaException {
 	 */
 	public InvalidOrganizationException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -35,7 +34,6 @@ public class InvalidOrganizationException extends AbstractRumbaException {
 	 */
 	public InvalidOrganizationException(String message, Object[] values) {
 		super(message, values);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -43,7 +41,6 @@ public class InvalidOrganizationException extends AbstractRumbaException {
 	 */
 	public InvalidOrganizationException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -53,7 +50,6 @@ public class InvalidOrganizationException extends AbstractRumbaException {
 	 */
 	public InvalidOrganizationException(String message, Object[] values, Throwable cause) {
 		super(message, values, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public String toString() {

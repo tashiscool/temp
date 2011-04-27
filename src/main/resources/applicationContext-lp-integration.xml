@@ -25,6 +25,12 @@
 	<gateway id="marshallingLicensedProductWebServiceGateway"
 		default-request-channel="wsGetLicensedProductsRequestsChannel"
 		service-interface="com.pearson.ed.lp.ws.MarshallingLicensedProductServiceEndpoint"
+		error-channel="exceptionTransformationChannel"
+	/>
+	
+	<transformer
+		input-channel="exceptionTransformationChannel"
+		expression="@licensedProductExceptionFactory.getLicensedProductException(payload.getCause().getMessage(), payload.getCause())"
 	/>
 	
 	<transformer 
@@ -38,6 +44,7 @@
 			<header name="qualifyingLicensePool" expression="payload.qualifyingLicensePool"/>
 		</header-enricher>
 		<recipient-list-router apply-sequence="true">
+			<recipient channel="licensePoolClientRequestChannel" />
 			<recipient selector-expression="headers.qualifyingLicensePool matches '^RootAndParents|AllInHierarchy$'"
 				channel="preGetParentOrganizationTreeChannel"
 			/>
@@ -45,7 +52,6 @@
 				channel="preGetChildOrganizationTreeChannel"
 			/>
 			<recipient channel="preGetOrganizationChannel" />
-			<recipient channel="licensePoolClientRequestChannel" />
 		</recipient-list-router>
 	</chain>
 	
@@ -141,7 +147,7 @@
 	<channel id="productRequestChannel" />
 	<channel id="orderRequestChannel" />
 	<channel id="getLicensedProductsResponseChannel" />
-	<channel id="errorChannel" />
+	<channel id="exceptionTransformationChannel" />
 	
 	<!-- common beans -->
 	<beans:bean id="getLicensedProductRequestTransformer" 

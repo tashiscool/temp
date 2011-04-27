@@ -7,7 +7,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
-       http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd">
+       http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
 
 
 	<bean id="messageDispatcher"
@@ -107,24 +107,8 @@
         <property name="mtomEnabled" value="true"/>
     </bean>
     
-	<sws:marshalling-endpoints />
+	<sws:annotation-driven />
 
-	
-	<bean
-		class="org.springframework.ws.soap.server.endpoint.SoapFaultAnnotationExceptionResolver">
-		<description>
-			This exception resolver maps exceptions with the @SoapFault
-			annotation to SOAP Faults. The business logic exceptions
-			will have these.
-		</description>
-		<property name="order" value="1" />
-		<property name="mappedEndpoints">
-			<set>
-				<value>marshallingLicensePoolEndpoint</value>
-			</set>
-		</property>
-	</bean>
-	
 	<bean
 		class="com.pearson.ed.lp.exception.LicensedProductV2SoapFaultExceptionResolver">
 		<description>

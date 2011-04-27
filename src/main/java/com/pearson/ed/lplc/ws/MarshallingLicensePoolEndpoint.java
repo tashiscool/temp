@@ -3,6 +3,8 @@ package com.pearson.ed.lplc.ws;
 import org.apache.log4j.Logger;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
+import org.springframework.ws.server.endpoint.annotation.RequestPayload;
+import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.exception.ComponentCardinalityException;
@@ -126,7 +128,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 *            the create licensepool request.
 	 */
 	@PayloadRoot(localPart = CREATE_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public CreateLicensePoolResponse createLicensePool(CreateLicensePoolRequest licensepoolRequest) {
+	@ResponsePayload
+	public CreateLicensePoolResponse createLicensePool(
+			@RequestPayload CreateLicensePoolRequest licensepoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
 		try {
@@ -175,7 +179,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 *            the update licensepool request.
 	 */
 	@PayloadRoot(localPart = UPDATE_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public UpdateLicensePoolResponse createLicensePool(UpdateLicensePoolRequest licensepoolRequest) {
+	@ResponsePayload
+	public UpdateLicensePoolResponse createLicensePool(
+			@RequestPayload UpdateLicensePoolRequest licensepoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
 		try {
@@ -219,8 +225,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 *            the update licensepool request.
 	 */
 	@PayloadRoot(localPart = GET_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
+	@ResponsePayload
 	public LicensepoolsByOrganizationId getLicensepoolByOrgIdLicensePool(
-			GetLicensePoolByOrganizationIdRequest licensepoolRequest) {
+			@RequestPayload GetLicensePoolByOrganizationIdRequest licensepoolRequest) {
 
 		try {
 			String organizationId = licensepoolRequest.getGetLicensePoolByOrganizationIdRequestType()
@@ -253,7 +260,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 *            the update licensepool request.
 	 */
 	@PayloadRoot(localPart = GET_LICENSEPOOL_TO_SUBSCRIBE_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public LicensePoolToSubscribe getLicensepoolToSubscribe(GetLicensePoolToSubscribeRequest licensepoolRequest) {
+	@ResponsePayload
+	public LicensePoolToSubscribe getLicensepoolToSubscribe(
+			@RequestPayload GetLicensePoolToSubscribeRequest licensepoolRequest) {
 
 		try {
 			String organizationId = licensepoolRequest.getGetLicensePoolToSubscribeRequestType().getOrganizationId();
@@ -285,8 +294,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 * @return GetLicensePoolDetailsByIdResponse
 	 */
 	@PayloadRoot(localPart = GET_LICENCEPOOL_DETAILS_BY_ID_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
+	@ResponsePayload
 	public GetLicensePoolDetailsByIdResponse getLicensepoolDetailsByIdrequest(
-			GetLicensePoolDetailsByIdRequest getLicensePoolDetailsByIdRequest) {
+			@RequestPayload GetLicensePoolDetailsByIdRequest getLicensePoolDetailsByIdRequest) {
 
 		try {
 			String licensePoolId = getLicensePoolDetailsByIdRequest.getLicensePoolId();
@@ -318,7 +328,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 * @return DenyNewSubscriptionsResponse
 	 */
 	@PayloadRoot(localPart = DENY_NEW_SUBSCRIPTIONS_REQUEST, namespace = LICENSEPOOL_NAMESPACE)
-	public DenyNewSubscriptionsResponse denyNewSubscriptions(DenyNewSubscriptionsRequest denyNewSubscriptionsRequest) {
+	@ResponsePayload
+	public DenyNewSubscriptionsResponse denyNewSubscriptions(
+			@RequestPayload DenyNewSubscriptionsRequest denyNewSubscriptionsRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
 		try {
@@ -366,7 +378,9 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 	 * @return CancelLicensePoolResponse
 	 */
 	@PayloadRoot(localPart = CANCEL_LICENSEPOOL_REQUEST_ELEMENT, namespace = LICENSEPOOL_NAMESPACE)
-	public CancelLicensePoolResponse cancelLicensePool(CancelLicensePoolRequest cancelLicensePoolRequest) {
+	@ResponsePayload
+	public CancelLicensePoolResponse cancelLicensePool(
+			@RequestPayload CancelLicensePoolRequest cancelLicensePoolRequest) {
 		ServiceResponseType serviceResponseType = new ServiceResponseType();
 
 		try {
