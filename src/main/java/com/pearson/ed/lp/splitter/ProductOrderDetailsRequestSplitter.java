@@ -63,8 +63,8 @@ public class ProductOrderDetailsRequestSplitter {
 		}
 
 		List<Object> splitSet = new ArrayList<Object>();
-		splitSet.add(orderLineItemIdsRequest);
 		splitSet.add(productEntityIdsRequest);
+		splitSet.add(orderLineItemIdsRequest);
 		// add original request as a pass through for the final response aggregator
 		splitSet.add(licensePoolsAndOrgDisplayNames);
 

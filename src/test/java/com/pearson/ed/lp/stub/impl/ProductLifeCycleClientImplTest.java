@@ -3,7 +3,8 @@
  */
 package com.pearson.ed.lp.stub.impl;
 
-import static com.pearson.ed.ltg.rumba.common.test.XmlUtils.marshalToSource;
+import static com.pearson.ed.lp.LicensedProductTestHelper.generateDummyGetProductRequest;
+import static com.pearson.ed.lp.LicensedProductTestHelper.generateDummyGetProductResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,9 +23,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.transform.Source;
-
-import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +34,6 @@ import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
-import com.pearson.rws.product.doc.v2.AttributeType;
-import com.pearson.rws.product.doc.v2.AttributesType;
-import com.pearson.rws.product.doc.v2.DisplayInfoType;
-import com.pearson.rws.product.doc.v2.DisplayInfosType;
-import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
-import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponse;
-import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
 
 /**
  * Unit test of {@link OrderLifeCycleClientImpl} using Spring WS mock objects.
@@ -60,8 +51,6 @@ public class ProductLifeCycleClientImplTest extends BaseLicensedProductClientStu
 	 */
 	@Before
 	public void setUp() throws Exception {
-		BasicConfigurator.configure();
-
 		mockServer = MockWebServiceServer.createServer(testClient.getServiceClient());
 	}
 
@@ -256,76 +245,5 @@ public class ProductLifeCycleClientImplTest extends BaseLicensedProductClientStu
 						.contains(expectedGradeLevel));
 			}
 		}
-	}
-
-	/**
-	 * Generate a source object representing a GetProductsByProductEntityIds request.
-	 * 
-	 * @param productEntityIds
-	 *            collection of entity ids to use for the request
-	 * @return {@link Source} instance
-	 */
-	private Source generateDummyGetProductRequest(Long... productEntityIds) {
-		GetProductsByProductEntityIdsRequest request = new GetProductsByProductEntityIdsRequest();
-		request.getProductEntityId().addAll(Arrays.asList(productEntityIds));
-
-		return marshalToSource(marshaller, request);
-	}
-
-	/**
-	 * Generate a source object representing a GetProductsByProductEntityIds response using the provided seed data.
-	 * 
-	 * @param dummyDataByDummyProductEntityIds
-	 *            seed data to convert into a response
-	 * @return {@link Source} instance
-	 */
-	private Source generateDummyGetProductResponse(Map<Long, ProductData> dummyDataByDummyProductEntityIds) {
-		GetProductsByProductEntityIdsResponse response = new GetProductsByProductEntityIdsResponse();
-
-		for (Entry<Long, ProductData> dummyProduct : dummyDataByDummyProductEntityIds.entrySet()) {
-			GetProductsByProductEntityIdsResponseType product = new GetProductsByProductEntityIdsResponseType();
-			response.getProduct().add(product);
-
-			ProductData dummyData = dummyProduct.getValue();
-
-			product.setProductEntityId(dummyProduct.getKey());
-			product.setProductId(dummyData.getProductId());
-			
-			if((dummyData.getShortDescription() == null)
-					&& (dummyData.getLongDescription() == null)
-					&& (dummyData.getDisplayName() == null)
-					&& (dummyData.getCgProgram() == null)
-					&& ((dummyData.getGradeLevels() == null) || dummyData.getGradeLevels().isEmpty())) {
-				continue;
-			}
-
-			DisplayInfoType displayInfo = new DisplayInfoType();
-			displayInfo.setName(dummyData.getDisplayName());
-			displayInfo.setShortDescription(dummyData.getShortDescription());
-			displayInfo.setLongDescription(dummyData.getLongDescription());
-			product.setDisplayInformation(new DisplayInfosType());
-			product.getDisplayInformation().getDisplayInfo().add(displayInfo);
-
-			product.setAttributes(new AttributesType());
-
-			if (dummyData.getCgProgram() != null) {
-				String[] cgPrograms = dummyData.getCgProgram().split(" ");
-				for(String cgProgram : cgPrograms) {
-					AttributeType attribute = new AttributeType();
-					product.getAttributes().getAttribute().add(attribute);
-					attribute.setAttributeKey(ProductLifeCycleClientImpl.CG_PROGRAM_ATTR_KEY);
-					attribute.setAttributeValue(cgProgram);
-				}
-			}
-
-			for (String gradeLevel : dummyData.getGradeLevels()) {
-				AttributeType attribute = new AttributeType();
-				product.getAttributes().getAttribute().add(attribute);
-				attribute.setAttributeKey(ProductLifeCycleClientImpl.GRADE_LEVEL_ATTR_KEY);
-				attribute.setAttributeValue(gradeLevel);
-			}
-		}
-
-		return marshalToSource(marshaller, response);
 	}
 }

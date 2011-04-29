@@ -3,7 +3,8 @@
  */
 package com.pearson.ed.lp.stub.impl;
 
-import static com.pearson.ed.ltg.rumba.common.test.XmlUtils.marshalToSource;
+import static com.pearson.ed.lp.LicensedProductTestHelper.generateDummyGetOrgRequest;
+import static com.pearson.ed.lp.LicensedProductTestHelper.generateDummyGetOrgResponseData;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,28 +22,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.transform.Source;
-
-import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.test.client.MockWebServiceServer;
 
+import com.pearson.ed.lp.LicensedProductTestHelper.OrgRequestType;
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
 import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
-import com.pearson.rws.organization.doc._2009._07._01.AttributeKeyType;
-import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
-import com.pearson.rws.organization.doc._2009._07._01.GetOrganizationByIdRequest;
-import com.pearson.rws.organization.doc._2009._07._01.GetParentTreeByOrganizationIdRequest;
-import com.pearson.rws.organization.doc._2009._07._01.Organization;
-import com.pearson.rws.organization.doc._2009._07._01.OrganizationIdRequestType;
-import com.pearson.rws.organization.doc._2009._07._01.OrganizationResponse;
-import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeResponse;
-import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeType;
-import com.pearson.rws.organization.doc._2009._07._01.ReadAttributeType;
-import com.pearson.rws.organization.doc._2009._07._01.ReadAttributesListType;
 
 /**
  * Unit test of {@link OrganizationLifeCycleClientImpl} using Spring WS mock objects.
@@ -52,10 +40,6 @@ import com.pearson.rws.organization.doc._2009._07._01.ReadAttributesListType;
  */
 public class OrganizationLifeCycleClientImplTest extends BaseLicensedProductClientStubTest {
 
-	private static enum OrgRequestType {
-		ROOT_ONLY, PARENT_TREE, CHILD_TREE;
-	}
-
 	@Autowired(required = true)
 	private OrganizationLifeCycleClientImpl testClient;
 
@@ -64,8 +48,6 @@ public class OrganizationLifeCycleClientImplTest extends BaseLicensedProductClie
 	 */
 	@Before
 	public void setUp() throws Exception {
-		BasicConfigurator.configure();
-
 		mockServer = MockWebServiceServer.createServer(testClient.getServiceClient());
 	}
 
@@ -394,135 +376,6 @@ public class OrganizationLifeCycleClientImplTest extends BaseLicensedProductClie
 			assertEquals(String.format("Mismatched DisplayName for org id: %s", expected.getKey()),
 					expected.getValue(), actuals.get(expected.getKey()));
 		}
-	}
-
-	/**
-	 * Helper function to generate a dummy GetOrganizationById, GetChildTreeByOrganizationId, or
-	 * GetParentTreeByOrganizationId service request.
-	 * 
-	 * @param orgId
-	 *            dummy organization id
-	 * @param requestType
-	 *            what type of request to generate
-	 * @return {@link Source} instance
-	 */
-	private Source generateDummyGetOrgRequest(String orgId, OrgRequestType requestType) {
-		Object request = null;
-
-		switch (requestType) {
-		case CHILD_TREE:
-			GetChildTreeByOrganizationIdRequest getChildTreeRequest = new GetChildTreeByOrganizationIdRequest();
-			getChildTreeRequest.setOrganizationId(orgId);
-			request = getChildTreeRequest;
-			break;
-		case PARENT_TREE:
-			GetParentTreeByOrganizationIdRequest getParentTreeRequest = new GetParentTreeByOrganizationIdRequest();
-			getParentTreeRequest.setOrganizationId(orgId);
-			request = getParentTreeRequest;
-			break;
-		case ROOT_ONLY:
-			GetOrganizationByIdRequest getOrgRequest = new GetOrganizationByIdRequest();
-			getOrgRequest.setOrganizationIdRequestType(new OrganizationIdRequestType());
-			getOrgRequest.getOrganizationIdRequestType().setOrganizationId(orgId);
-			request = getOrgRequest;
-			break;
-		}
-
-		return marshalToSource(marshaller, request);
-	}
-
-	/**
-	 * Helper function to generate a dummy GetOrganizationById, GetChildTreeByOrganizationId, or
-	 * GetParentTreeByOrganizationId service response using the provided seed data.
-	 * 
-	 * For the GetOrganizationById response only the first entry of the provided map of seed data is used. For the
-	 * Get*TreeByOrganizationId responses, the seed data is turned into a depth-only tree with each subsequent entry in
-	 * the seed data map being the child/parent organization of the preceding entry.
-	 * 
-	 * @param dummyOrgDisplayNamesByOrgId
-	 *            seed data, map of organization ids to organization display names
-	 * @param requestType
-	 *            what type of request we need a response to
-	 * @return {@link Source} instance
-	 */
-	private Source generateDummyGetOrgResponseData(Map<String, String> dummyOrgDisplayNamesByOrgId,
-			OrgRequestType requestType) {
-		Object response = null;
-
-		int levelCounter = 0;
-
-		switch (requestType) {
-		case CHILD_TREE:
-			OrganizationTreeResponse childTreeResponse = new OrganizationTreeResponse();
-
-			OrganizationTreeType lastChildOrg = null;
-			levelCounter = 0;
-			for (Entry<String, String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				if (lastChildOrg == null) {
-					lastChildOrg = new OrganizationTreeType();
-					childTreeResponse.setOrganization(lastChildOrg);
-					lastChildOrg.setOrganizationId(dummyOrgData.getKey());
-					lastChildOrg.setName(dummyOrgData.getValue());
-					lastChildOrg.setLevel(levelCounter);
-				} else {
-					OrganizationTreeType childOrg = new OrganizationTreeType();
-					lastChildOrg.getOrganization().add(childOrg);
-					lastChildOrg = childOrg;
-
-					childOrg.setOrganizationId(dummyOrgData.getKey());
-					childOrg.setName(dummyOrgData.getValue());
-					childOrg.setLevel(levelCounter);
-				}
-				levelCounter++;
-			}
-
-			response = childTreeResponse;
-			break;
-		case PARENT_TREE:
-			OrganizationTreeResponse parentTreeResponse = new OrganizationTreeResponse();
-
-			OrganizationTreeType lastParentOrg = null;
-			levelCounter = 0;
-			for (Entry<String, String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				if (lastParentOrg == null) {
-					lastParentOrg = new OrganizationTreeType();
-					parentTreeResponse.setOrganization(lastParentOrg);
-					lastParentOrg.setOrganizationId(dummyOrgData.getKey());
-					lastParentOrg.setName(dummyOrgData.getValue());
-					lastParentOrg.setLevel(levelCounter);
-				} else {
-					OrganizationTreeType parentOrg = new OrganizationTreeType();
-					lastParentOrg.getOrganization().add(parentOrg);
-					lastParentOrg = parentOrg;
-
-					parentOrg.setOrganizationId(dummyOrgData.getKey());
-					parentOrg.setName(dummyOrgData.getValue());
-					parentOrg.setLevel(levelCounter);
-				}
-				levelCounter++;
-			}
-			response = parentTreeResponse;
-			break;
-		case ROOT_ONLY:
-			OrganizationResponse orgResponse = new OrganizationResponse();
-
-			Organization org = new Organization();
-			orgResponse.setOrganization(org);
-
-			Entry<String, String> justOneDummyOrg = dummyOrgDisplayNamesByOrgId.entrySet().iterator().next();
-
-			org.setOrganizationId(justOneDummyOrg.getKey());
-			org.setAttributes(new ReadAttributesListType());
-			ReadAttributeType attribute = new ReadAttributeType();
-			org.getAttributes().getAttribute().add(attribute);
-			attribute.setAttributeKey(AttributeKeyType.ORG_DISPLAY_NAME);
-			attribute.setAttributeValue(justOneDummyOrg.getValue());
-
-			response = orgResponse;
-			break;
-		}
-
-		return marshalToSource(marshaller, response);
 	}
 
 }

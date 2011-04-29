@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.pearson.ed.lp.message.LicensePoolResponse;
@@ -29,12 +29,12 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
 public class ProductOrderDetailsRequestSplitterTest {
 
 	private ProductOrderDetailsRequestSplitter splitter = new ProductOrderDetailsRequestSplitter();
-
+	
 	/**
-	 * @throws java.lang.Exception
+	 * Setup test logging.
 	 */
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() {
 		BasicConfigurator.configure();
 	}
 

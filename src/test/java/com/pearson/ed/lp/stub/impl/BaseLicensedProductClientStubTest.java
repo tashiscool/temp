@@ -4,9 +4,9 @@
 package com.pearson.ed.lp.stub.impl;
 
 
+import org.apache.log4j.BasicConfigurator;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.test.client.MockWebServiceServer;
@@ -20,15 +20,21 @@ import org.springframework.ws.test.client.MockWebServiceServer;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 		"classpath:applicationContext-lp-clients.xml",
+		"classpath:applicationContext-test-lp-client-mocks.xml",
 		"classpath:applicationContext-lp-exception.xml",
 		"classpath:applicationContext-test-lplc-ws.xml",
 		"classpath:applicationContext-lplc.xml"
 }, inheritLocations = true)
 public abstract class BaseLicensedProductClientStubTest {
 
-	@Autowired(required = true)
-	protected Jaxb2Marshaller marshaller;
-
 	protected MockWebServiceServer mockServer;
+	
+	/**
+	 * Setup test logging.
+	 */
+	@BeforeClass
+	public static void setUpClass() {
+		BasicConfigurator.configure();
+	}
 
 }

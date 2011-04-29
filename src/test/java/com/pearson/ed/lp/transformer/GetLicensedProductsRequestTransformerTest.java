@@ -6,7 +6,7 @@ package com.pearson.ed.lp.transformer;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.log4j.BasicConfigurator;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
@@ -21,12 +21,12 @@ import com.pearson.rws.licensedproduct.doc.v2.QualifyingLicensePool;
 public class GetLicensedProductsRequestTransformerTest {
 
 	private GetLicensedProductsRequestTransformer transformer = new GetLicensedProductsRequestTransformer();
-
+	
 	/**
-	 * @throws java.lang.Exception
+	 * Setup test logging.
 	 */
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() {
 		BasicConfigurator.configure();
 	}
 
