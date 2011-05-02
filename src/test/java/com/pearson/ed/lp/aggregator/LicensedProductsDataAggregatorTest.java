@@ -4,15 +4,25 @@
 package com.pearson.ed.lp.aggregator;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.pearson.ed.lp.exception.InvalidOrganizationException;
+import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
+import com.pearson.ed.lp.exception.ProductNotFoundException;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
@@ -22,9 +32,17 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
  * @author ULLOYNI
  * 
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+		"classpath:applicationContext-lp-exception.xml",
+		"classpath:applicationContext-lplc.xml"
+})
 public class LicensedProductsDataAggregatorTest {
 
 	private LicensedProductsDataAggregator aggregator = new LicensedProductsDataAggregator();
+	
+	@Autowired(required = true)
+	private LicensedProductExceptionFactory exceptionFactory;
 	
 	/**
 	 * Setup test logging.
@@ -32,6 +50,14 @@ public class LicensedProductsDataAggregatorTest {
 	@BeforeClass
 	public static void setUpClass() {
 		BasicConfigurator.configure();
+	}
+	
+	/**
+	 * Setup test.
+	 */
+	@Before
+	public void setUp() {
+		aggregator.setExceptionFactory(exceptionFactory);
 	}
 
 	/**
@@ -43,9 +69,11 @@ public class LicensedProductsDataAggregatorTest {
 		List<Object> input = new ArrayList<Object>();
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 
-		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
-
-		assertEmptyResult(result);
+		try {
+			aggregator.aggregateResponse(input);
+		} catch (Exception e) {
+			assertThat(e, is(InvalidOrganizationException.class));
+		}
 	}
 
 	/**
@@ -58,9 +86,11 @@ public class LicensedProductsDataAggregatorTest {
 		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
 		input.add(new OrganizationDisplayNamesResponse());
 
-		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
-
-		assertEmptyResult(result);
+		try {
+			aggregator.aggregateResponse(input);
+		} catch (Exception e) {
+			assertThat(e, is(InvalidOrganizationException.class));
+		}
 	}
 
 	/**
@@ -68,15 +98,17 @@ public class LicensedProductsDataAggregatorTest {
 	 * {@link com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator#aggregateResponse(java.util.List)}.
 	 */
 	@Test
-	public void testAggregateResponseEmptyResponseObjectsManyOrgDisplayNamesResponses() {
+	public void testAggregateResponseOneLicensePoolResponseManyEmptyOrgDisplayNamesResponses() {
 		List<Object> input = new ArrayList<Object>();
-		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
+		input.add(new LicensePoolResponse(Arrays.asList(new OrganizationLPMapping[]{new OrganizationLPMapping()})));
 		input.add(new OrganizationDisplayNamesResponse());
 		input.add(new OrganizationDisplayNamesResponse());
 
-		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
-
-		assertEmptyResult(result);
+		try {
+			aggregator.aggregateResponse(input);
+		} catch (Exception e) {
+			assertThat(e, is(ProductNotFoundException.class));
+		}
 	}
 
 	/**
@@ -86,7 +118,7 @@ public class LicensedProductsDataAggregatorTest {
 	@Test
 	public void testAggregateResponseOneOrgDisplayNamesResponse() {
 		List<Object> input = new ArrayList<Object>();
-		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
+		input.add(new LicensePoolResponse(Arrays.asList(new OrganizationLPMapping[]{new OrganizationLPMapping()})));
 		input.add(generateOrgDisplayNameDummyData());
 
 		LicensedProductDataCollection result = aggregator.aggregateResponse(input);
@@ -106,7 +138,7 @@ public class LicensedProductsDataAggregatorTest {
 	@Test
 	public void testAggregateResponseMultipleSameOrgDisplayNamesResponses() {
 		List<Object> input = new ArrayList<Object>();
-		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
+		input.add(new LicensePoolResponse(Arrays.asList(new OrganizationLPMapping[]{new OrganizationLPMapping()})));
 		input.add(generateOrgDisplayNameDummyData());
 		input.add(generateOrgDisplayNameDummyData());
 
@@ -130,7 +162,7 @@ public class LicensedProductsDataAggregatorTest {
 		diffResponse.getOrganizationDisplayNamesByIds().put("and-no-for-something", "completely-different");
 
 		List<Object> input = new ArrayList<Object>();
-		input.add(new LicensePoolResponse(new ArrayList<OrganizationLPMapping>()));
+		input.add(new LicensePoolResponse(Arrays.asList(new OrganizationLPMapping[]{new OrganizationLPMapping()})));
 		input.add(generateOrgDisplayNameDummyData());
 		input.add(diffResponse);
 
@@ -157,19 +189,6 @@ public class LicensedProductsDataAggregatorTest {
 		orgDisplayNamesData.getOrganizationDisplayNamesByIds().put("3", "dummy-3");
 
 		return orgDisplayNamesData;
-	}
-
-	/**
-	 * Helper empty result set assertion function.
-	 * 
-	 * @param result
-	 */
-	private void assertEmptyResult(LicensedProductDataCollection result) {
-		assertNotNull(result.getLicensePools());
-		assertNotNull(result.getLicensePools().getLicensePools());
-		assertEquals(0, result.getLicensePools().getLicensePools().size());
-		assertNotNull(result.getOrganizationDisplayNames());
-		assertEquals(0, result.getOrganizationDisplayNames().getOrganizationDisplayNamesByIds().size());
 	}
 
 }

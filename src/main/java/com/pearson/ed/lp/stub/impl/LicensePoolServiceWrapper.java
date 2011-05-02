@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
-import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
@@ -55,13 +54,6 @@ public class LicensePoolServiceWrapper implements LicensePoolLifeCycleClient {
 					exceptionFactory.findExceptionMessage(LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
 					null, 
 					e);
-		}
-		
-		if(licensePools.isEmpty()) {
-			throw new InvalidOrganizationException(
-					exceptionFactory.findExceptionMessage(
-							LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
-							new Object[]{request.getOrganizationId()});
 		}
 		
 		return new LicensePoolResponse(licensePools);

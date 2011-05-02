@@ -15,7 +15,6 @@ import com.pearson.ed.lp.exception.ExternalServiceCallException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
 import com.pearson.ed.lp.exception.OrderLineNotFoundException;
-import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.OrderLineItemsRequest;
 import com.pearson.ed.lp.message.OrderLineItemsResponse;
 import com.pearson.ed.lp.stub.api.OrderLifeCycleClient;
@@ -69,7 +68,7 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 				if(faultMessage.contains("Required object not found")) {
 					throw new OrderLineNotFoundException(
 							exceptionFactory.findExceptionMessage(
-									LicensedProductExceptionMessageCode.LP_EXC_0005.toString()), 
+									LicensedProductExceptionMessageCode.LP_EXC_0006.toString()), 
 									new Object[]{orderLineItemId}, exception);
 				} else {
 					throw new ExternalServiceCallException(exception.getMessage(), null, exception);
@@ -83,15 +82,9 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 				for (ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems()
 						.getOrderLine()) {
 					if (orderLineItem.getOrderLineItemId().equals(orderLineItemId)) {
-						if(orderLineItem.getOrderedISBN() == null) {
-							LOGGER.error(String.format("No ISBN number for order line item with Id %s", 
-									orderLineItemId));
-							throw new RequiredObjectNotFoundException(
-									exceptionFactory.findExceptionMessage(
-											LicensedProductExceptionMessageCode.LP_EXC_0007.toString()), 
-											new Object[]{orderLineItemId});
+						if(orderLineItem.getOrderedISBN() != null) {
+							responsePayload.put(orderLineItemId, orderLineItem.getOrderedISBN());
 						}
-						responsePayload.put(orderLineItemId, orderLineItem.getOrderedISBN());
 						break;
 					}
 				}

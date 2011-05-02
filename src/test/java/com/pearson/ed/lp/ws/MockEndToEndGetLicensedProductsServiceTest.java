@@ -44,6 +44,7 @@ import org.springframework.ws.transport.WebServiceMessageReceiver;
 import com.pearson.ed.lp.LicensedProductTestHelper.OrgRequestType;
 import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
+import com.pearson.ed.lp.exception.ProductNotFoundException;
 import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.stub.impl.LicensePoolServiceWrapper;
 import com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl;
@@ -192,15 +193,15 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 		dummyOrderLineItem.setOrderLineItemId(dummyOrderLineItemId);
 		
 		if(mockLicensePoolService.equals(failingMock)) {
-			if(toThrow instanceof InvalidOrganizationException) {
+			if(toThrow instanceof ProductNotFoundException) {
 				configureMockLicensePoolService(mockLicensePoolService, 
 						Arrays.asList(new OrganizationLPMapping[]{}));
 			} else {
 				configureMockLicensePoolService(mockLicensePoolService, 
 						toThrow);
+				// stop here
+				return;
 			}
-			// stop here
-			return;
 		} else {
 			configureMockLicensePoolService(mockLicensePoolService, 
 					Arrays.asList(new OrganizationLPMapping[]{dummyLicensePool}));
@@ -295,6 +296,11 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
 			}
 			break;
+		}
+		
+		if(mockLicensePoolService.equals(failingMock) && (toThrow instanceof ProductNotFoundException)) {
+			// stop here
+			return;
 		}
 		
 		// configure mock product service client
@@ -469,7 +475,7 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	@Test
 	public void testEndToEndMessagingWithQualifyingLicensePoolAllInHierarchyNoLicensePools() {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ALL_IN_HIERARCHY;
-		Throwable toThrow = new InvalidOrganizationException();
+		Throwable toThrow = new ProductNotFoundException();
 		setMockClientsBehaviors(qualifyingLicensePool, mockLicensePoolService, 
 				toThrow);
 
@@ -534,30 +540,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ROOT_ONLY;
 		Throwable toThrow = new Exception("Generic OrganizationLifeCycle service exception");
 		setMockClientsBehaviors(qualifyingLicensePool, mockOrgService, 
-				toThrow);
-
-		mockLicensedProductClient.sendRequest(RequestCreators.withPayload(
-				generateDummyGetLicensedProductRequest(dummyOrgId, qualifyingLicensePool)))
-				.andExpect(ResponseMatchers.clientOrSenderFault(
-						exceptionFactory.getLicensedProductException(toThrow).getMessage()));
-		
-		verify(mockLicensePoolService);
-		
-		mockOrgService.verify();
-		mockProductService.verify();
-		mockOrderService.verify();
-	}
-
-	/**
-	 * Test behavior with {@link QualifyingLicensePool} set to ALL_IN_HEIRARCHY but with exceptions thrown
-	 * due to no ISBN found.
-	 * @throws IOException 
-	 */
-	@Test
-	public void testEndToEndMessagingWithQualifyingLicensePoolAllInHeirarchyNoIsbn() throws IOException {
-		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ALL_IN_HIERARCHY;
-		Throwable toThrow = new Exception("No ISBN number for order line item with Id");
-		setMockClientsBehaviors(qualifyingLicensePool, mockOrderService, 
 				toThrow);
 
 		mockLicensedProductClient.sendRequest(RequestCreators.withPayload(

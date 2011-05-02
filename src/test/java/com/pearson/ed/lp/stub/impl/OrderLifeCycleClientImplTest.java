@@ -27,7 +27,6 @@ import org.springframework.ws.test.client.MockWebServiceServer;
 
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
 import com.pearson.ed.lp.exception.OrderLineNotFoundException;
-import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.OrderLineItemsRequest;
 import com.pearson.ed.lp.message.OrderLineItemsResponse;
 
@@ -177,28 +176,4 @@ public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubT
 		mockServer.verify();
 	}
 
-	/**
-	 * Test method for
-	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
-	 * .
-	 */
-	@Test
-	public void testGetOrderedISBNsByOrderLineItemIdsOrderLineItemWithoutIsbn() {
-		String dummyOrderId = "dummy-order-id";
-
-		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
-				withPayload(generateDummyOrderResponseMultipleItems(dummyOrderId, null, true)));
-
-		OrderLineItemsRequest request = new OrderLineItemsRequest();
-		request.getOrderLineItemIds().add(dummyOrderId);
-		
-		try {
-			testClient.getOrderedISBNsByOrderLineItemIds(request);
-			fail("Must throw exception!");
-		} catch (Exception e) {
-			assertThat(e, is(RequiredObjectNotFoundException.class));
-		}
-
-		mockServer.verify();
-	}
 }

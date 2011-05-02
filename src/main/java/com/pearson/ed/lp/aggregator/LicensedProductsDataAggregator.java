@@ -7,7 +7,12 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pearson.ed.lp.exception.InvalidOrganizationException;
+import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
+import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
+import com.pearson.ed.lp.exception.ProductNotFoundException;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
@@ -22,6 +27,13 @@ import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
 public class LicensedProductsDataAggregator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LicensedProductsDataAggregator.class);
+	
+	@Autowired(required = true)
+	private LicensedProductExceptionFactory exceptionFactory;
+	
+	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
+	}
 
 	/**
 	 * Aggregate a collection of response objects into a single {@link LicensedProductDataCollection}.
@@ -52,6 +64,21 @@ public class LicensedProductsDataAggregator {
 		}
 
 		OrganizationDisplayNamesResponse mergedResponse = merge(orgDisplayNameResponses);
+		
+		// no license pools found, check if we have organizations
+		if(licensePoolResponse.getLicensePools().isEmpty()) {
+			// no orgs, throw no organization found error
+			if(mergedResponse.getOrganizationDisplayNamesByIds().isEmpty()) {
+				throw new InvalidOrganizationException(
+						exceptionFactory.findExceptionMessage(
+								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()));
+			} else {
+				// no licensed products found
+				throw new ProductNotFoundException(
+						exceptionFactory.findExceptionMessage(
+								LicensedProductExceptionMessageCode.LP_EXC_0004.toString()));
+			}
+		}
 
 		LicensedProductDataCollection collectedData = new LicensedProductDataCollection();
 		collectedData.setLicensePools(licensePoolResponse);

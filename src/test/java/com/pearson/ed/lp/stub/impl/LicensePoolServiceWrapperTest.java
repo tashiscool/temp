@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
-import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
 import com.pearson.ed.lp.message.LicensePoolResponse;
@@ -79,15 +78,13 @@ public class LicensePoolServiceWrapperTest extends BaseLicensedProductClientStub
 				new OrganizationLPMapping[]{});
 		configureMockLicensePoolService(mockWrappedService, licensePools);
 		
-		try {
-			testServiceWrapper.getLicensePoolsByOrganizationId(
-					new LicensePoolByOrganizationIdRequest("test", "test"));
-			fail("Must throw an exception!");
-		} catch (Exception e) {
-			assertThat(e, is(InvalidOrganizationException.class));
-		}
+		LicensePoolResponse response = testServiceWrapper.getLicensePoolsByOrganizationId(
+				new LicensePoolByOrganizationIdRequest("test", "test"));
 		
 		verify(mockWrappedService);
+		
+		assertNotNull(response);
+		assertEquals(0, response.getLicensePools().size());
 	}
 
 	/**

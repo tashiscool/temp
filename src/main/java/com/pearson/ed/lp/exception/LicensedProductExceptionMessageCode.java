@@ -27,22 +27,22 @@ public enum LicensedProductExceptionMessageCode {
 	LP_EXC_0003,
 	
 	/**
-	 * Product not found
+	 * Licensed Products for Organization not found
 	 */
 	LP_EXC_0004,
 	
 	/**
-	 * Order line item for Order not found
+	 * Product not found
 	 */
 	LP_EXC_0005,
 	
 	/**
-	 * Missing Product display information
+	 * Order line item for Order not found
 	 */
 	LP_EXC_0006,
 	
 	/**
-	 * Missing Order line item ISBN information
+	 * Missing Product display information
 	 */
 	LP_EXC_0007;
 
