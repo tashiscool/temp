@@ -68,7 +68,7 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 				if(faultMessage.contains("Required object not found")) {
 					throw new OrderLineNotFoundException(
 							exceptionFactory.findExceptionMessage(
-									LicensedProductExceptionMessageCode.LP_EXC_0006.toString()), 
+									LicensedProductExceptionMessageCode.LP_EXC_0005.toString()), 
 									new Object[]{orderLineItemId}, exception);
 				} else {
 					throw new ExternalServiceCallException(exception.getMessage(), null, exception);

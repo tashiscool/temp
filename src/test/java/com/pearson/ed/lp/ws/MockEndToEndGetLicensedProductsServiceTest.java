@@ -42,7 +42,6 @@ import org.springframework.ws.test.server.ResponseMatchers;
 import org.springframework.ws.transport.WebServiceMessageReceiver;
 
 import com.pearson.ed.lp.LicensedProductTestHelper.OrgRequestType;
-import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.ProductNotFoundException;
 import com.pearson.ed.lp.message.ProductData;
@@ -54,8 +53,6 @@ import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrderLineItemLPMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
-import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProduct;
-import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductRequestElement;
 import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
 import com.pearson.rws.licensedproduct.doc.v2.LicensedProduct;
 import com.pearson.rws.licensedproduct.doc.v2.QualifyingLicensePool;
@@ -471,18 +468,29 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	/**
 	 * Test behavior with {@link QualifyingLicensePool} set to ALL_IN_HIERARCHY but with exceptions thrown
 	 * due to no license pools found.
+	 * @throws IOException 
 	 */
 	@Test
-	public void testEndToEndMessagingWithQualifyingLicensePoolAllInHierarchyNoLicensePools() {
+	public void testEndToEndMessagingWithQualifyingLicensePoolAllInHierarchyNoLicensePools() throws IOException {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ALL_IN_HIERARCHY;
 		Throwable toThrow = new ProductNotFoundException();
 		setMockClientsBehaviors(qualifyingLicensePool, mockLicensePoolService, 
 				toThrow);
 
+		UnmarshallingResponseCollector responseCollector = new UnmarshallingResponseCollector();
+		
 		mockLicensedProductClient.sendRequest(RequestCreators.withPayload(
 				generateDummyGetLicensedProductRequest(dummyOrgId, qualifyingLicensePool)))
-				.andExpect(ResponseMatchers.clientOrSenderFault(
-						exceptionFactory.getLicensedProductException(toThrow).getMessage()));
+				.andExpect(ResponseMatchers.noFault())
+				.andExpect(ResponseMatchers.validPayload(licensedProductXmlSchema))
+				.andExpect(responseCollector);
+		
+		Object response = responseCollector.getResponse();
+		
+		assertNotNull(response);
+		assertThat(response, is(GetLicensedProductResponseElement.class));
+		GetLicensedProductResponseElement licensedProductResponse = (GetLicensedProductResponseElement)response;
+		assertEquals(0, licensedProductResponse.getLicensedProduct().size());
 		
 		verify(mockLicensePoolService);
 		

@@ -63,6 +63,11 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 		GetProductsByProductEntityIdsRequest productEntityIdRequest = new GetProductsByProductEntityIdsRequest();
 		GetProductsByProductEntityIdsResponse productEntityIdResponse = null;
 
+		// pass through empty set if no entity ids exist to request, valid scenario
+		if(request.getProductEntityIds().isEmpty()) {
+			return response;
+		}
+		
 		productEntityIdRequest.getProductEntityId().addAll(request.getProductEntityIds());
 
 		try {
@@ -73,7 +78,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 			if(faultMessage.contains("Required object not found")) {
 				throw new ProductNotFoundException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0005.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0004.toString()), 
 								request.getProductEntityIds().toArray(), exception);
 			} else {
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
@@ -97,7 +102,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 							responseType.getProductEntityId()));
 					throw new RequiredObjectNotFoundException(
 							exceptionFactory.findExceptionMessage(
-									LicensedProductExceptionMessageCode.LP_EXC_0007.toString()), 
+									LicensedProductExceptionMessageCode.LP_EXC_0006.toString()), 
 									new Object[]{responseType.getProductEntityId()});
 				}
 

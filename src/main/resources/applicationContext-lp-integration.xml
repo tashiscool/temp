@@ -45,10 +45,10 @@
 		</header-enricher>
 		<recipient-list-router apply-sequence="true">
 			<recipient channel="licensePoolClientRequestChannel" />
-			<recipient selector-expression="headers.qualifyingLicensePool matches '^RootAndParents|AllInHierarchy$'"
+			<recipient selector-expression="headers.qualifyingLicensePool matches '^ROOT_AND_PARENTS|ALL_IN_HIERARCHY$'"
 				channel="preGetParentOrganizationTreeChannel"
 			/>
-			<recipient selector-expression="headers.qualifyingLicensePool.equals('AllInHierarchy')"
+			<recipient selector-expression="headers.qualifyingLicensePool.equals('ALL_IN_HIERARCHY')"
 				channel="preGetChildOrganizationTreeChannel"
 			/>
 			<recipient channel="preGetOrganizationChannel" />

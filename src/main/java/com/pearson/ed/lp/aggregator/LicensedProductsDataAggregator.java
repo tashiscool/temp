@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
-import com.pearson.ed.lp.exception.ProductNotFoundException;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
@@ -72,11 +71,6 @@ public class LicensedProductsDataAggregator {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
 								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()));
-			} else {
-				// no licensed products found
-				throw new ProductNotFoundException(
-						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0004.toString()));
 			}
 		}
 

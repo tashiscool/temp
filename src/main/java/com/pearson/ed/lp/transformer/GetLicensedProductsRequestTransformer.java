@@ -33,7 +33,7 @@ public class GetLicensedProductsRequestTransformer {
 		}
 		GetLicensedProduct requestContent = request.getGetLicensedProduct();
 		return new LicensePoolByOrganizationIdRequest(requestContent.getOrganizationId(), requestContent
-				.getQualifyingLicensePool().value());
+				.getQualifyingLicensePool().toString());
 	}
 
 }

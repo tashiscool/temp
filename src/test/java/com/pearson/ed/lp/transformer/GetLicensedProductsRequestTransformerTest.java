@@ -47,7 +47,7 @@ public class GetLicensedProductsRequestTransformerTest {
 		LicensePoolByOrganizationIdRequest result = transformer.transform(dummyRequest);
 
 		assertEquals(dummyOrgId, result.getOrganizationId());
-		assertEquals(dummyQualifyingLicensePool.value(), result.getQualifyingLicensePool());
+		assertEquals(dummyQualifyingLicensePool.toString(), result.getQualifyingLicensePool());
 	}
 
 }
