@@ -5,8 +5,8 @@
 class OrganizationServiceClient
   attr_writer :request, :request_type, :client
 
-  def initialize(host_and_port)
-    @client = Savon::Client.new {wsdl.document = "http://#{host_and_port}/OrganizationLifeCycle/services/2009/07/01/OrganizationLifeCycle_2009_07_01.wsdl"}
+  def initialize(savon_client)
+    @client = savon_client
   end
 
   # type is a symbol short hand for the actual request type to generate
@@ -23,14 +23,15 @@ class OrganizationServiceClient
             :name => nil,
             :organization_type => nil,
             :organization_display_group_info => [],
-            :identifiers => [],
-#              :identifier => {
-#                :identifier_type => "Mdr Id",
-#                :identifier_value => "#{user_story_name}_AT_MdrId"
-#              }
-#            },
+            :identifiers => {
+              :identifier => []
+            },
             :source_system => "https://idpdev.pearsoncmg.com/synapse"
           }
+        }
+      when :create_update_relation
+        @request = {
+            :organization_relation => {}
         }
 #      when :update
 #      when :delete
@@ -49,7 +50,7 @@ class OrganizationServiceClient
   def set_org_type(type = "School")
     case @request_type
       when :create
-        @request[:create_organization_type][:type] = type
+        @request[:create_organization_type][:organization_type] = type
     end
   end
 
@@ -84,7 +85,7 @@ class OrganizationServiceClient
   def add_identifier(id_type, id_value)
     case @request_type
       when :create
-        @request[:create_organization_type][:identifiers] << {
+        @request[:create_organization_type][:identifiers][:identifier] << {
             :identifier_type => id_type,
             :identifier_value => id_value
         }
@@ -97,7 +98,7 @@ class OrganizationServiceClient
 #			<xsd:enumeration value="C" />
 #		</xsd:restriction>
 #	</xsd:simpleType>
-  def add_related_org(related_org_id, relation_type = "C")
+  def add_related_org(related_org_id, relation_type = "C", organization_id = nil)
     case @request_type
       when :create
         # first move the identifiers, if we need to, for proper ordering in the xml
@@ -106,21 +107,39 @@ class OrganizationServiceClient
           @request[:create_organization_type][:related_organization] = []
           @request[:create_organization_type][:identifiers] = identifiers
         end
-        @request[:create_organization_type][:related_organization] << {
-            :related_organization_id => related_org_id,
-            :relation_type => relation_type
+        @request[:create_organization_type][:related_organization] << {}
+        @request[:create_organization_type][:attributes!] = {
+          :related_organization => {
+            "RelatedOrganizationId" => related_org_id,
+            "RelationType" => relation_type
+          }
+        }
+      when :create_update_relation
+        @request[:attributes!] = {
+          :organization_relation => {
+            "OrganizationId" => organization_id,
+            "RelatedOrganizationId" => related_org_id,
+            "RelationTypeCode" => relation_type
+          }
         }
     end
   end
 
   # execute the request and return the response hash
   def exec
+    service_function = nil
     case @request_type
       when :create
-        @client.request :create_organization_request do
-          soap.body = request
-          soap.namespaces["xmlns"] = "http://organization.rws.pearson.com/doc/2009/07/01/"
-        end
+        service_function = :create_organization_request
+      when :create_update_relation
+        service_function = :create_update_organization_relation_request
+    end
+
+    request = @request
+
+    @client.request service_function do
+      soap.body = request
+      soap.namespaces["xmlns"] = "http://organization.rws.pearson.com/doc/2009/07/01/"
     end
   end
 end

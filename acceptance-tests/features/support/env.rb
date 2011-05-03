@@ -2,7 +2,6 @@
 require 'savon'
 require 'rspec/expectations'
 require 'uuid'
-require 'organization_service_client'
 
 UUID.state_file = false
 
@@ -14,28 +13,36 @@ Savon.configure do |config|
   config.log_level = :info
 end
 
+# :get_something_request -> <GetSomethingRequest>
+Gyoku.convert_symbols_to :camelcase
 
-entity_endpoints_url = "rumba.test.pearsoncmg.com"
+entity_endpoints_url = "idpdev.pearsoncmg.com"
 composite_endpoint_url = "dev.osb.rumba.pearsoncmg.com"
 
 # initialize service client globals
 $service_clients = {}
-$service_clients[:OrganizationLifeCycle] = OrganizationServiceClient.new entity_endpoints_url
-$service_clients[:ProductLifeCycleV1] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/product/services/ProductLifeCycle.wsdl"}
+$service_clients[:OrganizationLifeCycle] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/OrganizationLifeCycle/services/2009/07/01/OrganizationLifeCycle_2009_07_01.wsdl"}
+$service_clients[:UserLifeCycleV3] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/UserLifeCycle/services/V3/UserLifeCycleV3.wsdl"}
 $service_clients[:ProductLifeCycleV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/product/services/V2/ProductLifeCycleV2.wsdl"}
-$service_clients[:LicensePoolLifeCycle] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/LicensedProduct/services/ResourceLifeCycle.wsdl"}
-#$grandparentOrgId = nil
-$parentOrgId = nil
-$child1OrgId = nil
-$child2OrgId = nil
-$productId = nil
-$productEntityId = nil
+$service_clients[:ResourceLifeCycleV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/resource/services/V2/ResourceLifeCycle_V2.wsdl"}
+$service_clients[:OrderProcessing] = Savon::Client.new {wsdl.document = "http://#{composite_endpoint_url}/ProcessOrderService/ProcessOrderService?wsdl"}
+$service_clients[:OrderProcessing].wsdl.endpoint = "http://#{composite_endpoint_url}/ProcessOrderService"
+$service_clients[:GetLicensedProductV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/LicensePoolLifeCycle/licensedproduct/services/V2/LicensedProduct.wsdl"}
+
+$dummy_org_id_for_product = nil
+$product_id = nil
+$product_entity_id = nil
+$resource_id = nil
+$grandparent_org_id = nil
+$parent_org_id = nil
+$child_org_ids = []
+$dummy_user_id = nil
+$active_us = nil
+$already_added = false
+$already_ordered = false
 
 
 Before do
-
-@qualifyingLicensedPool =nil
- @getLicensedProductResponse = nil
-
+  @result_response = nil
 end
 
