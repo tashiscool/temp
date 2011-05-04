@@ -39,6 +39,11 @@ public enum LicensedProductExceptionMessageCode {
 	/**
 	 * Missing Product display information
 	 */
-	LP_EXC_0006;
+	LP_EXC_0006,
+	
+	/**
+	 * Missing Organization display information
+	 */
+	LP_EXC_0007;
 
 }

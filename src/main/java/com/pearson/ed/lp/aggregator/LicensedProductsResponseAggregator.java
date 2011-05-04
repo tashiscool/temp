@@ -68,7 +68,26 @@ public class LicensedProductsResponseAggregator {
 			}
 		}
 
-		// TODO null checks?
+		if(productsData == null) {
+			LOGGER.error("Required ProductEntityIdsResponse message not received " +
+					"for final response generation!");
+			throw new NullPointerException("Required ProductEntityIdsResponse message not received " +
+					"for final response generation!");
+		}
+
+		if(orderData == null) {
+			LOGGER.error("Required OrderLineItemsResponse message not received " +
+					"for final response generation!");
+			throw new NullPointerException("Required OrderLineItemsResponse message not received " +
+					"for final response generation!");
+		}
+
+		if(licensePoolData == null) {
+			LOGGER.error("Required LicensedProductDataCollection message not received " +
+					"for final response generation!");
+			throw new NullPointerException("Required LicensedProductDataCollection message not received " +
+					"for final response generation!");
+		}
 
 		GetLicensedProductResponseElement getLicensedProductResponse = new GetLicensedProductResponseElement();
 		List<LicensedProduct> licensedProducts = getLicensedProductResponse.getLicensedProduct();

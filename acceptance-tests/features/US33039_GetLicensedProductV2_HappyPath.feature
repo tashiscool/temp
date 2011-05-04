@@ -1,4 +1,4 @@
-@US33039 @happy-path @wip
+@US33039 @happy-path
 Feature: GetLicensedProductV2 Happy Path
   As a CG administrator
   In order to see how many products are licensed by an organization
@@ -14,7 +14,7 @@ Feature: GetLicensedProductV2 Happy Path
 
   Scenario Outline: GetLicensedProduct successfully with different QualifyingLicensePools
     When I request all licensed products for the parent organization with the qualifier '<QualifyingLicensePool>'
-    Then I will get '<Count>' licensed products
+    Then I will get <Count> licensed products
       And each licensed product will be the 'InstitutionalLicensing' product
       And and the oppropriate organizations for '<QualifyingLicensePool>' will be referenced
 

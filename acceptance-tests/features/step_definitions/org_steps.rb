@@ -1,7 +1,18 @@
-Given /^I have an organization hierarchy with (a grandparent,|) (a parent and|) ([1-9]) child organizations?$/ do |grandparent, parent, child_count|
+Given /^I have an organization hierarchy with (a grandparent,|) (a parent and|) ([1-9]) child organizations?( without licensed products|)$/ do |grandparent, parent, child_count, without_orders|
   org_client = OrganizationServiceClient.new $service_clients[:OrganizationLifeCycle]
 
-  if $child_org_ids.empty? and child_count.to_i > 0
+  unless without_orders.nil? or without_orders.empty?
+    # generate fresh org heirarchy, and make sure to set the flag to ignore OrderProcessing service calls
+    unless $already_created_orderless_orgs
+      $already_ordered = true
+      $child_org_ids.clear
+      $parent_org_id = nil
+      $grandparent_org_id = nil
+      $already_created_orderless_orgs = true
+    end
+  end
+
+  if child_count.to_i > 0 and $child_org_ids.empty?
     child_count.to_i.times do |i|
       org_client.gen_skeleton_request :create
       org_client.set_org_name "#{$active_us} AT Child Org \##{i} " + UUID.generate
@@ -49,4 +60,8 @@ Given /^I have an organization hierarchy with (a grandparent,|) (a parent and|) 
     response.soap_fault?.should be_false, response.soap_fault
     $grandparent_org_id = response[:create_organization_response][:service_response_type][:return_value]
   end
+end
+
+Given /^I have an Id to an Organization that does not exist$/ do
+  $invalid_org_id = "nosuchorg"
 end

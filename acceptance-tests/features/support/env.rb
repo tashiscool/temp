@@ -26,8 +26,9 @@ $service_clients[:UserLifeCycleV3] = Savon::Client.new {wsdl.document = "http://
 $service_clients[:ProductLifeCycleV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/product/services/V2/ProductLifeCycleV2.wsdl"}
 $service_clients[:ResourceLifeCycleV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/resource/services/V2/ResourceLifeCycle_V2.wsdl"}
 $service_clients[:OrderProcessing] = Savon::Client.new {wsdl.document = "http://#{composite_endpoint_url}/ProcessOrderService/ProcessOrderService?wsdl"}
-$service_clients[:OrderProcessing].wsdl.endpoint = "http://#{composite_endpoint_url}/ProcessOrderService"
 $service_clients[:GetLicensedProductV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/LicensePoolLifeCycle/licensedproduct/services/V2/LicensedProduct.wsdl"}
+
+$service_clients[:OrderProcessing].wsdl.endpoint = "http://#{composite_endpoint_url}/ProcessOrderService"
 
 $dummy_org_id_for_product = nil
 $product_id = nil
@@ -35,11 +36,13 @@ $product_entity_id = nil
 $resource_id = nil
 $grandparent_org_id = nil
 $parent_org_id = nil
+$invalid_org_id = nil
 $child_org_ids = []
 $dummy_user_id = nil
 $active_us = nil
 $already_added = false
 $already_ordered = false
+$already_created_orderless_orgs = false
 
 
 Before do

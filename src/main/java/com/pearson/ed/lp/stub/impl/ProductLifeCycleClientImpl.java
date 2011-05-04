@@ -1,6 +1,8 @@
 package com.pearson.ed.lp.stub.impl;
 
 import static com.pearson.ed.lp.exception.LicensedProductExceptionFactory.getFaultMessage;
+import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.CG_PROGRAM_ATTR_KEY;
+import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.GRADE_LEVEL_ATTR_KEY;
 
 import java.util.Map;
 
@@ -36,9 +38,6 @@ import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsResponseType;
 public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLifeCycleClientImpl.class);
-
-	public static final String CG_PROGRAM_ATTR_KEY = "CG PROGRAM";
-	public static final String GRADE_LEVEL_ATTR_KEY = "LEVEL";
 
 	private WebServiceTemplate serviceClient;
 

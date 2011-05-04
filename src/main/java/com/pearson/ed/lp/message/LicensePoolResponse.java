@@ -1,5 +1,6 @@
 package com.pearson.ed.lp.message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
@@ -12,7 +13,7 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
  */
 public class LicensePoolResponse {
 
-	private List<OrganizationLPMapping> licensePools = null;
+	private List<OrganizationLPMapping> licensePools = new ArrayList<OrganizationLPMapping>();
 
 	/**
 	 * Default constructor.

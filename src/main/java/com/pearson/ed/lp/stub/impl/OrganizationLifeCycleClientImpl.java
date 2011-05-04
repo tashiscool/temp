@@ -1,6 +1,7 @@
 package com.pearson.ed.lp.stub.impl;
 
 import static com.pearson.ed.lp.exception.LicensedProductExceptionFactory.getFaultMessage;
+import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.ORG_DISPLAY_NAME_ATTR_KEY;
 
 import java.util.Map;
 
@@ -36,8 +37,6 @@ import com.pearson.rws.organization.doc._2009._07._01.ReadAttributeType;
 public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleClient {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrganizationLifeCycleClientImpl.class);
-
-	public static final String ORG_DISPLAY_NAME_ATTR_KEY = "ORG_DISPLAY_NAME";
 
 	private WebServiceTemplate serviceClient;
 	

@@ -10,7 +10,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.server.endpoint.SoapFaultAnnotationExceptionResolver;
 
-import com.pearson.ed.commons.service.exception.AbstractRumbaException;
+import com.pearson.ed.commons.service.exception.AbstractCodedRumbaException;
 import com.pearson.rws.common.doc.v2.ParameterListType;
 import com.pearson.rws.licensedproduct.doc.v2.LicensedProductExceptionType;
 import com.pearson.rws.licensedproduct.doc.v2.ObjectFactory;
@@ -29,17 +29,10 @@ public class LicensedProductV2SoapFaultExceptionResolver extends SoapFaultAnnota
 	@Autowired(required = true)
 	private Jaxb2Marshaller marshaller;
 
-	@Autowired(required = true)
-	private LicensedProductExceptionFactory exceptionFactory;
-	
 	public void setMarshaller(Jaxb2Marshaller marshaller) {
 		this.marshaller = marshaller;
 	}
 	
-	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
-		this.exceptionFactory = exceptionFactory;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -60,19 +53,19 @@ public class LicensedProductV2SoapFaultExceptionResolver extends SoapFaultAnnota
 		Result result = fault.addFaultDetail().getResult();
 
 		JAXBElement element = null;
-		if (ex instanceof AbstractRumbaException) {
+		if (ex instanceof AbstractCodedRumbaException) {
 			
-			LicensedProductException licensedProdException = exceptionFactory.getLicensedProductException(ex.getMessage(), ex);
+			AbstractCodedRumbaException codedException = (AbstractCodedRumbaException)ex;
 
 			LicensedProductExceptionType licensedProdJAXBException = new LicensedProductExceptionType();
 
-			licensedProdJAXBException.setCode(licensedProdException.getCodeAndDesc().getCode());
-			licensedProdJAXBException.setDescription(licensedProdException.getCodeAndDesc().getDescription());
-			licensedProdJAXBException.setMessage(licensedProdException.getCause().getMessage());
+			licensedProdJAXBException.setCode(codedException.getCodeAndDesc().getCode());
+			licensedProdJAXBException.setDescription(codedException.getCodeAndDesc().getDescription());
+			licensedProdJAXBException.setMessage(codedException.getCause().getMessage());
 
 			ParameterListType params = new ParameterListType();
 
-			Object[] objectValues = licensedProdException.getValues();
+			Object[] objectValues = codedException.getValues();
 			if ((objectValues != null) && (objectValues.length > 0)) {
 				for (Object objectValue : objectValues) {
 					if (objectValue != null) {

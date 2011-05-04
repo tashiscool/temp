@@ -116,7 +116,9 @@
 			annotation to SOAP Faults. The business logic exceptions
 			will have these.
 		</description>
-		<property name="order" value="1" />
+		<property name="order">
+			<util:constant static-field="org.springframework.core.Ordered.HIGHEST_PRECEDENCE"/>
+		</property>
 		<property name="mappedEndpoints">
 			<set>
 				<value>marshallingLicensedProductWebServiceGateway</value>

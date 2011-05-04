@@ -32,6 +32,7 @@
 				<prop key="LP_EXC_0004">${LP_EXC_0004}</prop>
 				<prop key="LP_EXC_0005">${LP_EXC_0005}</prop>
 				<prop key="LP_EXC_0006">${LP_EXC_0006}</prop>
+				<prop key="LP_EXC_0007">${LP_EXC_0007}</prop>
 			</props>
 		</property>
 	</bean>

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
+import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
@@ -61,7 +62,19 @@ public class LicensedProductsDataAggregator {
 				orgDisplayNameResponses.add((OrganizationDisplayNamesResponse) response);
 			}
 		}
-
+		
+		if(licensePoolResponse == null) {
+			LOGGER.error("Required LicensePoolResponse message not received!");
+			throw new NullPointerException("Required LicensePoolResponse message not received!");
+		}
+		
+		if(orgDisplayNameResponses.isEmpty() && !licensePoolResponse.getLicensePools().isEmpty()) {
+			LOGGER.error("No organization display names found! Not enough information to assemble last response!");
+			throw new RequiredObjectNotFoundException(
+					exceptionFactory.findExceptionMessage(
+							LicensedProductExceptionMessageCode.LP_EXC_0007.toString()));
+		}
+		
 		OrganizationDisplayNamesResponse mergedResponse = merge(orgDisplayNameResponses);
 		
 		// no license pools found, check if we have organizations

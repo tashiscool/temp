@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
+import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
 import com.pearson.ed.lp.message.LicensePoolByOrganizationIdRequest;
 import com.pearson.ed.lp.message.LicensePoolResponse;
 import com.pearson.ed.lp.stub.api.LicensePoolLifeCycleClient;
+import com.pearson.ed.lplc.exception.OrganizationNotValidException;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 
@@ -48,6 +50,11 @@ public class LicensePoolServiceWrapper implements LicensePoolLifeCycleClient {
 		try {
 			licensePools = licensePoolService.getLicensePoolByOrganizationId(
 					request.getOrganizationId(), request.getQualifyingLicensePool());
+		} catch (OrganizationNotValidException e) {
+			throw new InvalidOrganizationException(
+					exceptionFactory.findExceptionMessage(
+							LicensedProductExceptionMessageCode.LP_EXC_0003.toString()),
+					new Object[]{request.getOrganizationId()}, e);
 		} catch (Exception e) {
 			LOGGER.error("Unexpected exception thrown by wrapped LicensePoolService instance: " + e.getMessage());
 			throw new ExternalServiceCallException(

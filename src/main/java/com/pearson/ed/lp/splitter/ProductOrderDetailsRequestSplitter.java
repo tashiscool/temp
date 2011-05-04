@@ -44,6 +44,11 @@ public class ProductOrderDetailsRequestSplitter {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Received message to split");
 		}
+		
+		if(licensePoolsAndOrgDisplayNames.getLicensePools() == null) {
+			LOGGER.error("List of license pool data missing!");
+			throw new NullPointerException("List of license pool data missing!");
+		}
 
 		int licensedProductCount = licensePoolsAndOrgDisplayNames.getLicensePools().getLicensePools().size();
 

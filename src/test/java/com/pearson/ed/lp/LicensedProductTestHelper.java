@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import com.pearson.ed.lp.message.ProductData;
-import com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl;
+import com.pearson.ed.lp.ws.LicensedProductWebServiceConstants;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProduct;
@@ -175,7 +175,7 @@ public class LicensedProductTestHelper {
 				for(String cgProgram : cgPrograms) {
 					AttributeType attribute = new AttributeType();
 					product.getAttributes().getAttribute().add(attribute);
-					attribute.setAttributeKey(ProductLifeCycleClientImpl.CG_PROGRAM_ATTR_KEY);
+					attribute.setAttributeKey(LicensedProductWebServiceConstants.CG_PROGRAM_ATTR_KEY);
 					attribute.setAttributeValue(cgProgram);
 				}
 			}
@@ -183,7 +183,7 @@ public class LicensedProductTestHelper {
 			for (String gradeLevel : dummyData.getGradeLevels()) {
 				AttributeType attribute = new AttributeType();
 				product.getAttributes().getAttribute().add(attribute);
-				attribute.setAttributeKey(ProductLifeCycleClientImpl.GRADE_LEVEL_ATTR_KEY);
+				attribute.setAttributeKey(LicensedProductWebServiceConstants.GRADE_LEVEL_ATTR_KEY);
 				attribute.setAttributeValue(gradeLevel);
 			}
 		}
