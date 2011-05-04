@@ -53,12 +53,12 @@ public class LicensePoolServiceWrapper implements LicensePoolLifeCycleClient {
 		} catch (OrganizationNotValidException e) {
 			throw new InvalidOrganizationException(
 					exceptionFactory.findExceptionMessage(
-							LicensedProductExceptionMessageCode.LP_EXC_0003.toString()),
+							LicensedProductExceptionMessageCode.LP_EXC_0002.toString()),
 					new Object[]{request.getOrganizationId()}, e);
 		} catch (Exception e) {
 			LOGGER.error("Unexpected exception thrown by wrapped LicensePoolService instance: " + e.getMessage());
 			throw new ExternalServiceCallException(
-					exceptionFactory.findExceptionMessage(LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
+					exceptionFactory.findExceptionMessage(LicensedProductExceptionMessageCode.LP_EXC_0001.toString()), 
 					null, 
 					e);
 		}

@@ -12,38 +12,33 @@ package com.pearson.ed.lp.exception;
 public enum LicensedProductExceptionMessageCode {
 	
 	/**
-	 * Default error.
+	 * Unspecified LicensedProduct error
 	 */
 	LP_EXC_0001,
 	
 	/**
-	 * Unspecified LicensedProduct error
+	 * Organization not found
 	 */
 	LP_EXC_0002,
 	
 	/**
-	 * Organization not found
+	 * Product not found
 	 */
 	LP_EXC_0003,
 	
 	/**
-	 * Product not found
+	 * Order line item for Order not found
 	 */
 	LP_EXC_0004,
 	
 	/**
-	 * Order line item for Order not found
+	 * Missing Product display information
 	 */
 	LP_EXC_0005,
 	
 	/**
-	 * Missing Product display information
-	 */
-	LP_EXC_0006,
-	
-	/**
 	 * Missing Organization display information
 	 */
-	LP_EXC_0007;
+	LP_EXC_0006;
 
 }

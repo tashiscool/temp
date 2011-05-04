@@ -9,24 +9,14 @@ package com.pearson.ed.lp.exception;
 public enum LicensedProductExceptionCode {
 	
 	/**
-	 * Default error.
+	 * Unspecified LicensedProduct error
 	 */
 	LP0001,
 	
 	/**
-	 * Unspecified LicensedProduct error
-	 */
-	LP0002,
-	
-	/**
-	 * Invalid LicensedProduct fields
-	 */
-	LP0003,
-	
-	/**
 	 * Required data not found
 	 */
-	LP0004,
+	LP0002,
 	
 	/**
 	 * Product not found

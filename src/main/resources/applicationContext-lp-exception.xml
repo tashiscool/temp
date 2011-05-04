@@ -16,8 +16,6 @@
 			<props>
 				<prop key="LP0001">${LP0001}</prop>
 				<prop key="LP0002">${LP0002}</prop>
-				<prop key="LP0003">${LP0003}</prop>
-				<prop key="LP0004">${LP0004}</prop>
 				<prop key="PLC0006">${PLC0006}</prop>
 				<prop key="OLC0006">${OLC0006}</prop>
 				<prop key="ORLC006">${ORLC006}</prop>
@@ -32,7 +30,6 @@
 				<prop key="LP_EXC_0004">${LP_EXC_0004}</prop>
 				<prop key="LP_EXC_0005">${LP_EXC_0005}</prop>
 				<prop key="LP_EXC_0006">${LP_EXC_0006}</prop>
-				<prop key="LP_EXC_0007">${LP_EXC_0007}</prop>
 			</props>
 		</property>
 	</bean>

@@ -71,7 +71,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			if(faultMessage.contains("No Organization with Organization Id")) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
 						new Object[]{organizationId}, exception);
 			} else {
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
@@ -119,7 +119,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			if(faultMessage.contains("Invalid Organization Id")) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
 						new Object[]{organizationId}, exception);
 			} else if(faultMessage.contains("No child organizations found")) {
 				// consume the exception, this is an acceptable situation
@@ -165,7 +165,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			if(faultMessage.contains("Invalid Organization Id")) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
 						new Object[]{organizationId}, exception);
 			} else if(faultMessage.contains("No parent organizations found")) {
 				// consume the exception, this is an acceptable situation
