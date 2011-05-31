@@ -30,14 +30,14 @@
 	<bean id="schemaCollection"
 		class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
 		<description>
-			This bean wraps the LicensePool.xsd and LicensedProduct.xsd
+			This bean wraps the LicensePool.xsd and LicensedProductV2.xsd
 			(which import Service.xsd), and
 			inlines them as a one.
 		</description>
 		<property name="xsds">
 			<list>
 				<value>classpath:/licensepool/LicensePool.xsd</value>
-				<value>classpath:/licensedproduct/LicensedProduct.xsd</value>
+				<value>classpath:/licensedproduct/LicensedProductV2.xsd</value>
 			</list>
 		</property>
 		<property name="inline" value="true" />

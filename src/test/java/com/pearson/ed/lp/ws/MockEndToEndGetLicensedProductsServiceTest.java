@@ -135,8 +135,8 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		
-		// LicensedProduct.xsd schema file referenced through contract repo jar file
-		licensedProductXmlSchema = new ClassPathResource("licensedproduct/LicensedProduct.xsd");
+		// LicensedProductV2.xsd schema file referenced through contract repo jar file
+		licensedProductXmlSchema = new ClassPathResource("licensedproduct/LicensedProductV2.xsd");
 		
 		// set the default locale to ENGLISH for SOAPFault checks later on
 		Locale.setDefault(Locale.ENGLISH);

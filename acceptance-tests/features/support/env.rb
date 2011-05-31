@@ -1,17 +1,15 @@
 # common libraries for all step definitions
-require 'savon'
+require 'soap_client'
 require 'rspec/expectations'
 require 'uuid'
+#require 'Organization_2009_07_01_mapper'
+require 'UserLifeCycleV3_mapper'
+#require 'ProductLifeCycleV2_mapper'
+#require 'Resource_V2_mapper'
+#require 'OrderProcessing_mapper'
+require 'LicensedProductV2_mapper'
 
 UUID.state_file = false
-
-Savon.configure do |config|
-  # set to use SOAP version 1.2
-  config.soap_version = 2
-  # disable feature to raise errors for SOAPFaults and HTTP errors (we handle those separately)
-  config.raise_errors = false
-  config.log_level = :info
-end
 
 # :get_something_request -> <GetSomethingRequest>
 Gyoku.convert_symbols_to :camelcase
@@ -26,7 +24,7 @@ $service_clients[:UserLifeCycleV3] = Savon::Client.new {wsdl.document = "http://
 $service_clients[:ProductLifeCycleV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/product/services/V2/ProductLifeCycleV2.wsdl"}
 $service_clients[:ResourceLifeCycleV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/ProductLifeCycle/resource/services/V2/ResourceLifeCycle_V2.wsdl"}
 $service_clients[:OrderProcessing] = Savon::Client.new {wsdl.document = "http://#{composite_endpoint_url}/ProcessOrderService/ProcessOrderService?wsdl"}
-$service_clients[:GetLicensedProductV2] = Savon::Client.new {wsdl.document = "http://#{entity_endpoints_url}/LicensePoolLifeCycle/licensedproduct/services/V2/LicensedProduct.wsdl"}
+$service_clients[:GetLicensedProductV2] = SoapClient.new "http://#{entity_endpoints_url}/LicensePoolLifeCycle/licensedproduct/services/V2/LicensedProductV2.wsdl"
 
 $service_clients[:OrderProcessing].wsdl.endpoint = "http://#{composite_endpoint_url}/ProcessOrderService"
 
@@ -48,4 +46,3 @@ $already_created_orderless_orgs = false
 Before do
   @result_response = nil
 end
-
