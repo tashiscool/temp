@@ -1,5 +1,4 @@
 Given /^I have an organization hierarchy with (a grandparent,|) (a parent and|) ([1-9]) child organizations?( without licensed products|)$/ do |grandparent, parent, child_count, without_orders|
-  org_client = OrganizationServiceClient.new $service_clients[:OrganizationLifeCycle]
 
   unless without_orders.nil? or without_orders.empty?
     # generate fresh org heirarchy, and make sure to set the flag to ignore OrderProcessing service calls
@@ -14,51 +13,71 @@ Given /^I have an organization hierarchy with (a grandparent,|) (a parent and|) 
 
   if child_count.to_i > 0 and $child_org_ids.empty?
     child_count.to_i.times do |i|
-      org_client.gen_skeleton_request :create
-      org_client.set_org_name "#{$active_us} AT Child Org \##{i} " + UUID.generate
-      org_client.set_org_type "School"
-      org_client.add_org_display_group "K-12"
-      org_client.add_identifier "Pegasus Id", "#{$active_us}_Child_#{i}_PegasusId"
-      response = org_client.exec
-      response.http_error?.should be_false, response.http_error
-      response.soap_fault?.should be_false, response.soap_fault
-      $child_org_ids << response[:create_organization_response][:service_response_type][:return_value]
+      create_org = Organization_2009_07_01::CreateOrganizationRequest.new
+      create_org.createOrganizationType = Organization_2009_07_01::CreateOrganizationType.new
+      create_org.createOrganizationType.name = "#{$active_us} AT Child Org \##{i} " + UUID.generate
+      create_org.createOrganizationType.organizationType = Organization_2009_07_01::OrganizationTypeType::School
+      create_org.createOrganizationType.organizationDisplayGroupInfo = Organization_2009_07_01::DisplayGroupInfoType.new
+      create_org.createOrganizationType.organizationDisplayGroupInfo.groupType = Organization_2009_07_01::DisplayGroupType::K12
+      create_org.createOrganizationType.identifiers = Organization_2009_07_01::IdentifiersType.new
+      create_org.createOrganizationType.identifiers << Organization_2009_07_01::IdentifierType.new(Organization_2009_07_01::IdTypeType::PegasusId, "#{$active_us}_Child_#{i}_PegasusId")
+      create_org.createOrganizationType.sourceSystem = "https://idpdev.pearsoncmg.com/synapse"
+
+      response = $service_clients[:OrganizationLifeCycle].request create_org
+      response.should_not be_a(Savon::SOAP::Fault)
+      $child_org_ids << response.serviceResponseType.returnValue
     end
   end
 
   if not parent.nil? and $parent_org_id.nil?
-    org_client.gen_skeleton_request :create
-    org_client.set_org_name "#{$active_us} AT Parent Org " + UUID.generate
-    org_client.set_org_type "School"
-    org_client.add_org_display_group "K-12"
-    org_client.add_identifier "Pegasus Id", "#{$active_us}_Parent_PegasusId"
-    response = org_client.exec
-    response.http_error?.should be_false, response.http_error
-    response.soap_fault?.should be_false, response.soap_fault
-    $parent_org_id = response[:create_organization_response][:service_response_type][:return_value]
+    create_org = Organization_2009_07_01::CreateOrganizationRequest.new
+    create_org.createOrganizationType = Organization_2009_07_01::CreateOrganizationType.new
+    create_org.createOrganizationType.name = "#{$active_us} AT Parent Org " + UUID.generate
+    create_org.createOrganizationType.organizationType = Organization_2009_07_01::OrganizationTypeType::School
+    create_org.createOrganizationType.organizationDisplayGroupInfo = Organization_2009_07_01::DisplayGroupInfoType.new
+    create_org.createOrganizationType.organizationDisplayGroupInfo.groupType = Organization_2009_07_01::DisplayGroupType::K12
+    create_org.createOrganizationType.identifiers = Organization_2009_07_01::IdentifiersType.new
+    create_org.createOrganizationType.identifiers << Organization_2009_07_01::IdentifierType.new(Organization_2009_07_01::IdTypeType::PegasusId, "#{$active_us}_Parent_PegasusId")
+      create_org.createOrganizationType.sourceSystem = "https://idpdev.pearsoncmg.com/synapse"
+
+    response = $service_clients[:OrganizationLifeCycle].request create_org
+    response.should_not be_a(Savon::SOAP::Fault)
+    
+    $parent_org_id = response.serviceResponseType.returnValue
 
   # add multiple child orgs... since we use Hash objects right now we have to do this one at a time due to
   # the contract's use of attributes
     $child_org_ids.each do |child_org_id|
-      org_client.gen_skeleton_request :create_update_relation
-      org_client.add_related_org child_org_id, "C", $parent_org_id
-      response = org_client.exec
-      response.http_error?.should be_false, response.http_error
-      response.soap_fault?.should be_false, response.soap_fault
+      create_org_relation = Organization_2009_07_01::CreateUpdateOrganizationRelationRequest.new
+      relation = Organization_2009_07_01::OrganizationRelation.new
+      relation.xmlattr_OrganizationId = $parent_org_id
+      relation.xmlattr_RelatedOrganizationId = child_org_id
+      relation.xmlattr_RelationTypeCode = Organization_2009_07_01::RelationshipTypeCodeType::C
+      create_org_relation << relation
+
+      response = $service_clients[:OrganizationLifeCycle].request create_org_relation
+      response.should_not be_a(Savon::SOAP::Fault)
     end
   end
 
   if not grandparent.nil? and $grandparent_org_id.nil?
-    org_client.gen_skeleton_request :create
-    org_client.set_org_name "#{$active_us} AT Grandparent Org " + UUID.generate
-    org_client.set_org_type "School"
-    org_client.add_org_display_group "K-12"
-    org_client.add_related_org $parent_org_id
-    org_client.add_identifier "Pegasus Id", "#{$active_us}_Grandparent_PegasusId"
-    response = org_client.exec
-    response.http_error?.should be_false, response.http_error
-    response.soap_fault?.should be_false, response.soap_fault
-    $grandparent_org_id = response[:create_organization_response][:service_response_type][:return_value]
+    create_org = Organization_2009_07_01::CreateOrganizationRequest.new
+    create_org.createOrganizationType = Organization_2009_07_01::CreateOrganizationType.new
+    create_org.createOrganizationType.name = "#{$active_us} AT Grandparent Org " + UUID.generate
+    create_org.createOrganizationType.organizationType = Organization_2009_07_01::OrganizationTypeType::School
+    create_org.createOrganizationType.organizationDisplayGroupInfo = Organization_2009_07_01::DisplayGroupInfoType.new
+    create_org.createOrganizationType.organizationDisplayGroupInfo.groupType = Organization_2009_07_01::DisplayGroupType::K12
+    create_org.createOrganizationType.identifiers = Organization_2009_07_01::IdentifiersType.new
+    create_org.createOrganizationType.identifiers << Organization_2009_07_01::IdentifierType.new(Organization_2009_07_01::IdTypeType::PegasusId, "#{$active_us}_Grandparent_PegasusId")
+    create_org.createOrganizationType.relatedOrganization = Organization_2009_07_01::OrganizationRelationType.new
+    create_org.createOrganizationType.relatedOrganization.xmlattr_RelatedOrganizationId = $parent_org_id
+    create_org.createOrganizationType.relatedOrganization.xmlattr_RelationType = Organization_2009_07_01::RelationshipTypeCodeType::C
+    create_org.createOrganizationType.sourceSystem = "https://idpdev.pearsoncmg.com/synapse"
+
+    response = $service_clients[:OrganizationLifeCycle].request create_org
+    response.should_not be_a(Savon::SOAP::Fault)
+
+    $grandparent_org_id = response.serviceResponseType.returnValue
   end
 end
 

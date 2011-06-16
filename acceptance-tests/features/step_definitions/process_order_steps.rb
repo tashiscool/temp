@@ -5,15 +5,40 @@ Given /^I have an ordered license pool for each organization for the 'Institutio
     orgs << $grandparent_org_id << $parent_org_id
     orgs += $child_org_ids
 
-    order_client = OrderProcessingServiceClient.new $service_clients[:OrderProcessing]
     orgs.each do |org_id|
-      order_client.gen_skeleton_request :process_order
-      order_client.set_order_org_id org_id
-      order_client.add_order_line_item $product_entity_id
-      response = order_client.exec
-      response.http_error?.should be_false, response.http_error
-      response.soap_fault?.should be_false, response.soap_fault
-      response[:process_order_response][:service_response_type][:status_code].should == "SUCCESS"
+      order = OrderProcessing::ProcessOrderRequest.new
+      order.xmlattr_SourceSystem = "http://idpdev.pearsoncmg.com/synapse"
+      order.xmlattr_SubmittedBy = "Acceptance Tests"
+      order.order = OrderProcessing::OrderType.new
+      order.order.requestType = OrderProcessing::RequestTypeType::New
+      order.order.orderType = OrderProcessing::OrderTypeType::InstitutionalLicense
+      order.order.orderSourceSystem = OrderProcessing::OrderSourceSystemType::SapCg
+      order.order.orderOrgId = org_id
+      order.order.orderTotal = 1
+      order.order.iSOCurrencyCode = OrderProcessing::ISOCurrencyCodeType::USD
+      order.order.extOrderDate = Time.now
+      order.order.orderLineItems = OrderProcessing::OrderLineItemsType.new
+      order.order.orderStatus = OrderProcessing::OrderStatusCodeType::Created
+
+      order_item = OrderProcessing::OrderLineType.new
+      order_item.productEntityID = $product_entity_id
+      order_item.orderedISBN = "0123456789123"
+      order_item.quantity = 100
+      order_item.returnQuantity = 100
+      order_item.lineItemTotal = 100
+      order_item.notes = "#{$active_us}_AT_Order_Line_Item_for_#{$product_entity_id}"
+      order_item.lineItemStatus = OrderProcessing::OrderStatusCodeType::Created
+      order_item.licensePoolInfo = OrderProcessing::LicensePoolInfoType.new
+      order_item.licensePoolInfo.type = "Student seat based licensing"
+      order_item.licensePoolInfo.startDate = Time.now
+      order_item.licensePoolInfo.endDate = Time.now + 60*60*24*2000
+      order_item.licensePoolInfo.denyNewSubscription = OrderProcessing::DenyNewSubscriptionType::C_0
+
+      order.order.orderLineItems << order_item
+
+      response = $service_clients[:OrderProcessing].request order
+      response.should_not be_a(Savon::SOAP::Fault)
+      response.serviceResponseType.statusCode.should == OrderProcessing::StatusCodeType::SUCCESS
     end
     $already_ordered = true
   end

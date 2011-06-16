@@ -1,10 +1,14 @@
 Given /^I have created a valid resource$/ do
   if $resource_id.nil?
-    resource_client = ResourceServiceClientV2.new $service_clients[:ResourceLifeCycleV2]
-    resource_client.gen_skeleton_request :create
-    response = resource_client.exec
-    response.http_error?.should be_false, response.http_error
-    response.soap_fault?.should be_false, response.soap_fault
-    $resource_id = response[:create_resource_response][:service_response_type][:return_value]
+    create_resource = Resource_V2::CreateResourceRequest.new
+    create_resource.xmlattr_CreatedBy = "Acceptance Tests"
+    create_resource.resource = Resource_V2::CreateResourceType.new
+    create_resource.resource.name = "#{$active_us} AT Resource V2 " + UUID.generate
+    create_resource.resource.description = "#{$active_us} AT Resource V2"
+    create_resource.resource.authContextEntityId = 1
+
+    response = $service_clients[:ResourceLifeCycleV2].request create_resource
+    response.should_not be_a(Savon::SOAP::Fault)
+    $resource_id = response.serviceResponseType.returnValue
   end
 end
