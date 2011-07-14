@@ -18,6 +18,8 @@
 
 	<properties>
 		<short.name>lplc</short.name>
+        <hibernate.connection.username>${licensepool.hibernate.connection.username}</hibernate.connection.username>
+        <hibernate.connection.password>${licensepool.hibernate.connection.password}</hibernate.connection.password>
 	</properties>
 	
 	<profiles>
@@ -31,7 +33,6 @@
 			</activation>
 			<properties>
 				<env>local</env>
-				<hibernate.connection.url>${local.hibernate.connection.url}</hibernate.connection.url>
 				<tomcat.host>${local.tomcat.host}</tomcat.host>
 				<tomcat.username>${local.tomcat.username}</tomcat.username>
 				<tomcat.password>${local.tomcat.password}</tomcat.password>
@@ -44,7 +45,6 @@
 			<id>dev</id>
 			<properties>
 				<env>dev</env>
-				<hibernate.connection.url>${dev.hibernate.connection.url}</hibernate.connection.url>
 				<tomcat.host>${dev.tomcat.host}</tomcat.host>
 				<tomcat.username>${dev.tomcat.username}</tomcat.username>
 				<tomcat.password>${dev.tomcat.password}</tomcat.password>
@@ -57,7 +57,6 @@
 			<id>test</id>
 			<properties>
 				<env>test</env>
-				<hibernate.connection.url>${test.hibernate.connection.url}</hibernate.connection.url>
 				<tomcat.host>${test.tomcat.host}</tomcat.host>
 				<tomcat.username>${test.tomcat.username}</tomcat.username>
 				<tomcat.password>${test.tomcat.password}</tomcat.password>
@@ -70,7 +69,6 @@
 			<id>int</id>
 			<properties>
 				<env>int</env>
-				<hibernate.connection.url>${int.hibernate.connection.url}</hibernate.connection.url>
 			</properties>
 		</profile>
 		<profile>
@@ -80,7 +78,6 @@
 			<id>ppe</id>
 			<properties>
 				<env>ppe</env>
-				<hibernate.connection.url>${ppe.hibernate.connection.url}</hibernate.connection.url>
 			</properties>
 		</profile>
 		<profile>
@@ -90,7 +87,6 @@
 			<id>prod</id>
 			<properties>
 				<env>prod</env>
-				<hibernate.connection.url>${prod.hibernate.connection.url}</hibernate.connection.url>
 			</properties>
 		</profile>
 	</profiles>
@@ -152,10 +148,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
