@@ -14,7 +14,7 @@ UUID.state_file = false
 # :get_something_request -> <GetSomethingRequest>
 Gyoku.convert_symbols_to :camelcase
 
-entity_endpoints_url = "localhost:8080"
+entity_endpoints_url = "idpdev.pearsoncmg.com"
 composite_endpoint_url = "dev.osb.rumba.pearsoncmg.com"
 
 # initialize service client globals
