@@ -64,11 +64,17 @@ public abstract class BaseIntegrationTest extends AbstractTransactionalDataSourc
 	 * @return locations of the config files.
 	 */
 	protected String[] getConfigLocations() {
-		return new String[] { "classpath:applicationContext-lplc.xml", "classpath:applicationContext-lplc-dao.xml",
-				"classpath:applicationContext-lplc-hibernate.xml", "classpath:applicationContext-lplc-service.xml",
-				"classpath:applicationContext-lplc-jms.xml", "classpath:applicationContext-test-lplc-services.xml",
-				"classpath:applicationContext-lplc-ws.xml", "classpath:applicationContext-lplc.xml",
-				"classpath:applicationContext-lplc-exception.xml", "classpath:applicationContext-lplc-warning.xml",
+		return new String[] {
+				"classpath:applicationContext-test-lplc.xml",
+				"classpath:applicationContext-lplc-dao.xml",
+				"classpath:applicationContext-lplc-hibernate.xml",
+				"classpath:applicationContext-lplc-service.xml",
+				"classpath:applicationContext-lplc-jms.xml",
+				"classpath:applicationContext-test-lplc-services.xml",
+				"classpath:applicationContext-lplc-ws.xml",
+//				"classpath:applicationContext-lplc.xml",
+				"classpath:applicationContext-lplc-exception.xml",
+				"classpath:applicationContext-lplc-warning.xml",
 				"classpath:applicationContext-lp-exception.xml"};
 	}
 

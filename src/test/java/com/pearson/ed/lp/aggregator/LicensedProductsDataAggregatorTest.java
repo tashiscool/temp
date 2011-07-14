@@ -35,7 +35,7 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 		"classpath:applicationContext-lp-exception.xml",
-		"classpath:applicationContext-lplc.xml"
+		"classpath:applicationContext-test-lplc.xml"
 })
 public class LicensedProductsDataAggregatorTest {
 

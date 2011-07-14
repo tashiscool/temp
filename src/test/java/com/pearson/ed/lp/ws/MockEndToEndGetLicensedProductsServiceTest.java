@@ -77,7 +77,7 @@ import com.pearson.rws.licensedproduct.doc.v2.QualifyingLicensePool;
 		"classpath:applicationContext-lp-integration.xml",
 		"classpath:applicationContext-lp-exception.xml",
 		"classpath:applicationContext-test-lplc-ws.xml",
-		"classpath:applicationContext-lplc.xml"
+		"classpath:applicationContext-test-lplc.xml"
 })
 public class MockEndToEndGetLicensedProductsServiceTest {
 	
