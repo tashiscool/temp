@@ -11,7 +11,10 @@ require 'LicensedProductV2_mapper'
 
 UUID.state_file = false
 
-entity_endpoints_url = "idpdev.pearsoncmg.com"
+# :get_something_request -> <GetSomethingRequest>
+Gyoku.convert_symbols_to :camelcase
+
+entity_endpoints_url = "localhost:8080"
 composite_endpoint_url = "dev.osb.rumba.pearsoncmg.com"
 
 # initialize service client globals

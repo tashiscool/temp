@@ -43,7 +43,7 @@
 		<property name="ignoreUnresolvablePlaceholders" value="true"/>
 		<property name="locations">
 			<list>
-            	<value>classpath:app.properties</value>
+            	<value>classpath:rumba.properties</value>
 				<value>classpath:exception.properties</value>
 				<value>classpath:exceptionMessages_en_US.properties</value>
 				<value>classpath:warning.properties</value>

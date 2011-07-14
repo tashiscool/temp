@@ -32,7 +32,7 @@
 	<!-- Spring WS Clients -->
 	<bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
 		p:messageFactory-ref="messageFactory"
-		p:defaultUri="${product.service.endpoint}"
+		p:defaultUri="${productv2.service.endpoint}"
 		p:marshaller-ref="marshaller"
 		p:unmarshaller-ref="marshaller">
 		<property name="messageSender">
