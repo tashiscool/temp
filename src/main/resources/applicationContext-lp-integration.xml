@@ -134,9 +134,15 @@
 	<!-- channels -->
 	<channel id="wsGetLicensedProductsRequestsChannel" />
 	<channel id="licensePoolRequestChannel" />
-	<channel id="preGetParentOrganizationTreeChannel" />
-	<channel id="preGetChildOrganizationTreeChannel" />
-	<channel id="preGetOrganizationChannel" />
+	<channel id="preGetParentOrganizationTreeChannel">
+	   <dispatcher task-executor="pool"/>
+	</channel>
+	<channel id="preGetChildOrganizationTreeChannel">
+       <dispatcher task-executor="pool"/>
+    </channel>
+	<channel id="preGetOrganizationChannel">
+       <dispatcher task-executor="pool"/>
+    </channel>
 	<channel id="getParentOrganizationTreeChannel" />
 	<channel id="getChildOrganizationTreeChannel" />
 	<channel id="getOrganizationChannel" />
@@ -169,5 +175,8 @@
 	<beans:bean id="productOrderDetailsRequestSplitter" 
 		class="com.pearson.ed.lp.splitter.ProductOrderDetailsRequestSplitter"
 	/>
+    
+    <!-- TODO: tokenize the hell out of these properties -->
+    <task:executor id="pool" keep-alive="5" queue-capacity="50" />
 
 </beans:beans>
