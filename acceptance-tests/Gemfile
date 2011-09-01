@@ -1,0 +1,9 @@
+# licensepool acceptance-tests gemfile
+source "http://rubygems.org"
+source "http://gems.rubyforge.org"
+
+gem "rspec-expectations", "~>2.6.0"
+gem "uuid"
+gem "cucumber"
+gem "atdd-common"
+gem "contractrepository"
