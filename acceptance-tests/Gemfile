@@ -1,6 +1,7 @@
 # licensepool acceptance-tests gemfile
 source "http://rubygems.org"
 source "http://gems.rubyforge.org"
+source "http://rumba.ci.dev.pearsoncmg.com/gem-proxy"
 
 gem "rspec-expectations", "~>2.6.0"
 gem "uuid"
