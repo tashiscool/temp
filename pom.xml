@@ -57,24 +57,18 @@
 	</dependencies>
 
 	<build>
+	   <resources>
+            <resource>
+                <directory>${project.build.directory}/contractrepo</directory>
+                <targetPath>${project.build.directory}/contract</targetPath>
+                <includes>
+                    <include>licensepool/*</include>
+                    <include>licensedproduct/*</include>
+                    <include>common/*</include>
+                </includes>
+            </resource>
+	   </resources>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>extract-contracts</id>
-						<goals><goal>unpack-dependencies</goal></goals>
-						<phase>generate-resources</phase>
-						<configuration>
-							<includeGroupIds>com.pearson.ed.contract</includeGroupIds>
-							<includeArtifactIds>rumba-contracts</includeArtifactIds>
-							<includes>licensepool/*,licensedproduct/*,common/*</includes>
-							<outputDirectory>${project.build.directory}/contract</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
