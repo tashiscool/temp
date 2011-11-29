@@ -8,6 +8,8 @@ Given /^I have created a valid '([a-zA-Z]*)' enabled product$/ do |business_mode
     user.lastName = "Testerson"
     user.displayName = "#{$active_us} AT User"
     user.gender = "Unspecified"
+    user.userName = "#{$active_us}_username_#{UUID.generate}"
+    user.password = "abcd1234!"
     user.encryptionType = UserLifeCycleV3::EncryptionTypeType::SHA
     user.authenticationType = UserLifeCycleV3::AuthenticationTypeType::SSO
     user.businessRuleSet = UserLifeCycleV3::BusinessRuleSet::HE
@@ -15,6 +17,7 @@ Given /^I have created a valid '([a-zA-Z]*)' enabled product$/ do |business_mode
 
     response = $service_clients[:UserLifeCycleV3].request create_user
     response.should_not be_a(Savon::SOAP::Fault)
+    response.serviceResponseType.responseCode.should == UserLifeCycleV3::ResponseCodeType::SUCCESS
     $dummy_user_id = response.serviceResponseType.returnValue
   end
 
@@ -66,6 +69,7 @@ Given /^I have created a valid '([a-zA-Z]*)' enabled product$/ do |business_mode
 
     response = $service_clients[:ProductLifeCycleV2].request create_product
     response.should_not be_a(Savon::SOAP::Fault)
+    response.serviceResponseType.responseCode.should == ProductLifeCycleV2::ResponseCodeType::SUCCESS
 
     $product_id = response.serviceResponseType.returnValue
 
