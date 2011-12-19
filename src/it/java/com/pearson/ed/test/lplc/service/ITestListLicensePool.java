@@ -24,7 +24,7 @@ import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolDetails;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
 @RunWith(JUnit4ClassRunner.class)
-public class TestListLicensePool extends BaseIntegrationTest {
+public class ITestListLicensePool extends BaseIntegrationTest {
 
 	@Test
 	public void testListLicensePool() {

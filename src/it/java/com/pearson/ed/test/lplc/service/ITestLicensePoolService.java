@@ -14,7 +14,7 @@ import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
-public class TestLicensePoolService extends BaseIntegrationTest {
+public class ITestLicensePoolService extends BaseIntegrationTest {
 
 	/**
 	 * testDenyNewSubscriptions() method to test the functionality of denyNewSubscriptions() method of

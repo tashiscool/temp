@@ -19,7 +19,7 @@ import com.pearson.ed.test.lplc.common.TestLPLCConstants;
  * @author vc999el
  * 
  */
-public class TestOrganizationLPDAO extends BaseIntegrationTest {
+public class ITestOrganizationLPDAO extends BaseIntegrationTest {
 
 	/**
 	 * testListOrganizationMappingByOrganizationId() method to test the functionality of

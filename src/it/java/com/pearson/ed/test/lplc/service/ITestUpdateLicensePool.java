@@ -17,7 +17,7 @@ import com.pearson.ed.lplc.services.api.LicensePoolService;
 import com.pearson.ed.test.lplc.common.BaseIntegrationTest;
 
 @RunWith(JUnit4ClassRunner.class)
-public class TestUpdateLicensePool extends BaseIntegrationTest {
+public class ITestUpdateLicensePool extends BaseIntegrationTest {
 
 	@Test
 	public void testUpdateLicensePool() {
