@@ -17,8 +17,6 @@
 
 	<properties>
 		<short.name>lplc</short.name>
-        <hibernate.connection.username>${licensepool.hibernate.connection.username}</hibernate.connection.username>
-        <hibernate.connection.password>${licensepool.hibernate.connection.password}</hibernate.connection.password>
 	</properties>
 	
 	<dependencies>
@@ -60,14 +58,6 @@
 	   <resources>
             <resource>
                 <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>sql</directory>
-                <targetPath>../sql</targetPath>
-                <includes>
-                    <include>**/*.sql</include>
-                </includes>
-                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>${project.build.directory}/contractrepo</directory>
