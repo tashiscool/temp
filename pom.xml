@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>com.pearson.ed.ltg.rumba</groupId>
 		<artifactId>webservices</artifactId>
-        <version>12.6.1-SNAPSHOT</version>
+        <version>3.0.31</version>
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
 	<artifactId>LicensePoolLifeCycle</artifactId>
-    <version>12.6.1-SNAPSHOT</version>
+    <version>3.0.31</version>
 	<packaging>war</packaging>
 
 	<name>LicensePoolLifeCycle</name>
