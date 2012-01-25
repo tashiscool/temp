@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.pearson.ed.ltg.rumba</groupId>
 		<artifactId>webservices</artifactId>
-        <version>12.6.0</version>
+        <version>12.6.1-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
@@ -27,7 +27,7 @@
 
 	<dependencies>
         <dependency>
-            <groupId>com.pearson.ed.contract</groupId>
+            <groupId>com.pearson.ed.ltg.rumba</groupId>
             <artifactId>rumba-contracts</artifactId>
             <version>${rumba.contracts-version}</version>
         </dependency>
