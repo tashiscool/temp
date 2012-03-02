@@ -62,7 +62,7 @@ Given /^I have created a valid '([a-zA-Z]*)' enabled product$/ do |business_mode
     create_product.product.identifiers << identifier
 
     create_product.product.displayInformation = ProductLifeCycleV2::CreateDisplayInfosType.new
-    display_info = ProductLifeCycleV2::BaseDisplayInfoType.new "#{$active_us} AT Product", nil, nil, true, ProductLifeCycleV2::LocaleType::En_US
+    display_info = ProductLifeCycleV2::BaseDisplayInfoType.new "#{$active_us} AT Product", nil, nil, true, ProductLifeCycleV2::LocaleType::En
     create_product.product.displayInformation << display_info
 
     create_product.product.contact = ProductLifeCycleV2::BaseProductContactType.new "Owner", $dummy_user_id
