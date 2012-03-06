@@ -9,7 +9,7 @@ GEM
       contractrepository (>= 12.6.4)
       savon (~> 0.9.1)
     builder (3.0.0)
-    contractrepository (12.6.5.20120301042204)
+    contractrepository (12.6.4.20120305132231)
       rubyjedi-soap4r (~> 1.5.8.20100619003610)
     cucumber (1.1.9)
       builder (>= 2.1.2)
