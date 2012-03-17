@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd">
 
 	<bean id="jmsFactory" class="progress.message.jclient.QueueConnectionFactory">
-    	<property name="brokerURL">
+    	<property name="connectionURLs">
       		<value>${jms.server.endpoint.url}</value>
     	</property>
     	<property name="defaultUser">
