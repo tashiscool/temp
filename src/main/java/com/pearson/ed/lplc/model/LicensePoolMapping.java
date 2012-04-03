@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.text.SimpleDateFormat;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -303,10 +305,13 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 	 * @return true if the LicensePoolMapping objects are equal.
 	 */
 	public boolean equals(Object obj) {
-		if (!(obj instanceof LicensePoolMapping))
+		if (! (obj instanceof LicensePoolMapping)) {
 			return false;
-		if (this == obj)
+		}
+
+		if (this == obj) {
 			return true;
+		}
 
 		LicensePoolMapping u = (LicensePoolMapping) obj;
 
@@ -318,7 +323,31 @@ public class LicensePoolMapping extends LPLCBaseEntity implements Serializable {
 		equalsBuilder.append(this.quantity, u.quantity);
 		equalsBuilder.append(this.org_id, u.org_id);
 		equalsBuilder.append(this.isCancelled, u.isCancelled);
+
 		return equalsBuilder.isEquals() && super.equals(obj);
 	}
+
+	// {{{ toString
+	public String toString() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd KK:mm:ss.SSS aa");
+
+		StringBuffer sb = new StringBuffer(super.toString());
+
+		sb.append(", licensePoolId=").append(licensepoolId);
+		sb.append(", type=").append(type);
+		sb.append(", denyManualSubscription=").append(denyManualSubscription);
+ 		sb.append(", start_date=").append((start_date != null) ? format.format(start_date) : "null");
+ 		sb.append(", end_date=").append((end_date != null) ? format.format(end_date) : "null");
+ 		sb.append(", quantity=").append(quantity);
+ 		sb.append(", org_id=").append(org_id);
+ 		sb.append(", status=").append(status);
+ 		sb.append(", product_id=").append(product_id);
+ 		sb.append(", isCancelled=").append(isCancelled);
+ 		sb.append(", orderLineItems=").append("not dumped");
+ 		sb.append(", organizations=").append("not dumped");
+
+		return sb.toString();
+	}
+	// }}}
 
 }

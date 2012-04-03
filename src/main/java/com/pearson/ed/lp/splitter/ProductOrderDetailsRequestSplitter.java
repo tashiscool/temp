@@ -2,6 +2,7 @@ package com.pearson.ed.lp.splitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import com.pearson.ed.lp.message.LicensedProductDataCollection;
 import com.pearson.ed.lp.message.OrderLineItemsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
+import com.pearson.ed.lplc.model.OrderLineItemLPMapping;
+import com.pearson.ed.lplc.model.LicensePoolMapping;
 
 /**
  * Splitter implementation that takes a {@link LicensedProductDataCollection} message payload and separates out data for
@@ -54,15 +57,30 @@ public class ProductOrderDetailsRequestSplitter {
 
 		List<String> orderLineItemIds = new ArrayList<String>(licensedProductCount);
 		List<Long> productEntityIds = new ArrayList<Long>(licensedProductCount);
+
 		OrderLineItemsRequest orderLineItemIdsRequest = new OrderLineItemsRequest();
 		orderLineItemIdsRequest.setOrderLineItemIds(orderLineItemIds);
+		
 		ProductEntityIdsRequest productEntityIdsRequest = new ProductEntityIdsRequest();
 		productEntityIdsRequest.setProductEntityIds(productEntityIds);
 
 		for (OrganizationLPMapping licensePool : licensePoolsAndOrgDisplayNames.getLicensePools().getLicensePools()) {
+			LicensePoolMapping lpMapping = licensePool.getLicensepoolMapping();
+			Set<OrderLineItemLPMapping> orderLineItems = lpMapping.getOrderLineItems();
+			
+			if (orderLineItems.isEmpty()) {
+				throw new IllegalStateException("no order line items in " + lpMapping.toString());
+			}
+
+			String orderLineItemId =
+				orderLineItems				
+					.iterator()
+					.next()
+					.getOrderLineItemId();
+
 			// first element is the order line that created the license pool
-			orderLineItemIds.add(licensePool.getLicensepoolMapping().getOrderLineItems().iterator().next()
-					.getOrderLineItemId());
+			orderLineItemIds.add(orderLineItemId);
+
 			// is actually a number in the product DB, and this value is actually the product entity id
 			productEntityIds.add(Long.valueOf(licensePool.getLicensepoolMapping().getProduct_id()));
 		}
