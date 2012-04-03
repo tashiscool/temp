@@ -30,13 +30,24 @@ import com.pearson.rws.order.doc._2009._02._09.ReadOrderLineType;
  * 
  */
 public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(OrderLifeCycleClientImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private WebServiceTemplate serviceClient;
 	
 	@Autowired(required = true)
 	private LicensedProductExceptionFactory exceptionFactory;
+
+	public void setServiceClient(final WebServiceTemplate serviceClient) {
+		this.serviceClient = serviceClient;
+	}
+
+	public WebServiceTemplate getServiceClient() {
+		return serviceClient;
+	}
+
+	public void setExceptionFactory(final LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
+	}
 
 	/**
 	 * Get all ISBN numbers associated with the given order ids by calling the OrderLifeCycle service.
@@ -47,8 +58,9 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 	 * @return OrderLineItemsResponse mapping ISBN strings to associated order line item ids
 	 * @throws AbstractRumbaException on service error
 	 */
-	public OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request)
-			throws AbstractRumbaException {
+	public OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(final OrderLineItemsRequest request)
+		throws AbstractRumbaException
+	{
 
 		OrderLineItemsResponse response = new OrderLineItemsResponse();
 		Map<String, String> responsePayload = response.getOrderedISBNsByOrderLineItemIds();
@@ -61,30 +73,38 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 			GetOrderLineItemByIdResponse orderLineItemResponse = null;
 
 			try {
-				orderLineItemResponse = (GetOrderLineItemByIdResponse) serviceClient
-						.marshalSendAndReceive(orderLineItemRequest);
+				orderLineItemResponse =
+					(GetOrderLineItemByIdResponse) serviceClient.marshalSendAndReceive(orderLineItemRequest);
+
 			} catch (SoapFaultClientException exception) {
+				logger.error("exception invoking GetOrderLineItemById for " + orderLineItemId, exception);
+
 				String faultMessage = getFaultMessage(exception.getWebServiceMessage());
-				if(faultMessage.contains("Required object not found")) {
+
+				if (faultMessage.contains("Required object not found")) {
 					throw new OrderLineNotFoundException(
-							exceptionFactory.findExceptionMessage(
-									LicensedProductExceptionMessageCode.LP_EXC_0004.toString()), 
-									new Object[]{orderLineItemId}, exception);
+ 						exceptionFactory.findExceptionMessage(
+							LicensedProductExceptionMessageCode.LP_EXC_0004),
+							new Object[]{orderLineItemId},
+							exception
+						);
 				} else {
 					throw new ExternalServiceCallException(exception.getMessage(), null, exception);
 				}
 			} catch (Exception exception) {
+				logger.error("exception invoking GetOrderLineItemById for " + orderLineItemId, exception);
+				
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
 			}
 
 			if (orderLineItemResponse != null) {
 				// find the right order line item
-				for (ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems()
-						.getOrderLine()) {
+				for (ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems().getOrderLine()) {
 					if (orderLineItem.getOrderLineItemId().equals(orderLineItemId)) {
 						if(orderLineItem.getOrderedISBN() != null) {
 							responsePayload.put(orderLineItemId, orderLineItem.getOrderedISBN());
 						}
+
 						break;
 					}
 				}
@@ -93,21 +113,4 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 
 		return response;
 	}
-
-	public WebServiceTemplate getServiceClient() {
-		return serviceClient;
-	}
-
-	public void setServiceClient(WebServiceTemplate serviceClient) {
-		this.serviceClient = serviceClient;
-	}
-
-	public LicensedProductExceptionFactory getExceptionFactory() {
-		return exceptionFactory;
-	}
-
-	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
-		this.exceptionFactory = exceptionFactory;
-	}
-
 }

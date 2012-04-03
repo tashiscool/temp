@@ -44,6 +44,18 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 	@Autowired(required = true)
 	private LicensedProductExceptionFactory exceptionFactory;
 
+	public void setServiceClient(WebServiceTemplate serviceClient) {
+		this.serviceClient = serviceClient;
+	}
+	
+	public WebServiceTemplate getServiceClient() {
+		return serviceClient;
+	}
+	
+	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
+	}
+
 	/**
 	 * Populate ProductData pojos associated with the given product entity ids by calling the ProductLifeCycle service.
 	 * Implements {@link ProductLifeCycleClient#getProductDataByProductEntityIds(ProductEntityIdsRequest)}.
@@ -77,7 +89,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 			if(faultMessage.contains("Required object not found")) {
 				throw new ProductNotFoundException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0003.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0003), 
 								request.getProductEntityIds().toArray(), exception);
 			} else {
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
@@ -101,7 +113,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 							responseType.getProductEntityId()));
 					throw new RequiredObjectNotFoundException(
 							exceptionFactory.findExceptionMessage(
-									LicensedProductExceptionMessageCode.LP_EXC_0005.toString()), 
+									LicensedProductExceptionMessageCode.LP_EXC_0005), 
 									new Object[]{responseType.getProductEntityId()});
 				}
 
@@ -132,21 +144,5 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 		}
 
 		return response;
-	}
-
-	public WebServiceTemplate getServiceClient() {
-		return serviceClient;
-	}
-
-	public void setServiceClient(WebServiceTemplate serviceClient) {
-		this.serviceClient = serviceClient;
-	}
-
-	public LicensedProductExceptionFactory getExceptionFactory() {
-		return exceptionFactory;
-	}
-
-	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
-		this.exceptionFactory = exceptionFactory;
 	}
 }

@@ -72,7 +72,7 @@ public class LicensedProductsDataAggregator {
 			LOGGER.error("No organization display names found! Not enough information to assemble last response!");
 			throw new RequiredObjectNotFoundException(
 					exceptionFactory.findExceptionMessage(
-							LicensedProductExceptionMessageCode.LP_EXC_0006.toString()));
+							LicensedProductExceptionMessageCode.LP_EXC_0006));
 		}
 		
 		OrganizationDisplayNamesResponse mergedResponse = merge(orgDisplayNameResponses);
@@ -83,7 +83,7 @@ public class LicensedProductsDataAggregator {
 			if(mergedResponse.getOrganizationDisplayNamesByIds().isEmpty()) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()));
+								LicensedProductExceptionMessageCode.LP_EXC_0002));
 			}
 		}
 

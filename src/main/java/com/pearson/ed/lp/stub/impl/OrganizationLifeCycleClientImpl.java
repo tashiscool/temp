@@ -43,6 +43,18 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 	@Autowired(required = true)
 	private LicensedProductExceptionFactory exceptionFactory;
 
+	public void setServiceClient(WebServiceTemplate serviceClient) {
+		this.serviceClient = serviceClient;
+	}
+
+	public WebServiceTemplate getServiceClient() {
+		return serviceClient;
+	}
+
+	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
+		this.exceptionFactory = exceptionFactory;
+	}
+
 	/**
 	 * Get all DisplayNames associated with the given organization id by calling the OrganizationLifeCycle service.
 	 * Implements {@link OrganizationLifeCycleClient#getOrganizationDisplayName(String)}.
@@ -71,7 +83,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			if(faultMessage.contains("No Organization with Organization Id")) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0002), 
 						new Object[]{organizationId}, exception);
 			} else {
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
@@ -119,7 +131,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			if(faultMessage.contains("Invalid Organization Id")) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0002), 
 						new Object[]{organizationId}, exception);
 			} else if(faultMessage.contains("No child organizations found")) {
 				// consume the exception, this is an acceptable situation
@@ -165,7 +177,7 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			if(faultMessage.contains("Invalid Organization Id")) {
 				throw new InvalidOrganizationException(
 						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0002.toString()), 
+								LicensedProductExceptionMessageCode.LP_EXC_0002), 
 						new Object[]{organizationId}, exception);
 			} else if(faultMessage.contains("No parent organizations found")) {
 				// consume the exception, this is an acceptable situation
@@ -183,14 +195,6 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		}
 
 		return response;
-	}
-
-	public WebServiceTemplate getServiceClient() {
-		return serviceClient;
-	}
-
-	public void setServiceClient(WebServiceTemplate serviceClient) {
-		this.serviceClient = serviceClient;
 	}
 
 	/**
@@ -211,13 +215,4 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 			}
 		}
 	}
-
-	public LicensedProductExceptionFactory getExceptionFactory() {
-		return exceptionFactory;
-	}
-
-	public void setExceptionFactory(LicensedProductExceptionFactory exceptionFactory) {
-		this.exceptionFactory = exceptionFactory;
-	}
-
 }

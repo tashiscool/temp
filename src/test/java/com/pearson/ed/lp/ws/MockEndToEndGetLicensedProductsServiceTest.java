@@ -142,6 +142,11 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 		Locale.setDefault(Locale.ENGLISH);
 
 		mockLicensedProductClient = MockWebServiceClient.createClient(messageReceiver, messageFactory);
+
+		/*
+		 * @todo fix this; get the service client directly via autowiring or
+		 * setter injection, not from another bean. bad form!
+		 */
 		mockOrgService = MockWebServiceServer.createServer(testOrgClient.getServiceClient());
 		mockOrderService = MockWebServiceServer.createServer(testOrderClient.getServiceClient());
 		mockProductService = MockWebServiceServer.createServer(testProductClient.getServiceClient());

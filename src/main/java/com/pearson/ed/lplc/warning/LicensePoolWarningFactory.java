@@ -7,16 +7,8 @@ public class LicensePoolWarningFactory {
 	private String defaultKey;
 	private Properties codeDescProperties;
 
-	public String getDefaultKey() {
-		return defaultKey;
-	}
-
 	public void setDefaultKey(String defaultKey) {
 		this.defaultKey = defaultKey;
-	}
-
-	public Properties getCodeDescProperties() {
-		return codeDescProperties;
 	}
 
 	public void setCodeDescProperties(Properties codeDescProperties) {

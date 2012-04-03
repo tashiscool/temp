@@ -27,13 +27,6 @@ public class LicensedProductExceptionFactory {
 	private Properties exceptionMessageProperties;
 
 	/**
-	 * @return the defaultKey
-	 */
-	public final String getDefaultKey() {
-		return defaultKey;
-	}
-
-	/**
 	 * @param defaultKey
 	 *            the defaultKey to set
 	 */
@@ -42,25 +35,11 @@ public class LicensedProductExceptionFactory {
 	}
 
 	/**
-	 * @return the codeDescProperties
-	 */
-	public Properties getCodeDescProperties() {
-		return codeDescProperties;
-	}
-
-	/**
 	 * @param codeDescProperties
 	 *            the codeDescProperties to set
 	 */
 	public void setCodeDescProperties(Properties codeDescProperties) {
 		this.codeDescProperties = codeDescProperties;
-	}
-
-	/**
-	 * @return the exceptionMessageProperties
-	 */
-	public Properties getExceptionMessageProperties() {
-		return exceptionMessageProperties;
 	}
 
 	/**
@@ -119,6 +98,7 @@ public class LicensedProductExceptionFactory {
 		}
 
 		desc = codeDescProperties.getProperty(code);
+
 		if (desc == null) {
 			code = defaultKey;
 			desc = codeDescProperties.getProperty(code);
@@ -126,12 +106,23 @@ public class LicensedProductExceptionFactory {
 
 		LicensedProductException licensedProductException;
 		if (cause instanceof AbstractRumbaException) {
-			licensedProductException = new LicensedProductException(message, ((AbstractRumbaException) cause).getValues(),
-					cause, new CodedRumbaExceptionElement(code, desc));
+			licensedProductException =
+				new LicensedProductException(
+					message,
+					((AbstractRumbaException) cause).getValues(),
+					cause,
+					new CodedRumbaExceptionElement(code, desc)
+				);
 		} else {
-			licensedProductException = new LicensedProductException(message, null, cause,
-					new CodedRumbaExceptionElement(code, desc));
+			licensedProductException =
+				new LicensedProductException(
+					message,
+					null,
+					cause,
+					new CodedRumbaExceptionElement(code, desc)
+				);
 		}
+
 		return licensedProductException;
 	}
 
@@ -142,8 +133,8 @@ public class LicensedProductExceptionFactory {
 	 * @return the exception message corresponding to the message code in the
 	 *         property file
 	 */
-	public String findExceptionMessage(String messageCode) {
-		return exceptionMessageProperties.getProperty(messageCode);
+	public String findExceptionMessage(final LicensedProductExceptionMessageCode messageCode) {
+		return exceptionMessageProperties.getProperty(messageCode.name());
 	}
 	
 	/**
@@ -155,8 +146,16 @@ public class LicensedProductExceptionFactory {
 	 */
 	public static String getFaultMessage(WebServiceMessage message) {
 		AxiomSoapMessage soapMessage = (AxiomSoapMessage)message;
-		SOAPFaultText soapFaultText = soapMessage.getAxiomMessage().getSOAPEnvelope().getBody().getFault().getReason()
+		
+		SOAPFaultText soapFaultText =
+			soapMessage
+				.getAxiomMessage()
+				.getSOAPEnvelope()
+				.getBody()
+				.getFault()
+				.getReason()
 				.getSOAPFaultText(SOAP_FAULT_LANGUAGE);
+
 		return soapFaultText.getText();
 	}
 
