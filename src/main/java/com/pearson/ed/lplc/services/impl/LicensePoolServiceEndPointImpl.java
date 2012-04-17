@@ -170,13 +170,22 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 * @throws Exception
 	 */
 	public String cancel(String licensePoolId, String createdBy, boolean isCancel) {
-		LicensePoolDTO licensePoolDTO = new LicensePoolDTO();
+		final LicensePoolDTO licensePoolDTO = new LicensePoolDTO();
 		String canceledLicensePoolId = null;
 		try {
 			canceledLicensePoolId = licensepoolService.cancel(licensePoolId, createdBy, isCancel);
 			if (null != canceledLicensePoolId) {
 				licensePoolDTO.setLicensepoolId(licensePoolId);
-				licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CANCEL);
+				executor.execute(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CANCEL);
+						} catch (Exception e) {
+							throw new LicensePoolJMSException("Failed to publish JMS message.");
+						}
+					}
+	    		});
 			}
 		} catch (RequiredObjectNotFound e) {
 			throw new RequiredObjectNotFound("Licensepool with ID: " + licensePoolId + " does not exist.");
