@@ -2,8 +2,10 @@ package com.pearson.ed.lplc.services.impl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.exception.LicensePoolJMSException;
@@ -28,6 +30,8 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	private String transactionId;
 	private LicensePoolConverter licensePoolConverter;
 	private LicensepoolJMSUtils licensepoolJMSUtils;
+	@Autowired
+	private ExecutorService executor;
 
 	/**
 	 * @return the licensePoolConverter
@@ -71,14 +75,19 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 	 * @throws LicensePoolJMSException
 	 */
 	public String createLicensePool(CreateLicensePool licensepool) {
-		LicensePoolDTO licensePoolDTO = licensePoolConverter.covertCreateRequestToLicensePoolDTO(licensepool);
+		final LicensePoolDTO licensePoolDTO = licensePoolConverter.covertCreateRequestToLicensePoolDTO(licensepool);
 		String licensePoolId = licensepoolService.createLicensePool(licensePoolDTO);
-		try {
 			licensePoolDTO.setLicensepoolId(licensePoolId);
-			licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CREATE);
-		} catch (Exception e) {
-			throw new LicensePoolJMSException("Failed to publish JMS message.");
-		}
+			executor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						licensepoolJMSUtils.publish(licensePoolDTO, EventTypeType.LP_CREATE);
+					} catch (Exception e) {
+						throw new LicensePoolJMSException("Failed to publish JMS message.");
+					}
+				}
+    		});
 		return licensePoolId;
 	}
 
