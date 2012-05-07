@@ -1,7 +1,11 @@
 # licensepool acceptance-tests gemfile
 source "http://rubygems.org"
 source "http://gems.rubyforge.org"
-source "http://rumba.ci.dev.pearsoncmg.com/gem-proxy"
+
+# only include RUMBA hosted gem server if NOT on CI node!
+unless /^rumbadc/.match(Socket.gethostname) and 'ulcapp' == ENV['USER']
+  source "http://rumba.ci.dev.pearsoncmg.com/gem-proxy"
+end
 
 gem "rspec-expectations", "~>2.6.0"
 gem "uuid"
