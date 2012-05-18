@@ -4,7 +4,7 @@ source "http://gems.rubyforge.org"
 
 # only include RUMBA hosted gem server if NOT on CI node!
 unless /^rumbadc/.match(Socket.gethostname) and 'ulcapp' == ENV['USER']
-  source "http://rumba.ci.dev.pearsoncmg.com/gem-proxy"
+  source "http://rumba.ci.dev.pearsoncmg.com/gems"
 end
 
 gem "rspec-expectations", "~>2.6.0"
