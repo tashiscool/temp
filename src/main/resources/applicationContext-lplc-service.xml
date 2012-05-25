@@ -56,7 +56,10 @@
         <property name="messageFactory" ref="messageFactoryBean"/>
         <property name="defaultUri" value="${organization.service.endpoint}"/>
         <property name="messageSender">
-            <bean class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender"/>
+            <bean class="org.springframework.ws.transport.http.CommonsHttpMessageSender">
+                <!-- 2 minute read timeout -->
+                <property name="readTimeout" value="120000" />
+            </bean>
         </property>
         <property name="marshaller" ref="marshaller"/>
         <property name="unmarshaller" ref="marshaller"/>
