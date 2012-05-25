@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:ws="http://www.springframework.org/schema/web-services"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
-		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:ws="http://www.springframework.org/schema/web-services"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+        http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
 
-	<!-- licensePoolLifeCycleClient can be found in applicationContext-lp-lplcClient.xml -->
+    <!-- licensePoolLifeCycleClient can be found in applicationContext-lp-lplcClient.xml -->
 
-	<bean id="productLifeCycleClient" 
-		class="com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl"
-		p:serviceClient-ref="productWebServiceClient"
-	/>
+    <bean id="productLifeCycleClient" 
+        class="com.pearson.ed.lp.stub.impl.ProductLifeCycleClientImpl"
+        p:serviceClient-ref="productWebServiceClient"
+    />
 
-	<bean id="orderLifeCycleClient" 
-		class="com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl"
-		p:serviceClient-ref="orderWebServiceClient"
-	/>
+    <bean id="orderLifeCycleClient" 
+        class="com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl"
+        p:serviceClient-ref="orderWebServiceClient"
+    />
 
-	<bean id="organizationLifeCycleClient" 
-		class="com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl"
-		p:serviceClient-ref="organizationWebServiceClient"
-	/>
+    <bean id="organizationLifeCycleClient" 
+        class="com.pearson.ed.lp.stub.impl.OrganizationLifeCycleClientImpl"
+        p:serviceClient-ref="organizationWebServiceClient"
+    />
 
-	<!-- Spring WS Clients -->
-	<bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
-		p:messageFactory-ref="messageFactory"
-		p:defaultUri="${productv2.service.endpoint}"
-		p:marshaller-ref="marshaller"
-		p:unmarshaller-ref="marshaller">
-		<property name="messageSender">
-			<bean
-				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
-		</property>
-	</bean>
-	
-	<bean id="orderWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
-		p:messageFactory-ref="messageFactory"
-		p:defaultUri="${order.service.endpoint}"
-		p:marshaller-ref="marshaller"
-		p:unmarshaller-ref="marshaller">
-		<property name="messageSender">
-			<bean
-				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
-		</property>
-	</bean>
-	
-	<bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
-		p:messageFactory-ref="messageFactory"
-		p:defaultUri="${organization.service.endpoint}"
-		p:marshaller-ref="marshaller"
-		p:unmarshaller-ref="marshaller">
-		<property name="messageSender">
-			<bean
-				class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
-		</property>
-	</bean>
+    <!-- Spring WS Clients -->
+    <bean id="productWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
+        p:messageFactory-ref="messageFactory"
+        p:defaultUri="${productv2.service.endpoint}"
+        p:marshaller-ref="marshaller"
+        p:unmarshaller-ref="marshaller">
+        <property name="messageSender">
+            <bean
+                class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
+        </property>
+    </bean>
+    
+    <bean id="orderWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
+        p:messageFactory-ref="messageFactory"
+        p:defaultUri="${order.service.endpoint}"
+        p:marshaller-ref="marshaller"
+        p:unmarshaller-ref="marshaller">
+        <property name="messageSender">
+            <bean
+                class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
+        </property>
+    </bean>
+    
+    <bean id="organizationWebServiceClient" class="org.springframework.ws.client.core.WebServiceTemplate"
+        p:messageFactory-ref="messageFactory"
+        p:defaultUri="${organization.service.endpoint}"
+        p:marshaller-ref="marshaller"
+        p:unmarshaller-ref="marshaller">
+        <property name="messageSender">
+            <bean
+                class="org.springframework.ws.transport.http.HttpUrlConnectionMessageSender" />
+        </property>
+    </bean>
 
 </beans>
