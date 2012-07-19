@@ -108,7 +108,7 @@ public class LicensedProductsResponseAggregator {
 			licensedProduct.setLicensedOrganizationDisplayName(organizationData.getOrganizationDisplayNamesByIds().get(
 					organizationId));
 			licensedProduct.setLicensePoolType(licensePool.getLicensepoolMapping().getType());
-			licensedProduct.setLicensePoolStatus(licensePool.getLicensepoolMapping().getStatus());
+			licensedProduct.setLicensePoolStatus(licensePool.getLicensepoolMapping().getStatus().trim());
 			licensedProduct.setDenyNewSubscription(licensePool.getLicensepoolMapping().getDenyManualSubscription());
 
 			try {
