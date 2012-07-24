@@ -100,4 +100,7 @@ public interface LicensePoolServiceEndPoint extends EntityEndpoint {
 	 */
 	String cancel(String licensePoolId, String createdBy, boolean isCancel);
 
+	void addChildToLicensePool(String licensePoolId, String organizationId,
+			int organizationLevel);
+
 }

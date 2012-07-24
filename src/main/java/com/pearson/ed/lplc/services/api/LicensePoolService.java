@@ -114,4 +114,7 @@ public interface LicensePoolService {
 	 * 
 	 */
 	void applyLicensesToNewOrganization(String organizationId, String parentOrganizationId);
+
+	void applyChildrenToLicenses(String licensePoolId, String organizationId,
+			int organizationLevel);
 }
