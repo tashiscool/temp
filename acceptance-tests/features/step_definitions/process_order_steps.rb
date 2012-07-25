@@ -17,10 +17,10 @@ Given /^I have an ordered license pool for each organization for the 'Institutio
       order.order.orderTotal = 1
       order.order.iSOCurrencyCode = OrderProcessing::ISOCurrencyCodeType::USD
       order.order.extOrderDate = Time.now
-      order.order.orderLineItems = OrderProcessing::OrderLineItemsType.new
+      order.order.orderLineItems = OrderProcessing::ProcessOrderLineItemsType.new
       order.order.orderStatus = OrderProcessing::OrderStatusCodeType::Created
 
-      order_item = OrderProcessing::OrderLineType.new
+      order_item = OrderProcessing::ProcessOrderLineType.new
       order_item.productEntityID = $product_entity_id
       order_item.orderedISBN = "0123456789123"
       order_item.quantity = 100
