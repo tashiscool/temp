@@ -487,4 +487,26 @@ public class LicensePoolServiceImpl implements LicensePoolService {
 		}
 		return orgLPMappings;
 	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void applyChildrenToLicenses(String licensePoolId,
+			String organizationId, int organizationLevel) {
+			List<OrganizationLPMapping> rootLicenses = getLicensePoolByOrganizationId(organizationId,
+					LPLCConstants.QUALIFYING_ORGS_ROOT);
+			if (rootLicenses != null && rootLicenses.size() >= 1) {
+				return;
+			}
+			List<OrganizationLPMapping> parentLicenses = getLicensePoolByOrganizationId(licensePoolId,
+					LPLCConstants.QUALIFYING_ORGS_ROOT);
+			if (parentLicenses != null && parentLicenses.size() >= 1) {
+				List<OrganizationLPMapping> newlyAppliedLicenses = licensePoolConverter
+						.setParentLicensePoolstoNewOrganization(parentLicenses, organizationId);
+				for (OrganizationLPMapping receivedLicenses : newlyAppliedLicenses)
+				{
+					receivedLicenses.setOrganization_level(organizationLevel);
+				}
+				organizationLPDAO.saveAllLicenses(newlyAppliedLicenses);
+			}
+	}
 }

@@ -1,5 +1,7 @@
 package com.pearson.ed.lplc.ws;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -17,6 +19,7 @@ import com.pearson.ed.lplc.services.converter.api.LicensePoolConverter;
 import com.pearson.ed.lplc.warning.LicensePoolWarningFactory;
 import com.pearson.rws.licensepool.doc._2009._04._01.CancelLicensePoolRequest;
 import com.pearson.rws.licensepool.doc._2009._04._01.CancelLicensePoolResponse;
+import com.pearson.rws.licensepool.doc._2009._04._01.ChildTreeDetails;
 import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePool;
 import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePoolRequest;
 import com.pearson.rws.licensepool.doc._2009._04._01.CreateLicensePoolResponse;
@@ -34,6 +37,7 @@ import com.pearson.rws.common.doc._2008._06._01.StatusCodeType;
 import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
 import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePoolRequest;
 import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePoolResponse;
+import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePoolsChildrenRequest;
 
 /**
  * A LicensePool Life Cycle endpoint that processes marshaled messages.
@@ -44,6 +48,7 @@ import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePoolResponse;
 @Endpoint
 public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceConstants {
 	private static final Logger logger = Logger.getLogger(MarshallingLicensePoolEndpoint.class);
+	private static final String CREATE_LICENSEPOOL_CHILDREN_REQUEST = "UpdateLicensePoolsChildrenRequest";
 	/**
 	 * LicensePool Life Cycle service
 	 */
@@ -417,4 +422,43 @@ public class MarshallingLicensePoolEndpoint implements LicensePoolWebServiceCons
 		cancelLicensePoolResponse.setServiceResponseType(serviceResponseType);
 		return cancelLicensePoolResponse;
 	}
+	 /**
+     * This endpoint method uses marshalling to handle message with a
+     * <code>&lt;DeleteLicensePoolsChildrenRequest&gt;</code> payload.
+     *
+     * @param deleteLicensePoolsChildrenRequest
+     *            deleteLicensePoolsChildrenRequest element.
+     * @return GetLicensePoolDetailsByIdResponse
+     */
+    @PayloadRoot(localPart = CREATE_LICENSEPOOL_CHILDREN_REQUEST, namespace = LICENSEPOOL_NAMESPACE)
+    @ResponsePayload
+    public GetLicensePoolDetailsByIdResponse deleteLicensePoolsChildren(
+    	@RequestPayload UpdateLicensePoolsChildrenRequest deleteLicensePoolsChildrenRequest) {
+
+            try {
+                    List<String> licensePoolIds = deleteLicensePoolsChildrenRequest.getParentLicenses();
+                    List<ChildTreeDetails> details = deleteLicensePoolsChildrenRequest.getChildOrgs();
+                    if (logger.isDebugEnabled()) {
+                            logger.debug("Received " + CREATE_LICENSEPOOL_CHILDREN_REQUEST + ":licensePoolIds = " + licensePoolIds
+                                            + ":orgIds = " + details);
+                    }
+
+                    logger.info("Invoking license pool service deleteLicensePoolsChildren method");
+                    GetLicensePoolDetailsByIdResponse response = new GetLicensePoolDetailsByIdResponse();
+                    for (String licensePoolId : licensePoolIds)
+                    {
+                        for (ChildTreeDetails detail : details)
+                        {
+                        	licensePoolServiceEndPoint.addChildToLicensePool(licensePoolId, detail.getOrganizationId(), detail.getOrganizationLevel());
+                        }                    	
+                    }
+                    //TODO: put a switch in this to getnewDetails or null;
+                    return response;
+
+            } catch (Exception exception) {
+                    LicensePoolException licensepoolException = exceptionFactory.getLicensePoolException(exception.getMessage(),exception);
+                    throw licensepoolException;
+
+            }
+    }
 }

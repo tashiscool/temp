@@ -230,4 +230,10 @@ public class LicensePoolServiceEndPointImpl implements LicensePoolServiceEndPoin
 		return transactionId;
 	}
 
+	@Override
+	public void addChildToLicensePool(String licensePoolId,
+			String organizationId, int organizationLevel) {
+		licensepoolService.applyChildrenToLicenses(licensePoolId, organizationId, organizationLevel);
+	}
+
 }

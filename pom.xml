@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>com.pearson.ed.ltg.rumba</groupId>
 		<artifactId>webservices</artifactId>
-        <version>12.6.6</version>
+        <version>12.6.13-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
 	<artifactId>LicensePoolLifeCycle</artifactId>
-    <version>12.6.11-SNAPSHOT</version>
+    <version>12.7.13.3-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>LicensePoolLifeCycle</name>
@@ -21,8 +21,8 @@
 	</properties>
 	
     <scm>
-        <developerConnection>scm:svn:http://subversion.pearsoncmg.com/data/common_services/main/trunk/application_src/webservices/licensepool</developerConnection>
-      <url>http://fisheye.pearsoncmg.com/browse/~br=trunk/rumba/main/trunk/application_src/webservices/licensepool</url>
+        <developerConnection>scm:git:http://rumba.ci.dev.pearsoncmg.com/gitblit/git/webservices/licensepool.git</developerConnection>
+      <url>http://rumba.ci.dev.pearsoncmg.com/gitblit/summary/?r=webservices/licensepool.git</url>
   </scm>
 
 	<dependencies>
