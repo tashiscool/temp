@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>com.pearson.ed.ltg.rumba</groupId>
 		<artifactId>webservices</artifactId>
-        <version>12.6.13-SNAPSHOT</version>
+        <version>12.12.3.0</version>
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
 	<artifactId>LicensePoolLifeCycle</artifactId>
-    <version>12.7.13.3-SNAPSHOT</version>
+    <version>12.12.17.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>LicensePoolLifeCycle</name>
@@ -153,16 +153,6 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-pool</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-api</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
