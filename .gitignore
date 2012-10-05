@@ -1,6 +1,7 @@
 target/
-.classpath
-.settings/
-.project
-.springBeans
+rumbalogs/
 *.log
+.classpath
+.project
+.settings/
+.springBeans
