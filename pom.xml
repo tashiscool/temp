@@ -11,7 +11,7 @@
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
 	<artifactId>LicensePoolLifeCycle</artifactId>
-    <version>12.12.21.0</version>
+    <version>12.12.22-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>LicensePoolLifeCycle</name>
