@@ -1,6 +1,7 @@
 package com.pearson.ed.lplc.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -116,12 +117,16 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDA
 	public List<String> findExpiredLicensePool() {
 		Criteria criteria = getSession().createCriteria(LicensePoolMapping.class);
 		criteria.setProjection(Projections.property("licensepoolId"));
-		long oneDay = (long) 1000.0 * 60 * 60 * 24;
-		Date today = new Date(System.currentTimeMillis());
-		Date yesterday = new Date(System.currentTimeMillis() - oneDay);
-		Criterion betweenEnddate = Restrictions.between("end_date", yesterday, today);
+
+		Calendar todayCal = Calendar.getInstance();
+		Calendar yesterdayCal = Calendar.getInstance();
+		yesterdayCal.add(Calendar.DATE, -1);  
+ 
+		Criterion betweenEnddate = Restrictions.between("end_date", yesterdayCal.getTime(), todayCal.getTime());
 		criteria.add(betweenEnddate);
 		return (List) criteria.list();
 
 	}
+	
+
 }
