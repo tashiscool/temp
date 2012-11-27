@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/integration"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:ws="http://www.springframework.org/schema/web-services"
 	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
@@ -23,151 +19,69 @@
 	<annotation-config />
 
 	<gateway id="marshallingLicensedProductWebServiceGateway"
-		default-request-channel="wsGetLicensedProductsRequestsChannel"
+		default-request-channel="wsGetLicensedProductRequestChannel"
 		service-interface="com.pearson.ed.lp.ws.MarshallingLicensedProductServiceEndpoint"
-		error-channel="exceptionTransformationChannel"
-	/>
-	
-	<transformer
-		input-channel="exceptionTransformationChannel"
-		expression="@licensedProductExceptionFactory.getLicensedProductException(payload.getCause().getMessage(), payload.getCause())"
-	/>
-	
-	<transformer 
-		ref="getLicensedProductRequestTransformer"
-		input-channel="wsGetLicensedProductsRequestsChannel"
-		output-channel="licensePoolRequestChannel"
-	/>
-	
-	<chain input-channel="licensePoolRequestChannel">
-		<header-enricher>
-			<header name="qualifyingLicensePool" expression="payload.qualifyingLicensePool"/>
-		</header-enricher>
-		<recipient-list-router apply-sequence="true">
-			<recipient channel="licensePoolClientRequestChannel" />
-			<recipient selector-expression="headers.qualifyingLicensePool matches '^ROOT_AND_PARENTS|ALL_IN_HIERARCHY$'"
-				channel="preGetParentOrganizationTreeChannel"
-			/>
-			<recipient selector-expression="headers.qualifyingLicensePool.equals('ALL_IN_HIERARCHY')"
-				channel="preGetChildOrganizationTreeChannel"
-			/>
-			<recipient channel="preGetOrganizationChannel" />
-		</recipient-list-router>
-	</chain>
-	
-	<transformer 
-		input-channel="preGetParentOrganizationTreeChannel"
-		output-channel="getParentOrganizationTreeChannel"
-		expression="payload.organizationId"
-	/>
-	
-	<transformer 
-		input-channel="preGetChildOrganizationTreeChannel"
-		output-channel="getChildOrganizationTreeChannel"
-		expression="payload.organizationId"
-	/>
-	
-	<transformer 
-		input-channel="preGetOrganizationChannel"
-		output-channel="getOrganizationChannel"
-		expression="payload.organizationId"
-	/>
-	
-	<aggregator input-channel="licensePoolResponseChannel" 
-		ref="licensedProductsDataAggregator"
-		output-channel="productOrderDetailsRequestSplitterChannel"
-	/>
-	
-	<splitter ref="productOrderDetailsRequestSplitter" 
-		input-channel="productOrderDetailsRequestSplitterChannel" 
-		output-channel="productOrderDetailsRequestChannel"
-		apply-sequence="true"
-	/>
-	
-	<chain input-channel="productOrderDetailsRequestChannel">
+		error-channel="exceptionTransformationChannel" />
+
+	<transformer input-channel="exceptionTransformationChannel"
+		expression="@licensedProductExceptionFactory.getLicensedProductException(payload.getCause().getMessage(), payload.getCause())" />
+
+	<transformer ref="getLicensedProductRequestTransformer"
+		input-channel="wsGetLicensedProductRequestChannel" output-channel="licensePoolClientRequestChannel" />
+
+	<splitter ref="licensedProductDetailsRequestSplitter"
+		input-channel="licensePoolClientResponseChannel" output-channel="licensedProductDetailsRequestChannel"
+		apply-sequence="true" />
+
+	<chain input-channel="licensedProductDetailsRequestChannel">
 		<payload-type-router>
 			<mapping type="com.pearson.ed.lp.message.ProductEntityIdsRequest"
-				channel="productRequestChannel"
-			/>
-			<mapping type="com.pearson.ed.lp.message.OrderLineItemsRequest"
-				channel="orderRequestChannel"
-			/>
-			<mapping type="com.pearson.ed.lp.message.LicensedProductDataCollection"
-				channel="getLicensedProductsResponseChannel"
-			/>
+				channel="productRequestChannel" />
+			<mapping type="com.pearson.ed.lp.message.OrderLineItemRequest"
+				channel="orderRequestChannel" />
+			<mapping type="com.pearson.ed.lp.message.OrganizationDisplayNameRequest"
+				channel="organizationRequestChannel" />
+			<mapping type="com.pearson.ed.lp.message.LicensePoolResponse"
+				channel="getLicensedProductResponseChannel" />
 		</payload-type-router>
 	</chain>
-	
-	<aggregator input-channel="getLicensedProductsResponseChannel"
-		ref="licensedProductsResponseAggregator"
-	/>
-	
-	<!-- Service Activators - note that the referenced client stubs are provided by another configuration file -->
-	<service-activator input-channel="licensePoolClientRequestChannel" 
-		output-channel="licensePoolResponseChannel" 
-		ref="licensePoolLifeCycleClient"
-	/>
-	<service-activator input-channel="getParentOrganizationTreeChannel" 
-		output-channel="licensePoolResponseChannel" 
-		ref="organizationLifeCycleClient" 
-		method="getParentTreeDisplayNamesByOrganizationId"
-	/>
-	<service-activator input-channel="getChildOrganizationTreeChannel" 
-		output-channel="licensePoolResponseChannel" 
-		ref="organizationLifeCycleClient" 
-		method="getChildTreeDisplayNamesByOrganizationId"
-	/>
-	<service-activator input-channel="getOrganizationChannel" 
-		output-channel="licensePoolResponseChannel" 
-		ref="organizationLifeCycleClient" 
-		method="getOrganizationDisplayName"
-	/>
-	<service-activator input-channel="productRequestChannel" 
-		output-channel="getLicensedProductsResponseChannel" 
-		ref="productLifeCycleClient"
-	/>
-	<service-activator input-channel="orderRequestChannel" 
-		output-channel="getLicensedProductsResponseChannel" 
-		ref="orderLifeCycleClient"
-	/>
-	
+
+	<aggregator input-channel="getLicensedProductResponseChannel"
+		ref="licensedProductResponseAggregator" />
+		
+	<!-- Service Activators - note that the referenced client stubs are provided 
+		by another configuration file -->
+	<service-activator input-channel="licensePoolClientRequestChannel"
+		output-channel="licensePoolClientResponseChannel" ref="licensePoolLifeCycleClient" />
+		
+	<service-activator input-channel="productRequestChannel"
+		output-channel="getLicensedProductResponseChannel" ref="productLifeCycleClient" />
+		
+	<service-activator input-channel="orderRequestChannel"
+		output-channel="getLicensedProductResponseChannel" ref="orderLifeCycleClient" />
+		
+	<service-activator input-channel="organizationRequestChannel" 
+		output-channel="getLicensedProductResponseChannel" ref="organizationLifeCycleClient" />
+		
 	<!-- channels -->
-	<channel id="wsGetLicensedProductsRequestsChannel" />
-	<channel id="licensePoolRequestChannel" />
-	<channel id="preGetParentOrganizationTreeChannel" />
-	<channel id="preGetChildOrganizationTreeChannel" />
-	<channel id="preGetOrganizationChannel" />
-	<channel id="getParentOrganizationTreeChannel" />
-	<channel id="getChildOrganizationTreeChannel" />
-	<channel id="getOrganizationChannel" />
+	<channel id="wsGetLicensedProductRequestChannel" />
+	<channel id="exceptionTransformationChannel" />	
 	<channel id="licensePoolClientRequestChannel" />
-	<channel id="licensePoolResponseChannel" />
-	<channel id="productOrderDetailsRequestSplitterChannel" />
-	<channel id="productOrderDetailsRequestChannel" />
+	<channel id="licensePoolClientResponseChannel" />
 	<channel id="productRequestChannel" />
 	<channel id="orderRequestChannel" />
-	<channel id="getLicensedProductsResponseChannel" />
-	<channel id="exceptionTransformationChannel" />
-	
+	<channel id="organizationRequestChannel" />
+	<channel id="getLicensedProductResponseChannel" />
+	<channel id="licensedProductDetailsRequestChannel" />
+
 	<!-- common beans -->
-	<beans:bean id="getLicensedProductRequestTransformer" 
-		class="com.pearson.ed.lp.transformer.GetLicensedProductsRequestTransformer" 
-	/>
-	
-	<beans:bean id="licensedProductsDataAggregator"
-		class="com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator"
-	/>
-	
-	<beans:bean id="licensedProductsResponseAggregator" 
-		class="com.pearson.ed.lp.aggregator.LicensedProductsResponseAggregator" 
-	/>
-	
-	<beans:bean id="organizationDisplayNamesResponseAggregator" 
-		class="com.pearson.ed.lp.aggregator.LicensedProductsDataAggregator" 
-	/>
-	
-	<beans:bean id="productOrderDetailsRequestSplitter" 
-		class="com.pearson.ed.lp.splitter.ProductOrderDetailsRequestSplitter"
-	/>
+	<beans:bean id="getLicensedProductRequestTransformer"
+		class="com.pearson.ed.lp.transformer.GetLicensedProductRequestTransformer" />
+
+	<beans:bean id="licensedProductDetailsRequestSplitter"
+		class="com.pearson.ed.lp.splitter.LicensedProductDetailsRequestSplitter" />
+		
+	<beans:bean id="licensedProductResponseAggregator"
+		class="com.pearson.ed.lp.aggregator.LicensedProductResponseAggregator" />
 
 </beans:beans>

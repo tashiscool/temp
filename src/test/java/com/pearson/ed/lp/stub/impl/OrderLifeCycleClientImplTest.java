@@ -10,7 +10,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.springframework.ws.test.client.RequestMatchers.payload;
 import static org.springframework.ws.test.client.ResponseCreators.withClientOrSenderFault;
@@ -27,8 +26,8 @@ import org.springframework.ws.test.client.MockWebServiceServer;
 
 import com.pearson.ed.lp.exception.ExternalServiceCallException;
 import com.pearson.ed.lp.exception.OrderLineNotFoundException;
-import com.pearson.ed.lp.message.OrderLineItemsRequest;
-import com.pearson.ed.lp.message.OrderLineItemsResponse;
+import com.pearson.ed.lp.message.OrderLineItemRequest;
+import com.pearson.ed.lp.message.OrderLineItemResponse;
 
 /**
  * Unit test of {@link OrderLifeCycleClientImpl} using Spring WS mock objects.
@@ -51,71 +50,73 @@ public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubT
 
 	/**
 	 * Test method for
-	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNByOrderLineItemId(com.pearson.ed.lp.message.OrderLineItemRequest)}
 	 * .
 	 */
 	@Test
-	public void testGetOrderedISBNsByOrderLineItemIdsHappyPathOneOrderId() {
+	public void testGetOrderedISBNByOrderLineItemIdHappyPathOneOrderId() {
 		String dummyOrderId = "dummy-order-id";
 		String dummyIsbn = "0123456789012";
 
 		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
 				withPayload(generateDummyOrderResponse(dummyOrderId, dummyIsbn, true)));
 
-		OrderLineItemsRequest request = new OrderLineItemsRequest();
-		request.getOrderLineItemIds().add(dummyOrderId);
-		OrderLineItemsResponse response = testClient.getOrderedISBNsByOrderLineItemIds(request);
+		OrderLineItemRequest request = new OrderLineItemRequest();
+		request.setOrderLineItemId(dummyOrderId);
+		OrderLineItemResponse response = testClient.getOrderedISBNByOrderLineItemId(request);
 
 		mockServer.verify();
 
 		assertNotNull(response);
-		assertEquals(1, response.getOrderedISBNsByOrderLineItemIds().size());
-		assertTrue(response.getOrderedISBNsByOrderLineItemIds().containsKey(dummyOrderId));
-		assertEquals(dummyIsbn, response.getOrderedISBNsByOrderLineItemIds().get(dummyOrderId));
+		assertEquals(dummyOrderId, response.getOrderLineItemId());
+		assertEquals(dummyIsbn, response.getOrderedISBN());
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNByOrderLineItemId(com.pearson.ed.lp.message.OrderLineItemRequest)}
 	 * .
 	 */
 	@Test
-	public void testGetOrderedISBNsByOrderLineItemIdsHappyPathMoreThanOneOrderItemsInResponse() {
+	public void testGetOrderedISBNByOrderLineItemIdHappyPathMoreThanOneOrderItemsInResponse() {
 		String dummyOrderId = "dummy-order-id";
 		String dummyIsbn = "0123456789012";
 
 		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
 				withPayload(generateDummyOrderResponseMultipleItems(dummyOrderId, dummyIsbn, true)));
 
-		OrderLineItemsRequest request = new OrderLineItemsRequest();
-		request.getOrderLineItemIds().add(dummyOrderId);
-		OrderLineItemsResponse response = testClient.getOrderedISBNsByOrderLineItemIds(request);
+		OrderLineItemRequest request = new OrderLineItemRequest();
+		request.setOrderLineItemId(dummyOrderId);
+		OrderLineItemResponse response = testClient.getOrderedISBNByOrderLineItemId(request);
 
 		mockServer.verify();
 
 		assertNotNull(response);
-		assertEquals(1, response.getOrderedISBNsByOrderLineItemIds().size());
-		assertTrue(response.getOrderedISBNsByOrderLineItemIds().containsKey(dummyOrderId));
-		assertEquals(dummyIsbn, response.getOrderedISBNsByOrderLineItemIds().get(dummyOrderId));
+		assertEquals(dummyOrderId, response.getOrderLineItemId());
+		assertEquals(dummyIsbn, response.getOrderedISBN());
+		
+		assertNotNull(response);
+		assertEquals(dummyOrderId, response.getOrderLineItemId());
+		assertEquals(dummyIsbn, response.getOrderedISBN());
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNByOrderLineItemId(com.pearson.ed.lp.message.OrderLineItemRequest)}
 	 * .
 	 */
 	@Test
-	public void testGetOrderedISBNsByOrderLineItemIdsNonSpecificClientFault() {
+	public void testGetOrderedISBNByOrderLineItemIdNonSpecificClientFault() {
 		String dummyOrderId = "dummy-order-id";
 
 		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
 				withClientOrSenderFault("Bad service! No cookie!", Locale.ENGLISH));
 
-		OrderLineItemsRequest request = new OrderLineItemsRequest();
-		request.getOrderLineItemIds().add(dummyOrderId);
+		OrderLineItemRequest request = new OrderLineItemRequest();
+		request.setOrderLineItemId(dummyOrderId);
 		
 		try {
-			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			testClient.getOrderedISBNByOrderLineItemId(request);
 			fail("Must throw exception!");
 		} catch (Exception e) {
 			assertThat(e, is(ExternalServiceCallException.class));
@@ -126,21 +127,21 @@ public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubT
 
 	/**
 	 * Test method for
-	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNByOrderLineItemId(com.pearson.ed.lp.message.OrderLineItemRequest)}
 	 * .
 	 */
 	@Test
-	public void testGetOrderedISBNsByOrderLineItemIdsNonSpecificIOException() {
+	public void testGetOrderedISBNByOrderLineItemIdNonSpecificIOException() {
 		String dummyOrderId = "dummy-order-id";
 
 		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
 				withException(new IOException("Bad service! No cookie!")));
 
-		OrderLineItemsRequest request = new OrderLineItemsRequest();
-		request.getOrderLineItemIds().add(dummyOrderId);
+		OrderLineItemRequest request = new OrderLineItemRequest();
+		request.setOrderLineItemId(dummyOrderId);
 		
 		try {
-			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			testClient.getOrderedISBNByOrderLineItemId(request);
 			fail("Must throw exception!");
 		} catch (Exception e) {
 			assertThat(e, is(ExternalServiceCallException.class));
@@ -151,11 +152,11 @@ public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubT
 
 	/**
 	 * Test method for
-	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNsByOrderLineItemIds(com.pearson.ed.lp.message.OrderLineItemsRequest)}
+	 * {@link com.pearson.ed.lp.stub.impl.OrderLifeCycleClientImpl#getOrderedISBNByOrderLineItemId(com.pearson.ed.lp.message.OrderLineItemRequest)}
 	 * .
 	 */
 	@Test
-	public void testGetOrderedISBNsByOrderLineItemIdsBadOrderLineItemId() {
+	public void testGetOrderedISBNByOrderLineItemIdBadOrderLineItemId() {
 		String dummyOrderId = "dummy-order-id";
 
 		mockServer.expect(payload(generateDummyOrderRequest(dummyOrderId))).andRespond(
@@ -163,11 +164,11 @@ public class OrderLifeCycleClientImplTest extends BaseLicensedProductClientStubT
 						"message:com.pearson.ed.order.exception.RequiredObjectNotFound", 
 						Locale.ENGLISH));
 
-		OrderLineItemsRequest request = new OrderLineItemsRequest();
-		request.getOrderLineItemIds().add(dummyOrderId);
+		OrderLineItemRequest request = new OrderLineItemRequest();
+		request.setOrderLineItemId(dummyOrderId);
 		
 		try {
-			testClient.getOrderedISBNsByOrderLineItemIds(request);
+			testClient.getOrderedISBNByOrderLineItemId(request);
 			fail("Must throw exception!");
 		} catch (Exception e) {
 			assertThat(e, is(OrderLineNotFoundException.class));

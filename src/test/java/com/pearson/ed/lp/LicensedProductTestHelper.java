@@ -201,27 +201,10 @@ public class LicensedProductTestHelper {
 	 *            what type of request to generate
 	 * @return {@link Source} instance
 	 */
-	public static Source generateDummyGetOrgRequest(String orgId, OrgRequestType requestType) {
-		Object request = null;
-
-		switch (requestType) {
-		case CHILD_TREE:
-			GetChildTreeByOrganizationIdRequest getChildTreeRequest = new GetChildTreeByOrganizationIdRequest();
-			getChildTreeRequest.setOrganizationId(orgId);
-			request = getChildTreeRequest;
-			break;
-		case PARENT_TREE:
-			GetParentTreeByOrganizationIdRequest getParentTreeRequest = new GetParentTreeByOrganizationIdRequest();
-			getParentTreeRequest.setOrganizationId(orgId);
-			request = getParentTreeRequest;
-			break;
-		case ROOT_ONLY:
-			GetOrganizationByIdRequest getOrgRequest = new GetOrganizationByIdRequest();
-			getOrgRequest.setOrganizationIdRequestType(new OrganizationIdRequestType());
-			getOrgRequest.getOrganizationIdRequestType().setOrganizationId(orgId);
-			request = getOrgRequest;
-			break;
-		}
+	public static Source generateDummyGetOrgRequest(String orgId) {
+		GetOrganizationByIdRequest request = new GetOrganizationByIdRequest();
+		request.setOrganizationIdRequestType(new OrganizationIdRequestType());
+		request.getOrganizationIdRequestType().setOrganizationId(orgId);
 
 		return marshalToSource(marshaller, request);
 	}
@@ -240,83 +223,18 @@ public class LicensedProductTestHelper {
 	 *            what type of request we need a response to
 	 * @return {@link Source} instance
 	 */
-	public static Source generateDummyGetOrgResponseData(Map<String, String> dummyOrgDisplayNamesByOrgId,
-			OrgRequestType requestType) {
-		Object response = null;
+	public static Source generateDummyGetOrgResponseData(String requestedOrganizationId, String dummyOrgDisplayName) {
+		OrganizationResponse response = new OrganizationResponse();
 
-		int levelCounter = 0;
+		Organization org = new Organization();
+		response.setOrganization(org);
 
-		switch (requestType) {
-		case CHILD_TREE:
-			OrganizationTreeResponse childTreeResponse = new OrganizationTreeResponse();
-
-			OrganizationTreeType lastChildOrg = null;
-			levelCounter = 0;
-			for (Entry<String, String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				if (lastChildOrg == null) {
-					lastChildOrg = new OrganizationTreeType();
-					childTreeResponse.setOrganization(lastChildOrg);
-					lastChildOrg.setOrganizationId(dummyOrgData.getKey());
-					lastChildOrg.setName(dummyOrgData.getValue());
-					lastChildOrg.setLevel(levelCounter);
-				} else {
-					OrganizationTreeType childOrg = new OrganizationTreeType();
-					lastChildOrg.getOrganization().add(childOrg);
-					lastChildOrg = childOrg;
-
-					childOrg.setOrganizationId(dummyOrgData.getKey());
-					childOrg.setName(dummyOrgData.getValue());
-					childOrg.setLevel(levelCounter);
-				}
-				levelCounter++;
-			}
-
-			response = childTreeResponse;
-			break;
-		case PARENT_TREE:
-			OrganizationTreeResponse parentTreeResponse = new OrganizationTreeResponse();
-
-			OrganizationTreeType lastParentOrg = null;
-			levelCounter = 0;
-			for (Entry<String, String> dummyOrgData : dummyOrgDisplayNamesByOrgId.entrySet()) {
-				if (lastParentOrg == null) {
-					lastParentOrg = new OrganizationTreeType();
-					parentTreeResponse.setOrganization(lastParentOrg);
-					lastParentOrg.setOrganizationId(dummyOrgData.getKey());
-					lastParentOrg.setName(dummyOrgData.getValue());
-					lastParentOrg.setLevel(levelCounter);
-				} else {
-					OrganizationTreeType parentOrg = new OrganizationTreeType();
-					lastParentOrg.getOrganization().add(parentOrg);
-					lastParentOrg = parentOrg;
-
-					parentOrg.setOrganizationId(dummyOrgData.getKey());
-					parentOrg.setName(dummyOrgData.getValue());
-					parentOrg.setLevel(levelCounter);
-				}
-				levelCounter++;
-			}
-			response = parentTreeResponse;
-			break;
-		case ROOT_ONLY:
-			OrganizationResponse orgResponse = new OrganizationResponse();
-
-			Organization org = new Organization();
-			orgResponse.setOrganization(org);
-
-			Entry<String, String> justOneDummyOrg = dummyOrgDisplayNamesByOrgId.entrySet().iterator().next();
-
-			org.setOrganizationId(justOneDummyOrg.getKey());
-			org.setAttributes(new ReadAttributesListType());
-			ReadAttributeType attribute = new ReadAttributeType();
-			org.getAttributes().getAttribute().add(attribute);
-			attribute.setAttributeKey(AttributeKeyType.ORG_DISPLAY_NAME);
-			attribute.setAttributeValue(justOneDummyOrg.getValue());
-
-			response = orgResponse;
-			break;
-		}
-
+		org.setOrganizationId(requestedOrganizationId);
+		org.setAttributes(new ReadAttributesListType());
+		ReadAttributeType attribute = new ReadAttributeType();
+		org.getAttributes().getAttribute().add(attribute);
+		attribute.setAttributeKey(AttributeKeyType.ORG_DISPLAY_NAME);
+		attribute.setAttributeValue(dummyOrgDisplayName);
 		return marshalToSource(marshaller, response);
 	}
 

@@ -3,8 +3,8 @@ package com.pearson.ed.lp.stub.api;
 import org.springframework.integration.annotation.ServiceActivator;
 
 import com.pearson.ed.commons.service.exception.AbstractRumbaException;
-import com.pearson.ed.lp.message.OrderLineItemsRequest;
-import com.pearson.ed.lp.message.OrderLineItemsResponse;
+import com.pearson.ed.lp.message.OrderLineItemRequest;
+import com.pearson.ed.lp.message.OrderLineItemResponse;
 
 /**
  * Client stub API for the OrderLifeCycle service.
@@ -23,7 +23,7 @@ public interface OrderLifeCycleClient {
 	 * @throws AbstractRumbaException on error from the service
 	 */
 	@ServiceActivator
-	OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest request)
+	OrderLineItemResponse getOrderedISBNByOrderLineItemId(OrderLineItemRequest request)
 			throws AbstractRumbaException;
 
 }

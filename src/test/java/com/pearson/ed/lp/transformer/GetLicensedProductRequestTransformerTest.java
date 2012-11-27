@@ -18,9 +18,9 @@ import com.pearson.rws.licensedproduct.doc.v2.QualifyingLicensePool;
  * @author ULLOYNI
  * 
  */
-public class GetLicensedProductsRequestTransformerTest {
+public class GetLicensedProductRequestTransformerTest {
 
-	private GetLicensedProductsRequestTransformer transformer = new GetLicensedProductsRequestTransformer();
+	private GetLicensedProductRequestTransformer transformer = new GetLicensedProductRequestTransformer();
 	
 	/**
 	 * Setup test logging.
@@ -32,7 +32,7 @@ public class GetLicensedProductsRequestTransformerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.pearson.ed.lp.transformer.GetLicensedProductsRequestTransformer#transform(com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductRequestElement)}
+	 * {@link com.pearson.ed.lp.transformer.GetLicensedProductRequestTransformer#transform(com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductRequestElement)}
 	 * .
 	 */
 	@Test

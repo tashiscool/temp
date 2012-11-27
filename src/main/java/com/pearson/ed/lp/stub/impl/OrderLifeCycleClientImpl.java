@@ -2,8 +2,6 @@ package com.pearson.ed.lp.stub.impl;
 
 import static com.pearson.ed.lp.exception.LicensedProductExceptionFactory.getFaultMessage;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,8 @@ import com.pearson.ed.lp.exception.ExternalServiceCallException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
 import com.pearson.ed.lp.exception.OrderLineNotFoundException;
-import com.pearson.ed.lp.message.OrderLineItemsRequest;
-import com.pearson.ed.lp.message.OrderLineItemsResponse;
+import com.pearson.ed.lp.message.OrderLineItemRequest;
+import com.pearson.ed.lp.message.OrderLineItemResponse;
 import com.pearson.ed.lp.stub.api.OrderLifeCycleClient;
 import com.pearson.rws.order.doc._2009._02._09.GetOrderLineItemByIdRequest;
 import com.pearson.rws.order.doc._2009._02._09.GetOrderLineItemByIdResponse;
@@ -50,63 +48,60 @@ public class OrderLifeCycleClientImpl implements OrderLifeCycleClient {
 	}
 
 	/**
-	 * Get all ISBN numbers associated with the given order ids by calling the OrderLifeCycle service.
-	 * Implements {@link OrderLifeCycleClient#getOrderedISBNsByOrderLineItemIds(OrderLineItemsRequest)}.
+	 * Get ISBN number associated with the given order id by calling the OrderLifeCycle service.
+	 * Implements {@link OrderLifeCycleClient#getOrderedISBNByOrderLineItemId(OrderLineItemRequest)}.
 	 * 
 	 * @param request
-	 *            OrderLineItemsRequest wrapping a list of order line item ids
-	 * @return OrderLineItemsResponse mapping ISBN strings to associated order line item ids
+	 *            OrderLineItemRequest that contains order line item id
+	 * @return OrderLineItemResponse ISBN string for the given order line item id
 	 * @throws AbstractRumbaException on service error
 	 */
-	public OrderLineItemsResponse getOrderedISBNsByOrderLineItemIds(final OrderLineItemsRequest request)
+	public OrderLineItemResponse getOrderedISBNByOrderLineItemId(final OrderLineItemRequest request)
 		throws AbstractRumbaException
 	{
 
-		OrderLineItemsResponse response = new OrderLineItemsResponse();
-		Map<String, String> responsePayload = response.getOrderedISBNsByOrderLineItemIds();
+		OrderLineItemResponse response = new OrderLineItemResponse();
+		String orderLineItemId = request.getOrderLineItemId();
+		
+		GetOrderLineItemByIdRequest orderLineItemRequest = new GetOrderLineItemByIdRequest();
+		orderLineItemRequest.setOrderLineItemId(orderLineItemId);
+		response.setOrderLineItemId(orderLineItemId);
 
-		// we have to loop for each OrderLineItemId since this is a one-at-a-time request, NOT ideal
-		for (String orderLineItemId : request.getOrderLineItemIds()) {
-			GetOrderLineItemByIdRequest orderLineItemRequest = new GetOrderLineItemByIdRequest();
-			orderLineItemRequest.setOrderLineItemId(orderLineItemId);
+		GetOrderLineItemByIdResponse orderLineItemResponse = null;
 
-			GetOrderLineItemByIdResponse orderLineItemResponse = null;
+		try {
+			orderLineItemResponse =
+				(GetOrderLineItemByIdResponse) serviceClient.marshalSendAndReceive(orderLineItemRequest);
 
-			try {
-				orderLineItemResponse =
-					(GetOrderLineItemByIdResponse) serviceClient.marshalSendAndReceive(orderLineItemRequest);
+		} catch (SoapFaultClientException exception) {
+			logger.error("exception invoking GetOrderLineItemById for " + orderLineItemId, exception);
 
-			} catch (SoapFaultClientException exception) {
-				logger.error("exception invoking GetOrderLineItemById for " + orderLineItemId, exception);
+			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
 
-				String faultMessage = getFaultMessage(exception.getWebServiceMessage());
-
-				if (faultMessage.contains("Required object not found")) {
-					throw new OrderLineNotFoundException(
- 						exceptionFactory.findExceptionMessage(
-							LicensedProductExceptionMessageCode.LP_EXC_0004),
-							new Object[]{orderLineItemId},
-							exception
-						);
-				} else {
-					throw new ExternalServiceCallException(exception.getMessage(), null, exception);
-				}
-			} catch (Exception exception) {
-				logger.error("exception invoking GetOrderLineItemById for " + orderLineItemId, exception);
-				
+			if (faultMessage.contains("Required object not found")) {
+				throw new OrderLineNotFoundException(
+					exceptionFactory.findExceptionMessage(
+						LicensedProductExceptionMessageCode.LP_EXC_0004),
+						new Object[]{orderLineItemId},
+						exception
+					);
+			} else {
 				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
 			}
+		} catch (Exception exception) {
+			logger.error("exception invoking GetOrderLineItemById for " + orderLineItemId, exception);
+			
+			throw new ExternalServiceCallException(exception.getMessage(), null, exception);
+		}
 
-			if (orderLineItemResponse != null) {
-				// find the right order line item
-				for (ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems().getOrderLine()) {
-					if (orderLineItem.getOrderLineItemId().equals(orderLineItemId)) {
-						if(orderLineItem.getOrderedISBN() != null) {
-							responsePayload.put(orderLineItemId, orderLineItem.getOrderedISBN());
-						}
-
-						break;
+		if (orderLineItemResponse != null) {
+			// find the right order line item
+			for (ReadOrderLineType orderLineItem : orderLineItemResponse.getOrder().getOrderLineItems().getOrderLine()) {
+				if (orderLineItem.getOrderLineItemId().equals(orderLineItemId)) {
+					if(orderLineItem.getOrderedISBN() != null) {
+						response.setOrderedISBN(orderLineItem.getOrderedISBN());
 					}
+					break;
 				}
 			}
 		}

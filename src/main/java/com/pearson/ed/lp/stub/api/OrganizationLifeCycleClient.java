@@ -1,7 +1,8 @@
 package com.pearson.ed.lp.stub.api;
 
 import com.pearson.ed.commons.service.exception.AbstractRumbaException;
-import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
+import com.pearson.ed.lp.message.OrganizationDisplayNameRequest;
+import com.pearson.ed.lp.message.OrganizationDisplayNameResponse;
 
 /**
  * Client stub API for the OrganizationLifeCycle service.
@@ -12,36 +13,14 @@ import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
 public interface OrganizationLifeCycleClient {
 
 	/**
-	 * Get request service activator to call the GetParentTreeByOrganizationId service function
-	 * of the OrganizationLifeCycle service.
-	 * 
-	 * @param organizationId organization id string
-	 * @return {@link OrganizationDisplayNamesResponse}
-	 * @throws AbstractRumbaException on service error
-	 */
-	OrganizationDisplayNamesResponse getParentTreeDisplayNamesByOrganizationId(String organizationId)
-		throws AbstractRumbaException;
-
-	/**
-	 * Get request service activator to call the GetChildTreeByOrganizationId service function
-	 * of the OrganizationLifeCycle service.
-	 * 
-	 * @param organizationId organization id string
-	 * @return {@link OrganizationDisplayNamesResponse}
-	 * @throws AbstractRumbaException on service error
-	 */
-	OrganizationDisplayNamesResponse getChildTreeDisplayNamesByOrganizationId(String organizationId)
-		throws AbstractRumbaException;
-
-	/**
 	 * Get request service activator to call the GetOrganizationById service function
 	 * of the OrganizationLifeCycle service.
 	 * 
-	 * @param organizationId organization id string
-	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @param {@link OrganizationDisplayNameRequest}
+	 * @return {@link OrganizationDisplayNameResponse}
 	 * @throws AbstractRumbaException on service error
 	 */
-	OrganizationDisplayNamesResponse getOrganizationDisplayName(String organizationId)
+	OrganizationDisplayNameResponse getOrganizationDisplayName(OrganizationDisplayNameRequest request)
 		throws AbstractRumbaException;
 
 }

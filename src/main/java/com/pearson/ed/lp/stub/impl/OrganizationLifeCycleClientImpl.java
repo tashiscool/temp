@@ -3,8 +3,6 @@ package com.pearson.ed.lp.stub.impl;
 import static com.pearson.ed.lp.exception.LicensedProductExceptionFactory.getFaultMessage;
 import static com.pearson.ed.lp.ws.LicensedProductWebServiceConstants.ORG_DISPLAY_NAME_ATTR_KEY;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +14,12 @@ import com.pearson.ed.lp.exception.ExternalServiceCallException;
 import com.pearson.ed.lp.exception.InvalidOrganizationException;
 import com.pearson.ed.lp.exception.LicensedProductExceptionFactory;
 import com.pearson.ed.lp.exception.LicensedProductExceptionMessageCode;
-import com.pearson.ed.lp.message.OrganizationDisplayNamesResponse;
+import com.pearson.ed.lp.message.OrganizationDisplayNameRequest;
+import com.pearson.ed.lp.message.OrganizationDisplayNameResponse;
 import com.pearson.ed.lp.stub.api.OrganizationLifeCycleClient;
-import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
 import com.pearson.rws.organization.doc._2009._07._01.GetOrganizationByIdRequest;
-import com.pearson.rws.organization.doc._2009._07._01.GetParentTreeByOrganizationIdRequest;
 import com.pearson.rws.organization.doc._2009._07._01.OrganizationIdRequestType;
 import com.pearson.rws.organization.doc._2009._07._01.OrganizationResponse;
-import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeResponse;
-import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeType;
 import com.pearson.rws.organization.doc._2009._07._01.ReadAttributeType;
 
 /**
@@ -55,19 +50,22 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		this.exceptionFactory = exceptionFactory;
 	}
 
+
 	/**
-	 * Get all DisplayNames associated with the given organization id by calling the OrganizationLifeCycle service.
-	 * Implements {@link OrganizationLifeCycleClient#getOrganizationDisplayName(String)}.
+	 * Get Display Name associated with the given organization id by calling the OrganizationLifeCycle service.
+	 * Implements {@link OrganizationLifeCycleClient#getOrganizationDisplayName(OrganizationDisplayNameRequest)}.
 	 * 
-	 * @param organizationId organization id string
-	 * @return {@link OrganizationDisplayNamesResponse}
+	 * @param request
+	 *            OrganizationDisplayNameRequest that contains organization id
+	 * @return OrganizationDisplayNameResponse display name for the given organization id
 	 * @throws AbstractRumbaException on service error
 	 */
-	public OrganizationDisplayNamesResponse getOrganizationDisplayName(String organizationId)
+	public OrganizationDisplayNameResponse getOrganizationDisplayName(OrganizationDisplayNameRequest request)
 			throws AbstractRumbaException {
 
-		OrganizationDisplayNamesResponse response = new OrganizationDisplayNamesResponse();
-		Map<String, String> responsePayload = response.getOrganizationDisplayNamesByIds();
+		String organizationId = request.getOrganizationId();
+		OrganizationDisplayNameResponse response = new OrganizationDisplayNameResponse();
+		response.setOrganizationId(organizationId);
 
 		GetOrganizationByIdRequest getOrganizationbyIdRequest = new GetOrganizationByIdRequest();
 		OrganizationIdRequestType organizationIdRequestType = new OrganizationIdRequestType();
@@ -95,8 +93,8 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		if ((organizationResponse != null) && (organizationResponse.getOrganization().getAttributes() != null)) {
 			for (ReadAttributeType attribute : organizationResponse.getOrganization().getAttributes().getAttribute()) {
 				if (attribute.getAttributeKey().value().equals(ORG_DISPLAY_NAME_ATTR_KEY)) {
-					responsePayload.put(organizationResponse.getOrganization().getOrganizationId(),
-							attribute.getAttributeValue());
+					response.setOrganizationDisplayName(attribute.getAttributeValue());
+					break;
 				}
 			}
 		}
@@ -104,115 +102,4 @@ public class OrganizationLifeCycleClientImpl implements OrganizationLifeCycleCli
 		return response;
 	}
 
-	/**
-	 * Get all ChildTreeDisplayNames associated with the given organization id by calling the OrganizationLifeCycle
-	 * service.
-	 * Implements {@link OrganizationLifeCycleClient#getChildTreeDisplayNamesByOrganizationId(String)}.
-	 * 
-	 * @param organizationId organization id string
-	 * @return {@link OrganizationDisplayNamesResponse}
-	 * @throws AbstractRumbaException on service error
-	 */
-
-	public OrganizationDisplayNamesResponse getChildTreeDisplayNamesByOrganizationId(String organizationId)
-			throws AbstractRumbaException {
-
-		OrganizationDisplayNamesResponse response = new OrganizationDisplayNamesResponse();
-		Map<String, String> responsePayload = response.getOrganizationDisplayNamesByIds();
-
-		GetChildTreeByOrganizationIdRequest getChildTreeRequest = new GetChildTreeByOrganizationIdRequest();
-		getChildTreeRequest.setOrganizationId(organizationId);
-		OrganizationTreeResponse treeResponse = null;
-
-		try {
-			treeResponse = (OrganizationTreeResponse) serviceClient.marshalSendAndReceive(getChildTreeRequest);
-		} catch (SoapFaultClientException exception) {
-			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
-			if(faultMessage.contains("Invalid Organization Id")) {
-				throw new InvalidOrganizationException(
-						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0002), 
-						new Object[]{organizationId}, exception);
-			} else if(faultMessage.contains("No child organizations found")) {
-				// consume the exception, this is an acceptable situation
-				LOGGER.info(String.format("No child organizations found for organization id: %s", organizationId));
-			} else {
-				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
-			}
-		} catch (Exception exception) {
-			throw new ExternalServiceCallException(exception.getMessage(), null, exception);
-		}
-
-		if (treeResponse != null) {
-			// dive into the response tree, hitting every node
-			parseOrganizationTree(treeResponse.getOrganization(), responsePayload);
-		}
-
-		return response;
-	}
-
-	/**
-	 * Get all ParentTreeDisplayNames associated with the given organization id by calling the OrganizationLifeCycle
-	 * service.
-	 * Implements {@link OrganizationLifeCycleClient#getParentTreeDisplayNamesByOrganizationId(String)}.
-	 * 
-	 * @param organizationId organization id string
-	 * @return {@link OrganizationDisplayNamesResponse}
-	 * @throws AbstractRumbaException on service error
-	 */
-	public OrganizationDisplayNamesResponse getParentTreeDisplayNamesByOrganizationId(String organizationId)
-			throws AbstractRumbaException {
-
-		OrganizationDisplayNamesResponse response = new OrganizationDisplayNamesResponse();
-		Map<String, String> responsePayload = response.getOrganizationDisplayNamesByIds();
-
-		GetParentTreeByOrganizationIdRequest getParentTreeRequest = new GetParentTreeByOrganizationIdRequest();
-		getParentTreeRequest.setOrganizationId(organizationId);
-		OrganizationTreeResponse treeResponse = null;
-
-		try {
-			treeResponse = (OrganizationTreeResponse) serviceClient.marshalSendAndReceive(getParentTreeRequest);
-		} catch (SoapFaultClientException exception) {
-			String faultMessage = getFaultMessage(exception.getWebServiceMessage());
-			if(faultMessage.contains("Invalid Organization Id")) {
-				throw new InvalidOrganizationException(
-						exceptionFactory.findExceptionMessage(
-								LicensedProductExceptionMessageCode.LP_EXC_0002), 
-						new Object[]{organizationId}, exception);
-			} else if(faultMessage.contains("No parent organizations found")) {
-				// consume the exception, this is an acceptable situation
-				LOGGER.info(String.format("No parent organizations found for organization id: %s", organizationId));
-			} else {
-				throw new ExternalServiceCallException(exception.getMessage(), null, exception);
-			}
-		} catch (Exception exception) {
-			throw new ExternalServiceCallException(exception.getMessage(), null, exception);
-		}
-
-		if (treeResponse != null) {
-			// dive into the response tree, hitting every node
-			parseOrganizationTree(treeResponse.getOrganization(), responsePayload);
-		}
-
-		return response;
-	}
-
-	/**
-	 * Recursive funtion to parse an entire OrganizationTreeType result tree and populate the provided result map with
-	 * the organization id and name values as the keys and values in the map.
-	 * 
-	 * @param orgTreeNode
-	 *            organization tree to parse
-	 * @param resultPayload
-	 *            result map to populate
-	 */
-	private void parseOrganizationTree(OrganizationTreeType orgTreeNode, Map<String, String> resultPayload) {
-		resultPayload.put(orgTreeNode.getOrganizationId(), orgTreeNode.getName());
-
-		if (!orgTreeNode.getOrganization().isEmpty()) {
-			for (OrganizationTreeType childNode : orgTreeNode.getOrganization()) {
-				parseOrganizationTree(childNode, resultPayload);
-			}
-		}
-	}
 }

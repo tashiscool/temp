@@ -15,9 +15,9 @@ import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductRequestElement;
  * @author ULLOYNI
  * 
  */
-public class GetLicensedProductsRequestTransformer {
+public class GetLicensedProductRequestTransformer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GetLicensedProductsRequestTransformer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GetLicensedProductRequestTransformer.class);
 
 	/**
 	 * Transform the JAXB2 generated {@link GetLicensedProductRequestElement} into

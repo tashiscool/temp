@@ -201,9 +201,9 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 			} else {
 				configureMockLicensePoolService(mockLicensePoolService, 
 						toThrow);
-				// stop here
-				return;
 			}
+			// stop here
+			return;
 		} else {
 			configureMockLicensePoolService(mockLicensePoolService, 
 					Arrays.asList(new OrganizationLPMapping[]{dummyLicensePool}));
@@ -212,98 +212,61 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 		// configure mock organization service client
 		String dummyOrgDisplayName = "dummy-org-display-name";
 
-		Map<String, String> dummyOrgData = new Hashtable<String, String>();
-		dummyOrgData.put(dummyOrgId, dummyOrgDisplayName);
 		
-		switch (qualifyingLicensePool) {
-		case ALL_IN_HIERARCHY:
-			if(mockOrgService.equals(failingMock)) {
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.PARENT_TREE)))
-						.andRespond(ResponseCreators.withClientOrSenderFault(
-								toThrow.getMessage(), 
-								Locale.getDefault()));
-				
-				if(toThrow.getMessage().contains("No parent organizations found")) {
-					// consumed exception
-					mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-							OrgRequestType.CHILD_TREE)))
-							.andRespond(ResponseCreators.withPayload(
-									generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.CHILD_TREE)));
-					mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-							OrgRequestType.ROOT_ONLY)))
-							.andRespond(ResponseCreators.withPayload(
-									generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
-				} else {
-					// stop here
-					return;
-				}
+		if(mockOrgService.equals(failingMock)) {
+			if(toThrow.getMessage().contains("No org display info found")) {
+				// simulate response without organization display info, which generates an exception
+				mockOrgService.expect(RequestMatchers.payload(
+						generateDummyGetOrgRequest(dummyOrgId)))
+						.andRespond(ResponseCreators.withPayload(
+								generateDummyGetOrgResponseData(
+										dummyOrgId, null)));
 			} else {
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.PARENT_TREE)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.PARENT_TREE)));
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.CHILD_TREE)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.CHILD_TREE)));
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.ROOT_ONLY)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
-			}
-			break;
-		case ROOT_AND_PARENTS:
-			if(mockOrgService.equals(failingMock)) {
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.PARENT_TREE)))
+				mockOrgService.expect(RequestMatchers.payload(
+						generateDummyGetOrgRequest(dummyOrgId)))
 						.andRespond(ResponseCreators.withClientOrSenderFault(
-								toThrow.getMessage(), 
-								Locale.getDefault()));
-				
-				if(toThrow.getMessage().contains("No parent organizations found")) {
-					// consumed exception
-					mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-							OrgRequestType.ROOT_ONLY)))
-							.andRespond(ResponseCreators.withPayload(
-									generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
-				} else {
-					// stop here
-					return;
-				}
-			} else {
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.PARENT_TREE)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.PARENT_TREE)));
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.ROOT_ONLY)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
+								toThrow.getMessage(), Locale.getDefault()));
 			}
-			break;
-		case ROOT_ONLY:
-			if(mockOrgService.equals(failingMock)) {
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.ROOT_ONLY)))
-						.andRespond(ResponseCreators.withClientOrSenderFault(
-								toThrow.getMessage(), 
-								Locale.getDefault()));
-				// stop here
-				return;
-			} else {
-				mockOrgService.expect(RequestMatchers.payload(generateDummyGetOrgRequest(dummyOrgId, 
-						OrgRequestType.ROOT_ONLY)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyGetOrgResponseData(dummyOrgData, OrgRequestType.ROOT_ONLY)));
-			}
-			break;
+			// stop here
+			return;
+		} else {
+			mockOrgService.expect(RequestMatchers.payload(
+					generateDummyGetOrgRequest(dummyOrgId)))
+					.andRespond(ResponseCreators.withPayload(
+							generateDummyGetOrgResponseData(
+									dummyOrgId, dummyOrgDisplayName)));
 		}
-		
+
 		if(mockLicensePoolService.equals(failingMock) && (toThrow instanceof ProductNotFoundException)) {
 			// stop here
 			return;
 		}
+		
+		// configure mock order service client
+		if(mockOrderService.equals(failingMock)) {
+			if(toThrow.getMessage().contains("No ISBN number")) {
+				// simulate response without ordered isbn number, which generates an exception
+				mockOrderService.expect(RequestMatchers.payload(
+						generateDummyOrderRequest(dummyOrderLineItemId)))
+						.andRespond(ResponseCreators.withPayload(
+								generateDummyOrderResponseMultipleItems(
+										dummyOrderLineItemId, null, true)));
+			} else {
+				mockOrderService.expect(RequestMatchers.payload(
+						generateDummyOrderRequest(dummyOrderLineItemId)))
+						.andRespond(ResponseCreators.withClientOrSenderFault(
+								toThrow.getMessage(), Locale.getDefault()));
+			}
+			// stop here
+			return;
+		} else {
+			mockOrderService.expect(RequestMatchers.payload(
+					generateDummyOrderRequest(dummyOrderLineItemId)))
+					.andRespond(ResponseCreators.withPayload(
+							generateDummyOrderResponseMultipleItems(
+									dummyOrderLineItemId, dummyIsbn, true)));
+		}
+
 		
 		// configure mock product service client
 		Long[] dummyProductEntityIds = new Long[] { dummyProductEntityId };
@@ -329,8 +292,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 						.andRespond(ResponseCreators.withClientOrSenderFault(
 								toThrow.getMessage(), Locale.getDefault()));
 			}
-			// stop here
-			return;
 		} else {
 			mockProductService.expect(RequestMatchers.payload(
 					generateDummyGetProductRequest(dummyProductEntityIds)))
@@ -338,28 +299,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 							generateDummyGetProductResponse(dummyProductData)));
 		}
 		
-		// configure mock order service client
-		if(mockOrderService.equals(failingMock)) {
-			if(toThrow.getMessage().contains("No ISBN number")) {
-				// simulate response without ordered isbn number, which generates an exception
-				mockOrderService.expect(RequestMatchers.payload(
-						generateDummyOrderRequest(dummyOrderLineItemId)))
-						.andRespond(ResponseCreators.withPayload(
-								generateDummyOrderResponseMultipleItems(
-										dummyOrderLineItemId, null, true)));
-			} else {
-				mockOrderService.expect(RequestMatchers.payload(
-						generateDummyOrderRequest(dummyOrderLineItemId)))
-						.andRespond(ResponseCreators.withClientOrSenderFault(
-								toThrow.getMessage(), Locale.getDefault()));
-			}
-		} else {
-			mockOrderService.expect(RequestMatchers.payload(
-					generateDummyOrderRequest(dummyOrderLineItemId)))
-					.andRespond(ResponseCreators.withPayload(
-							generateDummyOrderResponseMultipleItems(
-									dummyOrderLineItemId, dummyIsbn, true)));
-		}
 	}
 
 	/**
@@ -505,45 +444,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	}
 
 	/**
-	 * Test behavior with {@link QualifyingLicensePool} set to ALL_IN_HIERARCHY but with exceptions thrown
-	 * due to no parent organizations found (which should not result in a fault).
-	 * @throws IOException 
-	 */
-	@Test
-	public void testEndToEndMessagingWithQualifyingLicensePoolAllInHierarchyNoParentOrgs() throws IOException {
-		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ALL_IN_HIERARCHY;
-		Throwable toThrow = new Exception("No parent organizations found");
-		setMockClientsBehaviors(qualifyingLicensePool, mockOrgService, 
-				toThrow);
-
-		UnmarshallingResponseCollector responseCollector = new UnmarshallingResponseCollector();
-		
-		mockLicensedProductClient.sendRequest(RequestCreators.withPayload(
-				generateDummyGetLicensedProductRequest(dummyOrgId, qualifyingLicensePool)))
-				.andExpect(ResponseMatchers.noFault())
-				.andExpect(ResponseMatchers.validPayload(licensedProductXmlSchema))
-				.andExpect(responseCollector);
-		
-		Object response = responseCollector.getResponse();
-		
-		assertNotNull(response);
-		assertThat(response, is(GetLicensedProductResponseElement.class));
-		GetLicensedProductResponseElement licensedProductResponse = (GetLicensedProductResponseElement)response;
-		assertEquals(1, licensedProductResponse.getLicensedProduct().size());
-		
-		LicensedProduct licensedProduct = licensedProductResponse.getLicensedProduct().iterator().next();
-		assertEquals(dummyOrgId, licensedProduct.getOrganizationId());
-		assertEquals(dummyProductId, licensedProduct.getProductId());
-		assertEquals(dummyIsbn, licensedProduct.getOrderedISBN());
-		
-		verify(mockLicensePoolService);
-		
-		mockOrgService.verify();
-		mockProductService.verify();
-		mockOrderService.verify();
-	}
-
-	/**
 	 * Test behavior with {@link QualifyingLicensePool} set to ROOT_ONLY but with exceptions thrown
 	 * due to a generic exception from the OrganizationLifeCycle service.
 	 * @throws IOException 
@@ -551,8 +451,8 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 	@Test
 	public void testEndToEndMessagingWithQualifyingLicensePoolRootOnlyGenericException() throws IOException {
 		QualifyingLicensePool qualifyingLicensePool = QualifyingLicensePool.ROOT_ONLY;
-		Throwable toThrow = new Exception("Generic OrganizationLifeCycle service exception");
-		setMockClientsBehaviors(qualifyingLicensePool, mockOrgService, 
+		Throwable toThrow = new RuntimeException("Generic LicensePoolLifeCycle service exception");
+		setMockClientsBehaviors(qualifyingLicensePool, mockLicensePoolService, 
 				toThrow);
 
 		mockLicensedProductClient.sendRequest(RequestCreators.withPayload(
