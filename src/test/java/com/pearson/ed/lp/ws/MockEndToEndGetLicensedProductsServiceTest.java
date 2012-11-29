@@ -227,8 +227,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 						.andRespond(ResponseCreators.withClientOrSenderFault(
 								toThrow.getMessage(), Locale.getDefault()));
 			}
-			// stop here
-			return;
 		} else {
 			mockOrgService.expect(RequestMatchers.payload(
 					generateDummyGetOrgRequest(dummyOrgId)))
@@ -257,8 +255,6 @@ public class MockEndToEndGetLicensedProductsServiceTest {
 						.andRespond(ResponseCreators.withClientOrSenderFault(
 								toThrow.getMessage(), Locale.getDefault()));
 			}
-			// stop here
-			return;
 		} else {
 			mockOrderService.expect(RequestMatchers.payload(
 					generateDummyOrderRequest(dummyOrderLineItemId)))

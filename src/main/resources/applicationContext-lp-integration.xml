@@ -47,7 +47,8 @@
 	</chain>
 
 	<aggregator input-channel="getLicensedProductResponseChannel"
-		ref="licensedProductResponseAggregator" />
+		ref="licensedProductResponseAggregator" 
+		send-timeout="${licensedproduct.timeout_in_msec}"/>
 		
 	<!-- Service Activators - note that the referenced client stubs are provided 
 		by another configuration file -->
@@ -69,11 +70,19 @@
 	<channel id="licensePoolClientRequestChannel" />
 	<channel id="licensePoolClientResponseChannel" />
 	<channel id="productRequestChannel" />
-	<channel id="orderRequestChannel" />
-	<channel id="organizationRequestChannel" />
+	<channel id="orderRequestChannel">
+		<dispatcher task-executor="clientPool" />
+	</channel>
+	<channel id="organizationRequestChannel">
+		<dispatcher task-executor="clientPool" />
+	</channel>
 	<channel id="getLicensedProductResponseChannel" />
 	<channel id="licensedProductDetailsRequestChannel" />
 
+    <task:executor id="clientPool" pool-size="${licensedproduct.thread.pool_size}"
+        rejection-policy="CALLER_RUNS" keep-alive="${licensedproduct.thread.keep_alive_sec}"
+    />
+    
 	<!-- common beans -->
 	<beans:bean id="getLicensedProductRequestTransformer"
 		class="com.pearson.ed.lp.transformer.GetLicensedProductRequestTransformer" />
