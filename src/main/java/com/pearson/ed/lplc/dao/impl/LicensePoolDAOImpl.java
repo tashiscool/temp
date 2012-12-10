@@ -1,15 +1,26 @@
 package com.pearson.ed.lplc.dao.impl;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
@@ -23,6 +34,9 @@ import com.pearson.ed.lplc.model.LicensePoolMapping;
  */
 
 public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDAO {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(LicensePoolDAOImpl.class);
+	
 	/**
 	 * Creates a license pool mapping.
 	 * 
@@ -116,12 +130,25 @@ public class LicensePoolDAOImpl extends LPLCBaseDAOImpl implements LicensePoolDA
 	public List<String> findExpiredLicensePool() {
 		Criteria criteria = getSession().createCriteria(LicensePoolMapping.class);
 		criteria.setProjection(Projections.property("licensepoolId"));
-		long oneDay = (long) 1000.0 * 60 * 60 * 24;
-		Date today = new Date(System.currentTimeMillis());
-		Date yesterday = new Date(System.currentTimeMillis() - oneDay);
-		Criterion betweenEnddate = Restrictions.between("end_date", yesterday, today);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy KK:mm:ss.SSS aa");
+ 		Calendar todayCal = Calendar.getInstance();
+		Calendar yesterdayCal = Calendar.getInstance();
+		yesterdayCal.add(Calendar.DATE, -1);
+		
+		Date dT = null;
+		Date dY = null;
+		try {
+		 dT = dateFormat.parse(dateFormat.format(todayCal.getTime()));
+		 dY = dateFormat.parse(dateFormat.format(yesterdayCal.getTime()));
+		}catch(Exception ex)
+		{
+			LOGGER.error("ERROR occured while dateparsin operation"+ex.getMessage());
+		}
+ 	 	
+  	 	Criterion betweenEnddate = Restrictions.between("end_date", dY, dT);
 		criteria.add(betweenEnddate);
 		return (List) criteria.list();
 
 	}
-}
+ }
