@@ -3,8 +3,6 @@ package com.pearson.ed.lplc.model.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 

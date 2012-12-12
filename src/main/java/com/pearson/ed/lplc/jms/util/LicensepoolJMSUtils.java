@@ -1,12 +1,6 @@
 package com.pearson.ed.lplc.jms.util;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBContext;
@@ -22,7 +16,6 @@ import com.pearson.ed.lplc.jms.api.JMSWriter;
 import com.pearson.rws.licensepool.doc._2009._04._01.EventTypeType;
 import com.pearson.rws.licensepool.doc._2009._04._01.LicensePoolEvent;
 import com.pearson.rws.licensepool.doc._2009._04._01.ObjectFactory;
-import com.sun.mail.iap.ByteArray;
 
 public class LicensepoolJMSUtils {
 

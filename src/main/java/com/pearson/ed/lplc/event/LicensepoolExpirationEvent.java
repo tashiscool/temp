@@ -2,8 +2,6 @@ package com.pearson.ed.lplc.event;
 
 import java.util.List;
 
-import javax.jms.JMSException;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionException;

@@ -9,18 +9,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pearson.ed.lp.exception.RequiredObjectNotFoundException;
 import com.pearson.ed.lplc.common.LPLCConstants;
 import com.pearson.ed.lplc.dao.api.LicensePoolDAO;
 import com.pearson.ed.lplc.dao.api.OrganizationLPDAO;
 import com.pearson.ed.lplc.dto.LicensePoolDTO;
 import com.pearson.ed.lplc.dto.UpdateLicensePoolDTO;
 import com.pearson.ed.lplc.exception.ComponentValidationException;
-import com.pearson.ed.lplc.exception.LPLCBaseException;
 import com.pearson.ed.lplc.exception.LicensePoolCanceledException;
 import com.pearson.ed.lplc.exception.LicensePoolExpiredException;
 import com.pearson.ed.lplc.exception.LicensePoolForFutureException;
