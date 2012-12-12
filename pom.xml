@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.pearson.ed.ltg.rumba</groupId>
 		<artifactId>webservices</artifactId>
-        <version>12.12.23-SNAPSHOT</version>
+        <version>12.12.24-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
