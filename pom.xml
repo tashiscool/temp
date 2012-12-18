@@ -301,10 +301,10 @@
             <version>12.6.0</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>sonic</groupId>
-			<artifactId>sonic-client</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.progress.message</groupId>
+            <artifactId>sonic_Client</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -334,6 +334,11 @@
         <dependency>
             <groupId>com.pearson.ed.ltg.rumba.metrics</groupId>
             <artifactId>statsd-logging-aspect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pearson.ed.ltg.rumba.commons</groupId>
+            <artifactId>SpringApplicationContextListeners</artifactId>
+            <version>12.12.22-SNAPSHOT</version>
         </dependency>
 	</dependencies>
 

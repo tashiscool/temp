@@ -50,4 +50,6 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="com.pearson.ed.commons.spring.listener.SpringCleaningListener" />
 </beans>
