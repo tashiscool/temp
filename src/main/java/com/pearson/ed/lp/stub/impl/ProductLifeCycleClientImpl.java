@@ -22,6 +22,17 @@ import com.pearson.ed.lp.message.ProductData;
 import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lp.message.ProductEntityIdsResponse;
 import com.pearson.ed.lp.stub.api.ProductLifeCycleClient;
+import com.pearson.ed.lplc.stub.impl.Exception;
+import com.pearson.ed.lplc.stub.impl.GetLicensePoolToSubscribeRequest;
+import com.pearson.ed.lplc.stub.impl.GetProductDetailsRequestWithOrg;
+import com.pearson.ed.lplc.stub.impl.GetProductDetailsResponse;
+import com.pearson.ed.lplc.stub.impl.GetResourcesByProductIdRequest;
+import com.pearson.ed.lplc.stub.impl.GetResourcesByProductIdResponse;
+import com.pearson.ed.lplc.stub.impl.GetResourcesByProductIdResponseException;
+import com.pearson.ed.lplc.stub.impl.LicensePoolToSubscribe;
+import com.pearson.ed.lplc.stub.impl.LicensePoolToSubscribeException;
+import com.pearson.ed.lplc.stub.impl.Override;
+import com.pearson.ed.lplc.stub.impl.ProductLicenseWrapper;
 import com.pearson.rws.product.doc.v2.AttributeType;
 import com.pearson.rws.product.doc.v2.DisplayInfoType;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
@@ -142,6 +153,88 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 				}
 			}
 		}
+		
+		 @Override
+		    public Object getResourcesByProductId(
+		            GetResourcesByProductIdRequest request) {
+		        GetResourcesByProductIdResponse response = null;
+		        try {
+					LOGGER.debug("serviceClient sent" + request.toString() + "\n");
+		            response = (GetResourcesByProductIdResponse) serviceClient
+		                    .marshalSendAndReceive(request);
+					LOGGER.debug("serviceClient recieved" + response + "\n");
+		        } catch (SoapFaultClientException e) {
+					LOGGER.error("serviceClient SoapFaultClientException" + excSvc.getSoapFaultMessage(e) + "\n");
+		            return new GetResourcesByProductIdResponseException(
+		                    excSvc.getSoapFaultMessage(e).replace("{}", request.getProductId()), null,
+		                    e);
+		        } catch (Exception exception) {
+					LOGGER.error("serviceClient SoapFaultClientException" + exception.getMessage() + "\n");
+		            return new GetResourcesByProductIdResponseException(
+		                    exception.getMessage(), null, exception);
+		        }
+		        return response;
+		    }
+
+			@Override
+			public Object getProductAndLicenseDetailsById(
+					GetProductDetailsRequestWithOrg request) {
+				ProductLicenseWrapper wrapper = new ProductLicenseWrapper();
+				try {
+					Object prodObj = getProductDetailsById(request.getProductRequest());
+					if (prodObj instanceof GetProductDetailsResponse)
+					{
+						GetProductDetailsResponse product = (GetProductDetailsResponse) prodObj;
+						wrapper.setProductRepsonse(product);
+						request.getLicensePoolRequest().getGetLicensePoolToSubscribeRequestType()
+							.setProductId(String.valueOf(product.getProduct().getProductEntityId()));
+			            Object responObject = getLicensePoolToSubscribe(request.getLicensePoolRequest());
+			            if (responObject instanceof LicensePoolToSubscribe)
+						{
+			            	LicensePoolToSubscribe response =(LicensePoolToSubscribe) responObject;
+			            	wrapper.setLicenseResponse(response);
+						}
+			            else
+			            {
+			            	return responObject;
+			            }
+					}
+					else 
+					{
+						return prodObj;
+					}
+					
+		        }  catch (SoapFaultClientException e) {
+					LOGGER.error("licenseRequest SoapFaultClientException" + excSvc.getSoapFaultMessage(e) + "\n");
+		            return new LicensePoolToSubscribeException(
+		                    excSvc.getSoapFaultMessage(e), null,
+		                    e);
+		        }
+		        catch (Exception exception) {
+		            return new LicensePoolToSubscribeException(exception.getMessage(), null, exception);
+		        }
+				return wrapper;
+			}
+
+			public Object getLicensePoolToSubscribe(
+					GetLicensePoolToSubscribeRequest licenseRequest) {
+				LicensePoolToSubscribe response = null;
+				try {
+					LOGGER.debug("licenseRequest sent" + licenseRequest.toString() + "\n");
+		            response = (LicensePoolToSubscribe) serviceClientLicense
+		                    .marshalSendAndReceive(licenseRequest);
+					LOGGER.debug("licenseRequest recieved" + response + "\n");
+		        }  catch (SoapFaultClientException e) {
+					LOGGER.error("licenseRequest SoapFaultClientException" + excSvc.getSoapFaultMessage(e) + "\n");
+		            return new LicensePoolToSubscribeException(
+		                    excSvc.getSoapFaultMessage(e), null,
+		                    e);
+		        }
+		        catch (Exception exception) {
+		            return new LicensePoolToSubscribeException(exception.getMessage(), null, exception);
+		        }
+		        return response;
+			}
 
 		return response;
 	}

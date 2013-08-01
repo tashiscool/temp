@@ -10,11 +10,11 @@
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
-	<artifactId>LicensePoolLifeCycle</artifactId>
+	<artifactId>LicensePoolEvent</artifactId>
     <version>12.12.23-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>LicensePoolLifeCycle</name>
+	<name>LicensePoolEvent</name>
 
 	<properties>
 		
