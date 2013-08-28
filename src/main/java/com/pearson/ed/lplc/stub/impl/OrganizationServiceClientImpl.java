@@ -1,6 +1,7 @@
 package com.pearson.ed.lplc.stub.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.axiom.soap.SOAPFaultText;
@@ -15,6 +16,7 @@ import com.pearson.ed.lplc.exception.OrganizationNotValidException;
 import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
 import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
 import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
+import com.pearson.rws.organization.doc._2009._07._01.GetParentTreeByOrganizationIdRequest;
 import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeResponse;
 import com.pearson.rws.organization.doc._2009._07._01.OrganizationTreeType;
 
@@ -56,7 +58,7 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 		List<OrganizationDTO> organizationDTOList = new ArrayList<OrganizationDTO>();
 		String faultMessage = null;
 		try {
-			OrganizationTreeResponse organizationTreeResponse = getOrgHierarchy(organizationId);
+			OrganizationTreeResponse organizationTreeResponse = getOrgHierarchy(organizationId, true);
 			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
 			OrganizationDTO organizationDTO = new OrganizationDTO();
 
@@ -83,11 +85,21 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 		return organizationDTOList;
 	}
 
-	protected OrganizationTreeResponse getOrgHierarchy(String organizationId) throws SoapFaultClientException {
-		Object request = getChildTreeByOrganizationIdRequest(organizationId);
+	protected OrganizationTreeResponse getOrgHierarchy(String organizationId, boolean child) throws SoapFaultClientException {
+		Object request = null;
+		if (child)
+			request = getChildTreeByOrganizationIdRequest(organizationId);
+		else
+			request = getParentTreeByOrganizationIdRequest(organizationId);
 		OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
 				.marshalSendAndReceive(request);
 		return organizationTreeResponse;
+	}
+
+	private Object getParentTreeByOrganizationIdRequest(String organizationId) {
+		GetParentTreeByOrganizationIdRequest request = new GetParentTreeByOrganizationIdRequest();
+		request.setOrganizationId(organizationId);
+		return request;
 	}
 
 	/**
@@ -138,5 +150,70 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 		SOAPFaultText sOAPFaultText = soapMessage.getAxiomMessage().getSOAPEnvelope().getBody().getFault().getReason()
 				.getSOAPFaultText("en");
 		return sOAPFaultText.getText().toString();
+	}
+	
+	public ArrayList<OrganizationDTO> getChildTree(GetChildTreeByOrganizationIdRequest request)
+	{
+		ArrayList<OrganizationDTO> organizationDTOList = new ArrayList<OrganizationDTO>();
+		String faultMessage = null;
+		try {
+			OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
+					.marshalSendAndReceive(request);
+			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
+			OrganizationDTO organizationDTO = new OrganizationDTO();
+
+			organizationDTO.setOrgId(organizationTreeType.getOrganizationId());
+			organizationDTO.setOrgLevel(organizationTreeType.getLevel());
+			organizationDTOList.addAll(getOrganizationChildTree(organizationTreeType.getOrganization(),
+					organizationDTOList));
+			organizationDTOList.add(organizationDTO);
+
+		} catch (SoapFaultClientException soapFaultClientException) {
+			// FIXME: These needs to be removed once error codes are defined.
+			faultMessage = getFaultMessage(soapFaultClientException.getWebServiceMessage());
+			if (faultMessage.contains("Invalid Organization Id")) {
+				throw new OrganizationNotValidException("No Organization found for Organization ID: " +  request.getOrganizationId());
+			}
+			if (faultMessage.contains("No child organizations found for organization Id ")) {
+				return organizationDTOList;
+			}
+			throw new ExternalServiceCallException(soapFaultClientException.getMessage());
+		} catch (Exception exception) {
+			throw new ExternalServiceCallException(exception.getMessage());
+		}
+
+		return organizationDTOList;
+	}
+	public LinkedList<OrganizationDTO> getParentTree(GetParentTreeByOrganizationIdRequest request)
+	{
+		LinkedList<OrganizationDTO> organizationDTOList = new LinkedList<OrganizationDTO>();
+		String faultMessage = null;
+		try {
+			OrganizationTreeResponse organizationTreeResponse = (OrganizationTreeResponse) webServiceTemplate
+					.marshalSendAndReceive(request);
+			OrganizationTreeType organizationTreeType = organizationTreeResponse.getOrganization();
+			OrganizationDTO organizationDTO = new OrganizationDTO();
+
+			organizationDTO.setOrgId(organizationTreeType.getOrganizationId());
+			organizationDTO.setOrgLevel(organizationTreeType.getLevel());
+			organizationDTOList.addAll(getOrganizationChildTree(organizationTreeType.getOrganization(),
+					organizationDTOList));
+			organizationDTOList.add(organizationDTO);
+
+		} catch (SoapFaultClientException soapFaultClientException) {
+			// FIXME: These needs to be removed once error codes are defined.
+			faultMessage = getFaultMessage(soapFaultClientException.getWebServiceMessage());
+			if (faultMessage.contains("Invalid Organization Id")) {
+				throw new OrganizationNotValidException("No Organization found for Organization ID: " + request.getOrganizationId());
+			}
+			if (faultMessage.contains("No child organizations found for organization Id ")) {
+				return organizationDTOList;
+			}
+			throw new ExternalServiceCallException(soapFaultClientException.getMessage());
+		} catch (Exception exception) {
+			throw new ExternalServiceCallException(exception.getMessage());
+		}
+
+		return organizationDTOList;
 	}
 }

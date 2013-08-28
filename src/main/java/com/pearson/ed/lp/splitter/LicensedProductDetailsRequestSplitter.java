@@ -1,6 +1,7 @@
 package com.pearson.ed.lp.splitter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,13 @@ import com.pearson.ed.lp.message.ProductEntityIdsRequest;
 import com.pearson.ed.lplc.model.LicensePoolMapping;
 import com.pearson.ed.lplc.model.OrderLineItemLPMapping;
 import com.pearson.ed.lplc.model.OrganizationLPMapping;
+import com.pearson.rws.licensepool.doc._2009._04._01.GetLicensePoolDetailsByIdResponse;
+import com.pearson.rws.user.doc._2008._12._01.OrgRoleType;
+import com.pearson.rws.user.doc.v3.GetUsersByAffiliationRequest;
+import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
+import com.pearson.rws.product.doc.v2.GetResourcesByProductIdRequest;
+import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
+import com.pearson.rws.organization.doc._2009._07._01.GetParentTreeByOrganizationIdRequest;
 
 /**
  * Splitter implementation that takes a {@link LicensePoolResponse} message payload and separates out data for
@@ -45,7 +53,7 @@ public class LicensedProductDetailsRequestSplitter {
 	 * {@link ProductEntityIdsRequest}, and the original request as a pass through
 	 */
 	@Splitter
-	public List<Object> split(LicensePoolResponse licensePoolResponse) {
+	public List<Object> split(GetLicensePoolDetailsByIdResponse licensePoolResponse) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Received message to split");
 		}
@@ -54,49 +62,38 @@ public class LicensedProductDetailsRequestSplitter {
 			LOGGER.error("Required LicensePoolResponse message not received!");
 			throw new NullPointerException("Required LicensePoolResponse message not received!");
 		}
+		 
+		GetUsersByAffiliationRequest userRequest = new GetUsersByAffiliationRequest();
+		GetProductsByProductEntityIdsRequest getProducts = new GetProductsByProductEntityIdsRequest();
+		GetResourcesByProductIdRequest getResource = new GetResourcesByProductIdRequest();
+		GetChildTreeByOrganizationIdRequest getChildTree = new GetChildTreeByOrganizationIdRequest();
+		GetParentTreeByOrganizationIdRequest getParentTree = new GetParentTreeByOrganizationIdRequest();
+		String orgId = licensePoolResponse.getLicensePool().getQualifyingOrganizations()
+				.getQualifyingOrganization().get(0).getOrganizationId();
 		
-		int responseCount = licensePoolResponse.getLicensePools().size();
-
-		List<Long> productEntityIds = new ArrayList<Long>(responseCount);
-
-		List<Object> splitSet = new ArrayList<Object>((responseCount*2)+2);
+		userRequest.setOrganizationId(orgId);
+		userRequest.setOrgRole(OrgRoleType.CA.name());
 		
-		OrganizationDisplayNameRequest organizationDisplayNameRequest = null;
-		OrderLineItemRequest orderLineItemRequest = null;
-		ProductEntityIdsRequest productEntityIdsRequest = new ProductEntityIdsRequest();
-		productEntityIdsRequest.setProductEntityIds(productEntityIds);
-
-		for (OrganizationLPMapping licensePool : licensePoolResponse.getLicensePools()) {
-			LicensePoolMapping lpMapping = licensePool.getLicensepoolMapping();
-			Set<OrderLineItemLPMapping> orderLineItems = lpMapping.getOrderLineItems();
-			if (orderLineItems.isEmpty()) {
-				throw new IllegalStateException("no order line items in " + lpMapping.toString());
-			}
-
-			String orderLineItemId =
-				orderLineItems				
-					.iterator()
-					.next()
-					.getOrderLineItemId();
-
-			orderLineItemRequest = new OrderLineItemRequest();
-			// first element is the order line that created the license pool
-			orderLineItemRequest.setOrderLineItemId(orderLineItemId);
-
-			organizationDisplayNameRequest = new OrganizationDisplayNameRequest();
-			organizationDisplayNameRequest.setOrganizationId(lpMapping.getOrg_id());
-			
-			// is actually a number in the product DB, and this value is actually the product entity id
-			productEntityIds.add(Long.valueOf(lpMapping.getProduct_id()));
-			splitSet.add(organizationDisplayNameRequest);
-			splitSet.add(orderLineItemRequest);
-		}
-		if(!productEntityIdsRequest.getProductEntityIds().isEmpty()) {
-			splitSet.add(productEntityIdsRequest);
-		}
-		// add original request as a pass through for the final response aggregator
-		splitSet.add(licensePoolResponse);
-
+		Collection<Long> productIds = new ArrayList<Long>();
+		for (String productId : licensePoolResponse.getLicensePool().getProductId())
+			productIds.add(Long.parseLong(productId));
+		getProducts.getProductEntityId().addAll(productIds );
+		
+		getResource.setRole("Instructor");
+		getResource.setProductId(licensePoolResponse.getLicensePool().getProductId().get(0));
+		
+		getChildTree.setMaxLevel(999);
+		getChildTree.setOrganizationId(orgId);
+		
+		getParentTree.setMaxLevel(999);
+		getParentTree.setOrganizationId(orgId);
+		
+		List<Object> splitSet = new ArrayList<Object>();
+		splitSet.add(userRequest);
+		splitSet.add(getProducts);
+		splitSet.add(getResource);
+		splitSet.add(getChildTree);
+		splitSet.add(getParentTree);
 		return splitSet;
 	}
 

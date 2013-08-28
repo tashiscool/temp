@@ -81,7 +81,7 @@
 
 	<payload-type-router
 		input-channel="licensedProductDetailsRequestChannel">
-		 <mapping type="com.pearson.rws.user.doc.v3.GetUsersByCriteriaRequest"
+		 <mapping type="com.pearson.rws.user.doc.v3.GetUsersByAffiliationRequest"
             channel="getUserRequestChannel"
         />
         <mapping type="com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest"
@@ -142,13 +142,13 @@
         input-channel="getChildTreeRequestChannel"
         output-channel="responseCollectorChannel"
         ref="organizationLifeCycle"
-        method="getResourcesByProductId"
+        method="getChildTree"
     />
     <service-activator 
         input-channel="getParentTreeRequestChannel"
         output-channel="responseCollectorChannel"
         ref="organizationLifeCycle"
-        method="getResourcesByProductId"
+        method="getParentTree"
     />
     <service-activator 
         input-channel="passCodeEventChannel"
