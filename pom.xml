@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.pearson.ed.ltg.rumba</groupId>
 		<artifactId>webservices</artifactId>
-        <version>12.12.24-SNAPSHOT</version>
+        <version>13.7.16.0</version>
 	</parent>
 	
 	<groupId>com.pearson.ed.ltg.rumba.webservices</groupId>
@@ -304,6 +304,7 @@
         <dependency>
             <groupId>com.progress.message</groupId>
             <artifactId>sonic_Client</artifactId>
+  			<version>8.5.1</version>
         </dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
@@ -338,7 +339,7 @@
         <dependency>
             <groupId>com.pearson.ed.ltg.rumba.commons</groupId>
             <artifactId>SpringApplicationContextListeners</artifactId>
-            <version>12.12.22-SNAPSHOT</version>
+            <version>13.7.14.2</version>
         </dependency>
 	</dependencies>
 

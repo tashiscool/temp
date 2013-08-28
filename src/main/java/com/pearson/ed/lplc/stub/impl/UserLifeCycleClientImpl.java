@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
-import com.pearson.ed.ltg.rumba.webservices.exception.GetUserResponseException;
-import com.pearson.ed.ltg.rumba.webservices.exception.SubscriptionExceptionService;
-import com.pearson.ed.ltg.rumba.webservices.stub.api.ProductLifeCycleClient;
-import com.pearson.ed.ltg.rumba.webservices.stub.api.UserLifeCycleClient;
+import com.pearson.ed.lplc.stub.api.UserLifeCycleClient;
+import com.pearson.rws.user.doc._2009._03._01.GetUsersByCriteriaResponseElement;
 import com.pearson.rws.user.doc.v3.GetUserRequest;
 import com.pearson.rws.user.doc.v3.GetUserResponse;
+import com.pearson.rws.user.doc.v3.GetUsersByAffiliationRequest;
+import com.pearson.rws.user.doc.v3.GetUsersByAffiliationResponse;
 
 /**
  * Web Service Client stub implementation of the {@link ProductLifeCycleClient} interface. Wraps an instance of the
@@ -27,8 +27,8 @@ public class UserLifeCycleClientImpl implements UserLifeCycleClient {
     @Autowired
     private WebServiceTemplate serviceClientUser;
     
-    @Autowired
-    private SubscriptionExceptionService excSvc;
+//    @Autowired
+//    private SubscriptionExceptionService excSvc;
     
     public WebServiceTemplate getServiceClientUser() {
         return serviceClientUser;
@@ -40,22 +40,22 @@ public class UserLifeCycleClientImpl implements UserLifeCycleClient {
 
 
     @Override
-    public Object getUser(GetUserRequest getUserRequest) {
-        GetUserResponse response = null;
+    public GetUsersByAffiliationResponse getUsersByCriteria(GetUsersByAffiliationRequest getUserRequest) {
+    	GetUsersByAffiliationResponse response = null;
         try {
 			LOGGER.debug("serviceClientUser sent" + getUserRequest.toString() + "\n");
-        	response = (GetUserResponse) serviceClientUser
+        	response = (GetUsersByAffiliationResponse) serviceClientUser
                 .marshalSendAndReceive(getUserRequest);
         	LOGGER.debug("serviceClientUser recieved" + response.toString() + "\n");
         } 
         catch (SoapFaultClientException e) {
-			LOGGER.error("subscriptionWebServiceClient SoapFaultClientException" + excSvc.getSoapFaultMessage(e) + "\n");
-            return new GetUserResponseException(
-                    excSvc.getSoapFaultMessage(e), null,
-                    e);
+//			LOGGER.error("subscriptionWebServiceClient SoapFaultClientException" + excSvc.getSoapFaultMessage(e) + "\n");
+//            return new GetUserResponseException(
+//                    excSvc.getSoapFaultMessage(e), null,
+//                    e);
         }
     catch (Exception exception) {
-    	return new GetUserResponseException(exception.getMessage(), null, exception);
+//    	return new GetUserResponseException(exception.getMessage(), null, exception);
     }
         return response;
     }

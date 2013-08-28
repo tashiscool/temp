@@ -43,7 +43,9 @@
 		
 	<!-- Service Activators - note that the referenced client stubs are provided 
 		by another configuration file -->
-	<service-activator input-channel="licensePoolClientRequestChannel"
+	<service-activator 
+        method="getLicensePoolById"
+		input-channel="licensePoolClientRequestChannel"
 		output-channel="licensePoolClientResponseChannel" ref="licensePoolLifeCycleClient" />
 		
 	
