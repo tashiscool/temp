@@ -12,14 +12,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.pearson.ed.lplc.common.LPLCConstants;
-import com.pearson.ed.lplc.exception.LicensePoolJMSException;
 import com.pearson.ed.lplc.jms.api.JMSListener;
-import com.pearson.ed.lplc.services.api.LicensePoolService;
+import com.pearson.ed.lplc.services.api.LicensingCompositeService;
 
 /**
  * Implementation class for JMSListener interface to listen message from organization.
@@ -31,12 +31,13 @@ public class JMSListenerImpl implements JMSListener {
 
 	private static final Logger logger = Logger.getLogger(JMSListenerImpl.class);
 
-	private LicensePoolService licensepoolService;
+	@Autowired
+	private LicensingCompositeService licensepoolService;
 
 	/**
 	 * @return the licensepoolService
 	 */
-	public LicensePoolService getLicensepoolService() {
+	public LicensingCompositeService getLicensepoolService() {
 		return licensepoolService;
 	}
 
@@ -44,7 +45,7 @@ public class JMSListenerImpl implements JMSListener {
 	 * @param licensepoolService
 	 *            the licensepoolService to set
 	 */
-	public void setLicensepoolService(LicensePoolService licensepoolService) {
+	public void setLicensepoolService(LicensingCompositeService licensepoolService) {
 		this.licensepoolService = licensepoolService;
 	}
 
@@ -54,6 +55,7 @@ public class JMSListenerImpl implements JMSListener {
 	 * @param message
 	 *            contains message received from destination.
 	 */
+	@Override
 	public void onMessage(Message message) {
 		if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
@@ -73,8 +75,6 @@ public class JMSListenerImpl implements JMSListener {
 	private void assignLicensePoolsToNewOrganization(TextMessage textMessage) {
 		try {
 			String eventType = null;
-			String organizationId = null;
-			String parentOrganizationId = null;
 			String message = textMessage.getText();
 			if (logger.isDebugEnabled()) {
 				logger.debug("Received Message from organization topic: " + message);
@@ -87,13 +87,15 @@ public class JMSListenerImpl implements JMSListener {
 
 			NodeList eventTypeNode = document.getElementsByTagName(LPLCConstants.ORG_EVENT_TYPE);
 			eventType = eventTypeNode.item(0).getChildNodes().item(0).getNodeValue();
-			if (eventType.equalsIgnoreCase(LPLCConstants.ORG_REL_CREATE)) {
-				NodeList organizationNode = document.getElementsByTagName(LPLCConstants.ORG_ID);
-				organizationId = organizationNode.item(0).getChildNodes().item(0).getNodeValue();
-				NodeList parentOrganizationNode = document.getElementsByTagName(LPLCConstants.PARENT_ORG_ID);
-				parentOrganizationId = parentOrganizationNode.item(0).getChildNodes().item(0).getNodeValue();
-				licensepoolService.applyLicensesToNewOrganization(organizationId, parentOrganizationId);
-			}
+//			if (eventType.equalsIgnoreCase(LPLCConstants.ORG_REL_CREATE)) {
+//				NodeList organizationNode = document.getElementsByTagName(LPLCConstants.ORG_ID);
+//				organizationId = organizationNode.item(0).getChildNodes().item(0).getNodeValue();
+//				NodeList parentOrganizationNode = document.getElementsByTagName(LPLCConstants.PARENT_ORG_ID);
+//				parentOrganizationId = parentOrganizationNode.item(0).getChildNodes().item(0).getNodeValue();
+			NodeList licensepoolIdNode = document.getElementsByTagName("LicensePoolId");
+			String licensepoolId = licensepoolIdNode.item(0).getChildNodes().item(0).getNodeValue();
+			 licensepoolService.subscribeUser(licensepoolId, eventType);
+//			}
 		} catch (Exception exception) {
 			if (exception instanceof JMSException) {
 				throw new LicensePoolJMSException("Failed to Fetch JMS message", exception);
@@ -106,6 +108,20 @@ public class JMSListenerImpl implements JMSListener {
 				throw new RuntimeException(exception);
 			}
 		}
+	}
+	
+	class LicensePoolJMSException extends RuntimeException
+	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public LicensePoolJMSException(String string, Exception exception) {
+			super(string, exception);
+		}
+		
 	}
 
 }

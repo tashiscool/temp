@@ -23,39 +23,28 @@
 	<annotation-config />
 
 	<gateway id="marshallingLicensedProductWebServiceGateway"
-		default-request-channel="wsGetLicensedProductRequestChannel"
-		service-interface="com.pearson.ed.lp.ws.MarshallingLicensedProductServiceEndpoint"
+		default-request-channel="licensePoolClientRequestChannel"
+		service-interface="com.pearson.ed.lplc.services.api.LicensingCompositeService"
 		error-channel="exceptionTransformationChannel" />
 
-	<transformer input-channel="exceptionTransformationChannel"
-		expression="@licensedProductExceptionFactory.getLicensedProductException(payload.getCause().getMessage(), payload.getCause())" />
-
-	<transformer ref="getLicensedProductRequestTransformer"
-		input-channel="wsGetLicensedProductRequestChannel" output-channel="licensePoolClientRequestChannel" />
-
+	<service-activator 
+        method="getLicensePoolById"
+		input-channel="licensePoolClientRequestChannel"
+		output-channel="licensePoolClientResponseChannel" ref="licensePoolLifeCycleClient" />
+	
+		
+	
 	<splitter ref="licensedProductDetailsRequestSplitter"
 		input-channel="licensePoolClientResponseChannel" output-channel="licensedProductDetailsRequestChannel"
 		apply-sequence="true" />
 
 	
-
-	
-		
 	<!-- Service Activators - note that the referenced client stubs are provided 
 		by another configuration file -->
-	<service-activator 
-        method="getLicensePoolById"
-		input-channel="licensePoolClientRequestChannel"
-		output-channel="licensePoolClientResponseChannel" ref="licensePoolLifeCycleClient" />
-		
-	
-		
-	
-		
 	
 		
 	<!-- channels -->
-	<channel id="wsGetLicensedProductRequestChannel" />
+	
 	<channel id="exceptionTransformationChannel" />	
 	<channel id="licensePoolClientRequestChannel" />
 	<channel id="licensePoolClientResponseChannel" />
@@ -95,6 +84,9 @@
         />
         <mapping type="com.pearson.rws.organization.doc._2009._07._01.GetParentTreeByOrganizationIdRequest"
             channel="getParentTreeRequestChannel"
+        />
+        <mapping type="com.pearson.rws.licensepool.doc._2009._04._01.GetLicensePoolDetailsByIdResponse"
+            channel="responseCollectorChannel"
         />
         <mapping type="com.pearson.jms.PasscodeEvent"
             channel="passCodeEventChannel"

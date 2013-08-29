@@ -1,7 +1,6 @@
 package com.pearson.ed.lplc.stub.impl;
 
 import com.pearson.ed.lplc.stub.api.LicenseSubscriptionLifeCycleClient;
-import com.pearson.rws.subscriptionevent.doc._2009._06._01.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +9,6 @@ import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.rws.licensepool.doc._2009._04._01.GetLicensePoolDetailsByIdRequest;
 import com.pearson.rws.licensepool.doc._2009._04._01.GetLicensePoolDetailsByIdResponse;
-import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePool;
-import com.pearson.rws.licensepool.doc._2009._04._01.UpdateLicensePoolRequest;
-import com.pearson.rws.licensepool.doc._2009._04._01.UpdateUsedLicenses;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Web Service Client stub implementation of the {@link SubscriptionLifeCycleClient} interface. Wraps an instance of the

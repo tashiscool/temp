@@ -7,9 +7,6 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.lplc.stub.api.UserLifeCycleClient;
-import com.pearson.rws.user.doc._2009._03._01.GetUsersByCriteriaResponseElement;
-import com.pearson.rws.user.doc.v3.GetUserRequest;
-import com.pearson.rws.user.doc.v3.GetUserResponse;
 import com.pearson.rws.user.doc.v3.GetUsersByAffiliationRequest;
 import com.pearson.rws.user.doc.v3.GetUsersByAffiliationResponse;
 

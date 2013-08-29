@@ -332,6 +332,7 @@ public class LicensePoolDTO implements Serializable {
 	 * 
 	 * @return true if the objects are equal.
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof LicensePoolDTO)) {
 			return false;
@@ -362,6 +363,7 @@ public class LicensePoolDTO implements Serializable {
 	 * 
 	 * @return the LicensePool's hash code.
 	 */
+	@Override
 	public int hashCode() {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(11, 37);
 
@@ -385,6 +387,7 @@ public class LicensePoolDTO implements Serializable {
 	 * 
 	 * @return a String representation of the information store in a User.
 	 */
+	@Override
 	public String toString() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd KK:mm:ss.SSS aa");
 		StringBuffer sb = new StringBuffer();

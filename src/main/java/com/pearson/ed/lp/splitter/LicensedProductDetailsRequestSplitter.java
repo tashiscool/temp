@@ -9,14 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.annotation.Splitter;
 
-import com.pearson.ed.lp.message.LicensePoolResponse;
-import com.pearson.ed.lp.message.OrderLineItemRequest;
-import com.pearson.ed.lp.message.OrganizationDisplayNameRequest;
-import com.pearson.ed.lp.message.ProductEntityIdsRequest;
-import com.pearson.ed.lplc.model.LicensePoolMapping;
-import com.pearson.ed.lplc.model.OrderLineItemLPMapping;
-import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.rws.licensepool.doc._2009._04._01.GetLicensePoolDetailsByIdResponse;
+import com.pearson.rws.licensepool.doc._2009._04._01.OrganizationDetails;
 import com.pearson.rws.user.doc._2008._12._01.OrgRoleType;
 import com.pearson.rws.user.doc.v3.GetUsersByAffiliationRequest;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
@@ -68,8 +62,17 @@ public class LicensedProductDetailsRequestSplitter {
 		GetResourcesByProductIdRequest getResource = new GetResourcesByProductIdRequest();
 		GetChildTreeByOrganizationIdRequest getChildTree = new GetChildTreeByOrganizationIdRequest();
 		GetParentTreeByOrganizationIdRequest getParentTree = new GetParentTreeByOrganizationIdRequest();
-		String orgId = licensePoolResponse.getLicensePool().getQualifyingOrganizations()
-				.getQualifyingOrganization().get(0).getOrganizationId();
+		String orgId = null;
+		
+		for (OrganizationDetails orgDetails : licensePoolResponse
+				.getLicensePool().getQualifyingOrganizations()
+				.getQualifyingOrganization()) 
+		{
+			if (orgDetails.getOrganizationLevel() == 0) 
+			{
+				orgId = orgDetails.getOrganizationId();
+			}
+		}
 		
 		userRequest.setOrganizationId(orgId);
 		userRequest.setOrgRole(OrgRoleType.CA.name());
@@ -94,6 +97,7 @@ public class LicensedProductDetailsRequestSplitter {
 		splitSet.add(getResource);
 		splitSet.add(getChildTree);
 		splitSet.add(getParentTree);
+		splitSet.add(licensePoolResponse);
 		return splitSet;
 	}
 

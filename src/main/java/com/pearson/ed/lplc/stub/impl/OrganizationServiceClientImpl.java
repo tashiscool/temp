@@ -11,8 +11,6 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.axiom.AxiomSoapMessage;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
-import com.pearson.ed.lplc.exception.ExternalServiceCallException;
-import com.pearson.ed.lplc.exception.OrganizationNotValidException;
 import com.pearson.ed.lplc.stub.api.OrganizationServiceClient;
 import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
 import com.pearson.rws.organization.doc._2009._07._01.GetChildTreeByOrganizationIdRequest;
@@ -53,6 +51,7 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 	 * @param organizationId
 	 * @return List of OrganizationDTOs.
 	 */
+	@Override
 	public List<OrganizationDTO> getChildOrganizations(String organizationId) {
 
 		List<OrganizationDTO> organizationDTOList = new ArrayList<OrganizationDTO>();
@@ -127,7 +126,7 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 		OrganizationDTO organizationDTO = null;
 
 		for (int i = 0; i < organizationTreeTypes.size(); i++) {
-			OrganizationTreeType organizationTreeType = (OrganizationTreeType) organizationTreeTypes.get(i);
+			OrganizationTreeType organizationTreeType = organizationTreeTypes.get(i);
 			organizationDTO = new OrganizationDTO();
 			organizationDTO.setOrgId(organizationTreeType.getOrganizationId());
 			organizationDTO.setOrgLevel(organizationTreeType.getLevel());
@@ -215,5 +214,39 @@ public class OrganizationServiceClientImpl implements OrganizationServiceClient 
 		}
 
 		return organizationDTOList;
+	}
+	class ExternalServiceCallException extends RuntimeException
+	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public ExternalServiceCallException(String string, Exception exception) {
+			super(string, exception);
+		}
+
+		public ExternalServiceCallException(String message) {
+			super(message);
+		}
+		
+	}
+	class OrganizationNotValidException extends RuntimeException
+	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public OrganizationNotValidException(String string, Exception exception) {
+			super(string, exception);
+		}
+
+		public OrganizationNotValidException(String string) {
+			super(string);
+		}
+		
 	}
 }

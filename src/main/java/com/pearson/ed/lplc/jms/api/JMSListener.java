@@ -17,6 +17,7 @@ public interface JMSListener extends MessageListener {
 	 * @param message
 	 *            message received from destination.
 	 */
+	@Override
 	public void onMessage(Message message);
 
 }

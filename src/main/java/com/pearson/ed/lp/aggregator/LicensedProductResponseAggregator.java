@@ -17,12 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.annotation.Aggregator;
 
-import com.pearson.ed.lp.message.LicensePoolResponse;
-import com.pearson.ed.lp.message.OrderLineItemResponse;
-import com.pearson.ed.lp.message.OrganizationDisplayNameResponse;
-import com.pearson.ed.lp.message.ProductData;
-import com.pearson.ed.lp.message.ProductEntityIdsResponse;
-import com.pearson.ed.lplc.model.OrganizationLPMapping;
 import com.pearson.ed.lplc.stub.dto.OrganizationDTO;
 import com.pearson.rws.licensedproduct.doc.v2.GetLicensedProductResponseElement;
 import com.pearson.rws.licensedproduct.doc.v2.LicensedProduct;

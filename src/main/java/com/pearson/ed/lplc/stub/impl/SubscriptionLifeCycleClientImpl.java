@@ -6,8 +6,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,6 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.pearson.ed.lplc.stub.api.SubscriptionLifeCycleClient;
-import com.pearson.rws.subscriptionevent.doc._2009._06._01.SubscribeUserB2CRequestElement;
-import com.pearson.rws.subscriptionevent.doc._2009._06._01.SubscribeUserB2CResponseElement;
 import com.pearson.rws.subscriptionevent.doc.v2.SubscribeUserRequestElement;
 import com.pearson.rws.subscriptionevent.doc.v2.SubscribeUserResponseElement;
 
