@@ -82,8 +82,8 @@ public class LicensedProductDetailsRequestSplitter {
 			productIds.add(Long.parseLong(productId));
 		getProducts.getProductEntityId().addAll(productIds );
 		
-		getResource.setRole("Instructor");
-		getResource.setProductId(licensePoolResponse.getLicensePool().getProductId().get(0));
+//		getResource.setRole("Instructor");
+//		getResource.setProductId(licensePoolResponse.getLicensePool().getProductId().get(0));
 		
 		getChildTree.setMaxLevel(999);
 		getChildTree.setOrganizationId(orgId);
@@ -94,7 +94,7 @@ public class LicensedProductDetailsRequestSplitter {
 		List<Object> splitSet = new ArrayList<Object>();
 		splitSet.add(userRequest);
 		splitSet.add(getProducts);
-		splitSet.add(getResource);
+//		splitSet.add(getResource);
 		splitSet.add(getChildTree);
 		splitSet.add(getParentTree);
 		splitSet.add(licensePoolResponse);

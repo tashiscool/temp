@@ -94,7 +94,9 @@ public class JMSListenerImpl implements JMSListener {
 //				parentOrganizationId = parentOrganizationNode.item(0).getChildNodes().item(0).getNodeValue();
 			NodeList licensepoolIdNode = document.getElementsByTagName("LicensePoolId");
 			String licensepoolId = licensepoolIdNode.item(0).getChildNodes().item(0).getNodeValue();
-			 licensepoolService.subscribeUser(licensepoolId, eventType);
+			if (eventType.equals("LP_CREATE"))
+			{
+				licensepoolService.subscribeUser(licensepoolId, eventType);}
 //			}
 		} catch (Exception exception) {
 			if (exception instanceof JMSException) {

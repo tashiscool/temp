@@ -7,6 +7,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 
+import com.pearson.ed.lplc.dto.ProductResource;
 import com.pearson.ed.lplc.stub.api.ProductLifeCycleClient;
 import com.pearson.rws.product.doc.v2.GetProductDetailsResponse;
 import com.pearson.rws.product.doc.v2.GetProductsByProductEntityIdsRequest;
@@ -79,6 +80,7 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
         GetResourcesByProductIdResponse response = null;
         try {
 			LOGGER.debug("productWebServiceClient sent" + request.toString() + "\n");
+			
             response = (GetResourcesByProductIdResponse) productWebServiceClient
                     .marshalSendAndReceive(request);
 			LOGGER.debug("productWebServiceClient recieved" + response + "\n");
@@ -93,5 +95,19 @@ public class ProductLifeCycleClientImpl implements ProductLifeCycleClient {
 //                    exception.getMessage(), null, exception);
         }
         return response;
+    }
+    public ProductResource getProductsAndResourcesByProductEntityId(
+    		GetProductsByProductEntityIdsRequest request) {
+    	ProductResource returner = new ProductResource();
+    	GetProductDetailsResponse response = getProductsByProductEntityId(request);
+    	GetResourcesByProductIdRequest resourceRequest = new GetResourcesByProductIdRequest();
+    	resourceRequest.setRole("Instructor");
+    	resourceRequest.setProductId(response.getProduct().getProductId());
+		getResourcesByProductId(resourceRequest);
+		
+		returner.setResources(getResourcesByProductId(resourceRequest));
+		returner.setProduct(response);
+        
+		return returner;
     }
 }
